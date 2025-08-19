@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, User } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 
 export function SignUpForm() {
+  const router = useRouter();
   const [userType, setUserType] = useState<"talent" | "company">("talent");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,11 +40,20 @@ export function SignUpForm() {
     formData.password === formData.confirmPassword &&
     formData.confirmPassword !== "";
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userType === "talent") {
+      router.push("/signup/talent");
+    } else {
+      router.push("/signup/company");
+    }
+  };
+
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
       <div className="flex-1 bg-white p-8 flex flex-col">
-        {/* Header */}
+        {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
             src={Logo}
@@ -98,7 +109,7 @@ export function SignUpForm() {
             Let's get you started
           </h2>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Full name */}
             <div>
               <Label
