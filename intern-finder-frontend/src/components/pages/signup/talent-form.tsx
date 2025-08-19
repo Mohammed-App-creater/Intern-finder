@@ -41,7 +41,7 @@ export default function TalentForm() {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Teal background with text */}
-      <div className="flex-1 bg-gradient-to-br from-teal-400 to-teal-700 flex flex-col p-12 gap-50 text-[var(--text-white)]">
+      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-50 text-[var(--text-white)]">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image

@@ -264,7 +264,7 @@ export function SignUpForm() {
       </div>
 
       {/* Right side - Quote */}
-      <div className="flex-1 bg-gradient-to-br from-teal-400 to-teal-900 flex items-center justify-center p-3">
+      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3">
         <div className="text-left text-[var(--text-white)] max-w-lg">
           <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
             "Creativity is intelligence having fun"
