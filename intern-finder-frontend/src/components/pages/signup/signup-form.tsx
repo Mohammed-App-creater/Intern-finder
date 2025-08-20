@@ -63,10 +63,10 @@ export function SignUpForm() {
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-[var(--text-light)]">
+            <span className="text-xl font-medium text-[var(--text-light)]">
               Intern Fin
             </span>
-            <span className="text-xl font-bold text-[var(--text-dark)]">
+            <span className="text-xl font-medium text-[var(--text-dark)]">
               der
             </span>
           </div>
@@ -96,8 +96,8 @@ export function SignUpForm() {
               variant={userType === "company" ? "default" : "outline"}
               className={`flex-1 rounded-l-none ${
                 userType === "company"
-                  ? "bg-[var(--primary)] hover:bg-teal-700 text-white"
-                  : "bg-white border-gray-300 text-[var(--text-dark)] font-[900] hover:bg-[gray-50]"
+                  ? "bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)]"
+                  : "bg-[var(--text-white)] border-gray-300 text-[var(--text-dark)] font-[900] hover:bg-[gray-50]"
               }`}
               onClick={() => setUserType("company")}
             >
@@ -106,7 +106,7 @@ export function SignUpForm() {
           </div>
 
           <h2 className="text-xl font-[900] text-[var(--text-dark)] mb-6">
-            Let's get you started
+            Let&apos;s get you started
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -114,7 +114,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="fullName"
-                className="text-sm font-bold text-[var(--text-dark)]"
+                className="text-sm font-medium text-[var(--text-dark)]"
               >
                 Full name
               </Label>
@@ -132,7 +132,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="email"
-                className="text-sm font-bold text-[var(--text-dark)]"
+                className="text-sm font-medium text-[var(--text-dark)]"
               >
                 Email address
               </Label>
@@ -150,7 +150,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="password"
-                className="text-sm font-bold text-[var(--text-dark)]"
+                className="text-sm font-medium text-[var(--text-dark)]"
               >
                 Create password
               </Label>
@@ -173,9 +173,9 @@ export function SignUpForm() {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4 text-[var(--text-light)]" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4 text-[var(--text-light)]" />
                   )}
                 </Button>
               </div>
@@ -186,7 +186,7 @@ export function SignUpForm() {
                   <p
                     key={index}
                     className={`text-xs ${
-                      req.met ? "text-green-600" : "text-gray-400"
+                      req.met ? "text-green-600" : "text-[var(--text-light)]"
                     }`}
                   >
                     {req.text}
@@ -199,7 +199,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="confirmPassword"
-                className="text-sm font-bold text-[var(--text-dark)]"
+                className="text-sm font-medium text-[var(--text-dark)]"
               >
                 Confirm password
               </Label>
@@ -222,9 +222,9 @@ export function SignUpForm() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4 text-[var(--text-light)]" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4 text-[var(--text-light)]" />
                   )}
                 </Button>
               </div>
@@ -267,7 +267,7 @@ export function SignUpForm() {
       <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3">
         <div className="text-left text-[var(--text-white)] max-w-lg">
           <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
-            "Creativity is intelligence having fun"
+            &quot;Creativity is intelligence having fun&quot;
           </blockquote>
           <cite className="text-lg font-medium">- Albert Einstein</cite>
         </div>

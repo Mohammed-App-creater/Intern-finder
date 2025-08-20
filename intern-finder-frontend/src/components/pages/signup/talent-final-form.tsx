@@ -15,11 +15,17 @@ interface FormData {
   bio: string;
 }
 
-export default function FinishingTalentForm() {
+interface TalentFinalFormProps {
+  onSubmit: (data: any) => void;
+  initialData?: any;
+}
+
+export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFormProps) {
   const [formData, setFormData] = useState<FormData>({
     linkedin: "",
     website: "",
     bio: "",
+    ...initialData
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,13 +47,13 @@ export default function FinishingTalentForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    onSubmit(formData);
   };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col p-8">
+      <div className="flex-1 flex flex-col p-8 gap-25">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -68,8 +74,8 @@ export default function FinishingTalentForm() {
         </div>
 
         {/* Form Content */}
-        <div className="flex-1 flex flex-col max-w-md mx-auto p-4 md:p-8 w-full">
-          <h1 className="text-2xl font-bold text-gray-900 mb-8">
+        <div className="flex-1 flex flex-col max-w-md mx-auto p-4 md:p-8 min-w-200">
+          <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
             Let&apos;s go to the finishing steps
           </h1>
           
@@ -81,7 +87,7 @@ export default function FinishingTalentForm() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="linkedin"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-[var(--text-dark)]"
                   >
                     LinkedIn
                   </Label>
@@ -101,7 +107,7 @@ export default function FinishingTalentForm() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="website"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-[var(--text-dark)]"
                   >
                     Personal Website
                   </Label>
@@ -121,7 +127,7 @@ export default function FinishingTalentForm() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="bio"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-[var(--text-dark)]"
                   >
                     Bio
                   </Label>
@@ -137,7 +143,7 @@ export default function FinishingTalentForm() {
 
               {/* CV Upload */}
               <div className="flex items-center justify-center">
-                <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-teal-300 rounded-lg p-6 text-center bg-[var(--secondary)] w-full">
+                <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-[var(--primary)] rounded-lg p-6 text-center bg-[var(--secondary)] w-full">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -150,14 +156,14 @@ export default function FinishingTalentForm() {
                     <Button
                       type="button"
                       variant="default"
-                      className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-4 rounded-xl mb-3"
+                      className="flex justify-center items-center bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] text-lg px-6 py-7 rounded-xl mb-3 cursor-pointer"
                       onClick={handleUploadClick}
                     >
                       Upload Your CV
                     </Button>
-                    <div className="text-gray-600">
-                      <p className="text-sm">or drop it here</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                    <div className="text-[var(--text-dark)]">
+                      <p className="text-lg">or drop it here</p>
+                      <p className="text-xs text-[var(--text-light)] mt-1">
                         PDF, DOC or TXT files
                       </p>
                     </div>
@@ -169,7 +175,7 @@ export default function FinishingTalentForm() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8"
+              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 rounded-lg font-medium mt-8 cursor-pointer"
             >
               Done!
             </Button>
@@ -179,7 +185,7 @@ export default function FinishingTalentForm() {
 
       {/* Right Side - Message */}
       <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight md:leading-relaxed text-white text-center max-w-md">
+        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
           One more step for the Masterpiece profile
         </h2>
       </div>

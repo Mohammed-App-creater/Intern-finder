@@ -16,7 +16,12 @@ import { LocationInput } from "@/components/common/location";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 
-export default function TalentForm() {
+interface TalentFormProps {
+  onSubmit: (data: any) => void;
+  initialData?: any;
+}
+
+export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
   const [formData, setFormData] = useState({
     phoneNumber: "",
     institution: "",
@@ -25,6 +30,7 @@ export default function TalentForm() {
     workType: "",
     preferredRoles: "",
     location: "",
+    ...initialData
   });
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -36,6 +42,11 @@ export default function TalentForm() {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
   };
 
   return (
@@ -60,7 +71,7 @@ export default function TalentForm() {
         <div className="flex justify-center">
           <div className="max-w-150">
             <h1 className="flex justify-center text-7xl font-bold leading-tight">
-              Let's fill some details to make you stand out from the rest
+              Let&apos;s fill some details to make you stand out from the rest
             </h1>
           </div>
         </div>
@@ -78,7 +89,7 @@ export default function TalentForm() {
           {/* Profile Picture Upload */}
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
-              <div className="w-30 h-30 rounded-full border-2 border-teal-500 flex items-center justify-center overflow-hidden">
+              <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)]flex items-center justify-center overflow-hidden">
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -127,7 +138,7 @@ export default function TalentForm() {
             </span>
           </div>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Phone Number */}
             <div>
               <Label
@@ -201,12 +212,14 @@ export default function TalentForm() {
                 onValueChange={(value) => handleInputChange("program", value)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Remote" />
+                  <SelectValue placeholder="Diploma" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="remote">Remote</SelectItem>
-                  <SelectItem value="onsite">On-site</SelectItem>
-                  <SelectItem value="hybrid">Hybrid</SelectItem>
+                  <SelectItem value="diploma">Diploma</SelectItem>
+                  <SelectItem value="degree">Degree</SelectItem>
+                  <SelectItem value="masters">Masters</SelectItem>
+                  <SelectItem value="phd">Phd</SelectItem>
+                  <SelectItem value="other">other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -224,12 +237,12 @@ export default function TalentForm() {
                 onValueChange={(value) => handleInputChange("workType", value)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Full-time" />
+                  <SelectValue placeholder="Remote" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="fulltime">Full-time</SelectItem>
-                  <SelectItem value="parttime">Part-time</SelectItem>
-                  <SelectItem value="contract">Contract</SelectItem>
+                  <SelectItem value="fulltime">Remote</SelectItem>
+                  <SelectItem value="parttime">Hybrid</SelectItem>
+                  <SelectItem value="contract">On-site</SelectItem>
                 </SelectContent>
               </Select>
             </div>
