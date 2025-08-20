@@ -16,19 +16,17 @@ import { LocationInput } from "@/components/common/location";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 
-interface TalentFormProps {
+interface CompanyFormProps {
   onSubmit: (data: any) => void;
   initialData?: any;
 }
 
-export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
+export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps) {
   const [formData, setFormData] = useState({
-    phoneNumber: "",
-    institution: "",
+    organization: "",
+    industry: "",
     fieldOfStudy: "",
-    program: "",
-    workType: "",
-    preferredRoles: "",
+    website: "",
     location: "",
     ...initialData
   });
@@ -52,7 +50,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Teal background with text */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-50 text-[var(--text-white)]">
+      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -71,7 +69,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
         <div className="flex justify-center">
           <div className="max-w-150">
             <h1 className="flex justify-center text-7xl font-bold leading-tight">
-              Let&apos;s fill some details to make you stand out from the rest
+              Let&apos;s build your company profile and connect you with the next generation of talent
             </h1>
           </div>
         </div>
@@ -82,8 +80,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
           <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-8">
-            Share your skills and interests to find your perfect internship
-            match
+            Tell us about your company or institution
           </h2>
 
           {/* Profile Picture Upload */}
@@ -93,7 +90,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                 {profileImage ? (
                   <img
                     src={profileImage}
-                    alt="Profile"
+                    alt="Logo"
                     className="w-full h-full object-cover rounded-full"
                   />
                 ) : (
@@ -134,46 +131,46 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
               </button>
             </div>
             <span className="text-[var(--text-dark)] font-bold">
-              Profile Picture
+              Logo
             </span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Phone Number */}
+            {/* Organization Type */}
             <div>
               <Label
-                htmlFor="phoneNumber"
+                htmlFor="organization"
                 className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
               >
-                Phone Number
+                Organization Type
               </Label>
               <Input
-                id="phoneNumber"
+                id="organization"
                 type="tel"
-                placeholder="+1 234 567 8900"
-                value={formData.phoneNumber}
+                placeholder="NGO"
+                value={formData.organization}
                 onChange={(e) =>
-                  handleInputChange("phoneNumber", e.target.value)
+                  handleInputChange("organization", e.target.value)
                 }
                 className="w-full"
               />
             </div>
 
-            {/* Institution */}
+            {/* Industry/Field */}
             <div>
               <Label
-                htmlFor="institution"
+                htmlFor="industry"
                 className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
               >
-                Institution
+                Industry/Field
               </Label>
               <Input
-                id="institution"
+                id="industry"
                 type="text"
-                placeholder="MIT"
-                value={formData.institution}
+                placeholder="Technology"
+                value={formData.industry}
                 onChange={(e) =>
-                  handleInputChange("institution", e.target.value)
+                  handleInputChange("industry", e.target.value)
                 }
                 className="w-full"
               />
