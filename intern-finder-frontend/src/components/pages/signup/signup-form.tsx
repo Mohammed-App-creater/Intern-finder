@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -52,7 +53,12 @@ export function SignUpForm() {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
-      <div className="flex-1 bg-white p-8 flex flex-col">
+      <motion.div
+        initial={{ x: 800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 p-8 flex flex-col"
+      >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -253,7 +259,7 @@ export function SignUpForm() {
             <p className="text-center text-sm text-[var(--text-light)] mt-4">
               Already a user?{" "}
               <a
-                href="#"
+                href="/login"
                 className="text-[var(--primary)] hover:text-teal-700 font-medium cursor-pointer"
               >
                 Login
@@ -261,17 +267,22 @@ export function SignUpForm() {
             </p>
           </form>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right side - Quote */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3">
+      <motion.div
+        initial={{ x: -800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3"
+      >
         <div className="text-left text-[var(--text-white)] max-w-lg">
           <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
             &quot;Creativity is intelligence having fun&quot;
           </blockquote>
           <cite className="text-lg font-medium">- Albert Einstein</cite>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

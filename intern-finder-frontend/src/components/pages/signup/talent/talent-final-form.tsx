@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface FormData {
   linkedin: string;
@@ -20,12 +21,15 @@ interface TalentFinalFormProps {
   initialData?: object;
 }
 
-export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFormProps) {
+export default function TalentFinalForm({
+  onSubmit,
+  initialData,
+}: TalentFinalFormProps) {
   const [formData, setFormData] = useState<FormData>({
     linkedin: "",
     website: "",
     bio: "",
-    ...initialData
+    ...initialData,
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -53,7 +57,13 @@ export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFo
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col p-8 gap-25">
+      <AnimatePresence mode="wait">
+      <motion.div
+        initial={{ x: 800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 flex flex-col p-8 gap-25"
+      >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -78,7 +88,7 @@ export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFo
           <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
             Let&apos;s go to the finishing steps
           </h1>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6 w-full">
             <div className="flex flex-col md:flex-row gap-6 md:gap-10">
               {/* Form Fields */}
@@ -152,7 +162,10 @@ export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFo
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  <label htmlFor="cv-upload" className="cursor-pointer flex flex-col items-center">
+                  <label
+                    htmlFor="cv-upload"
+                    className="cursor-pointer flex flex-col items-center"
+                  >
                     <Button
                       type="button"
                       variant="default"
@@ -171,7 +184,7 @@ export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFo
                 </div>
               </div>
             </div>
-            
+
             {/* Submit Button */}
             <Button
               type="submit"
@@ -181,14 +194,22 @@ export default function TalentFinalForm({ onSubmit, initialData }: TalentFinalFo
             </Button>
           </form>
         </div>
-      </div>
+      </motion.div>
+      </AnimatePresence>
 
       {/* Right Side - Message */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6">
-        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
-          One more step for the Masterpiece profile
-        </h2>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ x: -800, opacity: 1 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6"
+        >
+          <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
+            One more step for the Masterpiece profile
+          </h2>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

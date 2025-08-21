@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { LocationInput } from "@/components/common/location";
 import Logo from "@/components/icons/logo.png";
 import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface CompanyFormProps {
   onSubmit: (data: object) => void;
@@ -22,7 +22,6 @@ export default function CompanyForm({
   const [formData, setFormData] = useState({
     organization: "",
     industry: "",
-    fieldOfStudy: "",
     website: "",
     location: "",
     ...initialData,
@@ -47,7 +46,12 @@ export default function CompanyForm({
   return (
     <div className="min-h-screen flex">
       {/* Left side - Teal background with text */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]">
+      <motion.div
+        initial={{ x: 800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]"
+      >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -71,10 +75,15 @@ export default function CompanyForm({
             </h1>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right side - Form */}
-      <div className="flex-1 p-8 flex flex-col justify-center">
+      <motion.div
+        initial={{ x: -800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 p-8 flex flex-col justify-center"
+      >
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
           <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-8">
@@ -134,7 +143,7 @@ export default function CompanyForm({
                   document.getElementById("profileUpload")?.click()
                 }
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-5 h-5" />
               </button>
             </div>
             <span className="text-[var(--text-dark)] font-bold">Logo</span>
@@ -179,26 +188,6 @@ export default function CompanyForm({
               />
             </div>
 
-            {/* Field of Study */}
-            <div>
-              <Label
-                htmlFor="fieldOfStudy"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Field of Study
-              </Label>
-              <Input
-                id="fieldOfStudy"
-                type="text"
-                placeholder="Computer Engineering"
-                value={formData.fieldOfStudy}
-                onChange={(e) =>
-                  handleInputChange("fieldOfStudy", e.target.value)
-                }
-                className="w-full"
-              />
-            </div>
-
             {/* Official Website URL */}
             <div>
               <Label
@@ -217,12 +206,6 @@ export default function CompanyForm({
               />
             </div>
 
-            {/* Location */}
-            <LocationInput
-              formData={formData}
-              handleInputChange={handleInputChange}
-            />
-
             {/* Continue Button */}
             <Button
               type="submit"
@@ -232,7 +215,7 @@ export default function CompanyForm({
             </Button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
