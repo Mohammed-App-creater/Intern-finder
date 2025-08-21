@@ -14,7 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Gender {
   male
   female
@@ -38,27 +37,32 @@ enum ApplicationStatus {
   rejected
 }
 
+enum FileKind {
+  PROFILE_IMAGE
+  CV
+}
+
 //// ===== MODELS ===== ////
 
 model Company {
-  id            String                  @id @default(uuid())
+  id            String                 @id @default(uuid())
   companyName   String
-  email         String                  @unique
+  email         String                 @unique
   password      String
   linkedinUrl   String?
   githubUrl     String?
   websiteUrl    String?
   foundedAt     DateTime?
-  employeeCount String?                 // could be number or range
-  locations     String[]                 // multiple locations
-  industries    String[]                 // multiple industries
+  employeeCount String? // could be number or range
+  locations     String[] // multiple locations
+  industries    String[] // multiple industries
   logoUrl       String?
   description   String?
-  techStack     String[]                 // plain array
+  techStack     String[] // plain array
   contact       String?
-  images        String[]                 // company pictures
-  team          Json?                     // [{profilePic, name, position, socialLinks}]
-  jobs          Job[]                     // relation: one company -> many jobs
+  images        String[] // company pictures
+  team          Json? // [{profilePic, name, position, socialLinks}]
+  jobs          Job[] // relation: one company -> many jobs
   dashboard     CompanyDashboardStats?
 
   createdAt DateTime @default(now())
@@ -66,79 +70,97 @@ model Company {
 }
 
 model Talent {
-  id               String                  @id @default(uuid())
+  id               String                @id @default(uuid())
   fullName         String
-  email            String                  @unique
+  email            String                @unique
   password         String
   phoneNumber      String?
-  languages        String[]                 // array of languages
+  languages        String[] // array of languages
   linkedinUrl      String?
-  githubUrl        String?
-  otherSocialUrl   String?
+  personalWebsite  String?
+  instagramUrl     String?
   aboutMe          String?
-  experiences      Json?                     // [{title, company, env, period, location, desc}]
-  education        Json?                     // [{institution, program, field, year, desc}]
-  skills           String[]                 // array of skills
+  experiences      Json? // [{title, company, env, period, location, desc}]
+  education        Json? // [{institution, program, field, year, desc}]
+  skills           String[] // array of skills
   gender           Gender?
-  profilePicUrl    String?
+  profileImageId   String?               @unique
+  profileImage     File?                 @relation("TalentProfileImage", fields: [profileImageId], references: [id])
   rating           Float?
   address          String?
   yearsExperience  Int?
-  resumeUrl        String?
-  availableForWork Boolean                  @default(false)
-  settings         Json?                     // small settings flags
-  applications     JobApplication[]          // relation: one talent -> many applications
+  resumeId         String?               @unique
+  resume           File?                 @relation("TalentCV", fields: [resumeId], references: [id])
+  availableForWork Boolean               @default(false)
+  settings         Json? // small settings flags
+  applications     JobApplication[] // relation: one talent -> many applications
   dashboard        TalentDashboardStats?
+  files            File[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Job {
-  id                  String                  @id @default(uuid())
-  companyId           String
-  title               String
-  environmentType     String
-  categories          String[]
-  salaryType          SalaryType
-  salaryRange         String?
-  responsibilities    String?
-  description         String
-  professionalSkills  String?
-  tags                String[]
-  minExperienceYears  Int?
-  degree              String?
-  location            String
-  status              JobStatus               @default(live)
-  capacity            Int?
-  requiredSkills      String[]
-  applications        JobApplication[]        // one job -> many applications
+model File {
+  id                 String   @id @default(uuid())
+  key                String   @unique // object storage key (e.g., s3 path)
+  bucket             String
+  mimeType           String
+  sizeBytes          Int
+  kind               FileKind
+  uploaded           Boolean  @default(false) // flip true on confirm
+  talent             Talent?  @relation(fields: [talentId], references: [id])
+  talentId           String?
+  profileImageTalent Talent?  @relation("TalentProfileImage")
+  resumeTalent       Talent?  @relation("TalentCV")
+  createdAt          DateTime @default(now())
+}
 
-  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+model Job {
+  id                 String           @id @default(uuid())
+  companyId          String
+  title              String
+  environmentType    String
+  categories         String[]
+  salaryType         SalaryType
+  salaryRange        String?
+  responsibilities   String?
+  description        String
+  professionalSkills String?
+  tags               String[]
+  minExperienceYears Int?
+  degree             String?
+  location           String
+  status             JobStatus        @default(live)
+  capacity           Int?
+  requiredSkills     String[]
+  applications       JobApplication[] // one job -> many applications
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model JobApplication {
-  id         String             @id @default(uuid())
-  jobId      String
-  talentId   String
-  status     ApplicationStatus  @default(pending)
-  appliedAt  DateTime           @default(now())
+  id        String            @id @default(uuid())
+  jobId     String
+  talentId  String
+  status    ApplicationStatus @default(pending)
+  appliedAt DateTime          @default(now())
 
-  job     Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  talent  Talent  @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
 
 model CompanyDashboardStats {
-  id                String   @id @default(uuid())
-  companyId         String   @unique
-  newCandidates     Int      @default(0)
-  totalJobsPosted   Int      @default(0)
-  messagesReceived  Int      @default(0)
+  id                String @id @default(uuid())
+  companyId         String @unique
+  newCandidates     Int    @default(0)
+  totalJobsPosted   Int    @default(0)
+  messagesReceived  Int    @default(0)
   jobStatistics     Json?
-  openJobs          Int      @default(0)
+  openJobs          Int    @default(0)
   applicantsSummary Json?
   jobUpdates        Json?
 
@@ -146,12 +168,12 @@ model CompanyDashboardStats {
 }
 
 model TalentDashboardStats {
-  id                  String   @id @default(uuid())
-  talentId            String   @unique
-  totalJobsApplied    Int      @default(0)
-  interviewCount      Int      @default(0)
-  jobsStatusSummary   Json?
-  upcomingInterview   Json?
+  id                String @id @default(uuid())
+  talentId          String @unique
+  totalJobsApplied  Int    @default(0)
+  interviewCount    Int    @default(0)
+  jobsStatusSummary Json?
+  upcomingInterview Json?
 
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
