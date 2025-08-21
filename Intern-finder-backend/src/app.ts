@@ -1,27 +1,32 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
+import express, { Request, Response } from "express";
+import cors from "cors";
+import storageRoutes from "./modules/storage/storage.routes";
+import { setupSwagger } from "./config/swagger";
+import errorHandler from '@/middlewares/errorHandler';
 
-const { NODE_ENV } = require("./config/env");
-const talentAuthRouter = require("./modules/auth/talentAuth.route");
-const { errorHandler, notFoundHandler } = require("./middlewares/errorHandler");
+
 
 const app = express();
 
-if (NODE_ENV !== "test") {
-  app.use(morgan("dev"));
-}
+
 
 app.use(cors());
 app.use(express.json());
+setupSwagger(app);
 
-app.get("/health", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to the Intern Finder API");
+});
+
+app.use("/api/storage", storageRoutes);
+
+// Health check endpoint
+app.get("/health", (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-app.use("/auth/talent", talentAuthRouter);
 
-app.use(notFoundHandler);
+
 app.use(errorHandler);
 
-module.exports = app;
+export default app;
