@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import CompanyForm from "@/components/pages/signup/company-form";
-import TalentFinalForm from "@/components/pages/signup/talent-final-form";
+import ContactInfoForm from "@/components/pages/signup/contact-info";
 
 export default function Talent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: object) => {
     setFormData({ ...formData, ...data });
     setCurrentStep(2);
   };
 
-  const handleFinalSubmit = (finalData: any) => {
+  const handleFinalSubmit = (finalData: object) => {
     // Combine all form data and submit
     const completeData = { ...formData, ...finalData };
     console.log("Complete form data:", completeData);
@@ -26,7 +26,7 @@ export default function Talent() {
         <CompanyForm onSubmit={handleFormSubmit} initialData={formData} />
       )}
       {currentStep === 2 && (
-        <TalentFinalForm onSubmit={handleFinalSubmit} initialData={formData} />
+        <ContactInfoForm onSubmit={handleFinalSubmit} initialData={formData} />
       )}
     </div>
   );

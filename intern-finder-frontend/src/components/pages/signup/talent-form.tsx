@@ -17,8 +17,8 @@ import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 
 interface TalentFormProps {
-  onSubmit: (data: any) => void;
-  initialData?: any;
+  onSubmit: (data: object) => void;
+  initialData?: object;
 }
 
 export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
@@ -91,10 +91,13 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div className="relative">
               <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
                 {profileImage ? (
-                  <img
+                  <Image
                     src={profileImage}
                     alt="Profile"
                     className="w-full h-full object-cover rounded-full"
+                    width={120}
+                    height={120}
+                    style={{ objectFit: "cover", borderRadius: "9999px" }}
                   />
                 ) : (
                   <User className="w-14 h-14 text-[var(--text-light)]" />

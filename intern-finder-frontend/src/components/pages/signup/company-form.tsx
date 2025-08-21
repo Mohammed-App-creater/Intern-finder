@@ -15,14 +15,17 @@ interface CompanyFormProps {
   initialData?: object;
 }
 
-export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps) {
+export default function CompanyForm({
+  onSubmit,
+  initialData,
+}: CompanyFormProps) {
   const [formData, setFormData] = useState({
     organization: "",
     industry: "",
     fieldOfStudy: "",
     website: "",
     location: "",
-    ...initialData
+    ...initialData,
   });
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -63,7 +66,8 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
         <div className="flex justify-center">
           <div className="max-w-150">
             <h1 className="flex justify-center text-7xl font-bold leading-tight">
-              Let&apos;s build your company profile and connect you with the next generation of talent
+              Let&apos;s build your company profile and connect you with the
+              next generation of talent
             </h1>
           </div>
         </div>
@@ -77,7 +81,7 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
             Tell us about your company or institution
           </h2>
 
-          {/* Profile Picture Upload */}
+          {/* Company Logo Upload */}
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
               <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
@@ -92,11 +96,11 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                     unoptimized
                   />
                 ) : (
-                  <Image 
-                  src={CompanyIcon}
-                  alt="Company Icon"
-                  width={50}
-                  height={50}
+                  <Image
+                    src={CompanyIcon}
+                    alt="Company Icon"
+                    width={50}
+                    height={50}
                   />
                 )}
               </div>
@@ -133,9 +137,7 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                 <Plus className="w-4 h-4" />
               </button>
             </div>
-            <span className="text-[var(--text-dark)] font-bold">
-              Logo
-            </span>
+            <span className="text-[var(--text-dark)] font-bold">Logo</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -172,9 +174,7 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                 type="text"
                 placeholder="Technology"
                 value={formData.industry}
-                onChange={(e) =>
-                  handleInputChange("industry", e.target.value)
-                }
+                onChange={(e) => handleInputChange("industry", e.target.value)}
                 className="w-full"
               />
             </div>
@@ -212,9 +212,7 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                 type="text"
                 placeholder="www.example.com"
                 value={formData.website}
-                onChange={(e) =>
-                  handleInputChange("website", e.target.value)
-                }
+                onChange={(e) => handleInputChange("website", e.target.value)}
                 className="w-full"
               />
             </div>
