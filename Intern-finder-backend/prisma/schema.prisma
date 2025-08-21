@@ -37,11 +37,6 @@ enum ApplicationStatus {
   rejected
 }
 
-enum FileKind {
-  PROFILE_IMAGE
-  CV
-}
-
 //// ===== MODELS ===== ////
 
 model Company {
@@ -70,50 +65,38 @@ model Company {
 }
 
 model Talent {
-  id               String                @id @default(uuid())
-  fullName         String
-  email            String                @unique
-  password         String
-  phoneNumber      String?
-  languages        String[] // array of languages
-  linkedinUrl      String?
-  personalWebsite  String?
-  instagramUrl     String?
-  aboutMe          String?
-  experiences      Json? // [{title, company, env, period, location, desc}]
-  education        Json? // [{institution, program, field, year, desc}]
-  skills           String[] // array of skills
-  gender           Gender?
-  profileImageId   String?               @unique
-  profileImage     File?                 @relation("TalentProfileImage", fields: [profileImageId], references: [id])
-  rating           Float?
-  address          String?
-  yearsExperience  Int?
-  resumeId         String?               @unique
-  resume           File?                 @relation("TalentCV", fields: [resumeId], references: [id])
-  availableForWork Boolean               @default(false)
-  settings         Json? // small settings flags
-  applications     JobApplication[] // relation: one talent -> many applications
-  dashboard        TalentDashboardStats?
-  files            File[]
+  id                 String           @id @default(uuid())
+  fullName           String
+  email              String           @unique
+  password           String
+  phoneNumber        String?
+  languages          String[] // array of languages
+  linkedinUrl        String?
+  personalWebsite    String?
+  instagramUrl       String?
+  locations          String?
+  fieldOfStudy       String? // e.g., Computer Science, Design
+  program            String?
+  workingEnvironment String?
+  bio                String?
+  preferredRole      String?
+  aboutMe            String?
+  experiences        Json? // [{title, company, env, period, location, desc}]
+  education          Json? // [{institution, program, field, year, desc}]
+  skills             String[] // array of skills
+  gender             Gender?
+  profileImageUrl    String?
+  rating             Float?
+  address            String?
+  yearsExperience    Int?
+  resumeUrl          String?
+  availableForWork   Boolean          @default(false)
+  settings           Json? // small settings flags
+  applications       JobApplication[] // relation: one talent -> many applications
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model File {
-  id                 String   @id @default(uuid())
-  key                String   @unique // object storage key (e.g., s3 path)
-  bucket             String
-  mimeType           String
-  sizeBytes          Int
-  kind               FileKind
-  uploaded           Boolean  @default(false) // flip true on confirm
-  talent             Talent?  @relation(fields: [talentId], references: [id])
-  talentId           String?
-  profileImageTalent Talent?  @relation("TalentProfileImage")
-  resumeTalent       Talent?  @relation("TalentCV")
-  createdAt          DateTime @default(now())
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  TalentDashboardStats TalentDashboardStats?
 }
 
 model Job {
