@@ -276,7 +276,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium"
+              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>

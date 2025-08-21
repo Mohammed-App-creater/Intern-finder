@@ -4,21 +4,15 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Plus, User } from "lucide-react";
+import { Plus } from "lucide-react";
 import { LocationInput } from "@/components/common/location";
 import Logo from "@/components/icons/logo.png";
+import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
 
 interface CompanyFormProps {
-  onSubmit: (data: any) => void;
-  initialData?: any;
+  onSubmit: (data: object) => void;
+  initialData?: object;
 }
 
 export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps) {
@@ -88,13 +82,22 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
             <div className="relative">
               <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
                 {profileImage ? (
-                  <img
+                  <Image
                     src={profileImage}
                     alt="Logo"
                     className="w-full h-full object-cover rounded-full"
+                    width={120}
+                    height={120}
+                    style={{ objectFit: "cover", borderRadius: "9999px" }}
+                    unoptimized
                   />
                 ) : (
-                  <User className="w-14 h-14 text-[var(--text-light)]" />
+                  <Image 
+                  src={CompanyIcon}
+                  alt="Company Icon"
+                  width={50}
+                  height={50}
+                  />
                 )}
               </div>
 
@@ -196,69 +199,21 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
               />
             </div>
 
-            {/* Program */}
+            {/* Official Website URL */}
             <div>
               <Label
-                htmlFor="program"
+                htmlFor="officialWebsiteURL"
                 className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
               >
-                Program
-              </Label>
-              <Select
-                value={formData.program}
-                onValueChange={(value) => handleInputChange("program", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Diploma" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="diploma">Diploma</SelectItem>
-                  <SelectItem value="degree">Degree</SelectItem>
-                  <SelectItem value="masters">Masters</SelectItem>
-                  <SelectItem value="phd">Phd</SelectItem>
-                  <SelectItem value="other">other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Work Type */}
-            <div>
-              <Label
-                htmlFor="workType"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Work Type
-              </Label>
-              <Select
-                value={formData.workType}
-                onValueChange={(value) => handleInputChange("workType", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Remote" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="fulltime">Remote</SelectItem>
-                  <SelectItem value="parttime">Hybrid</SelectItem>
-                  <SelectItem value="contract">On-site</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Preferred Roles */}
-            <div>
-              <Label
-                htmlFor="preferredRoles"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Preferred Roles
+                Official Website URL
               </Label>
               <Input
-                id="preferredRoles"
+                id="website"
                 type="text"
-                placeholder="Software Development"
-                value={formData.preferredRoles}
+                placeholder="www.example.com"
+                value={formData.website}
                 onChange={(e) =>
-                  handleInputChange("preferredRoles", e.target.value)
+                  handleInputChange("website", e.target.value)
                 }
                 className="w-full"
               />
@@ -273,7 +228,7 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium"
+              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>

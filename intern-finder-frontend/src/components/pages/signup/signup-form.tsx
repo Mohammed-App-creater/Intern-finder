@@ -84,8 +84,8 @@ export function SignUpForm() {
               variant={userType === "talent" ? "default" : "outline"}
               className={`flex-1 rounded-r-none ${
                 userType === "talent"
-                  ? "bg-[var(--primary)] hover:bg-teal-700 text-white"
-                  : "bg-white font-bold border-gray-300 text-[var(--text-dark)] hover:bg-gray-50"
+                  ? "bg-[var(--primary)] hover:bg-teal-700 text-white cursor-pointer"
+                  : "bg-white font-bold border-gray-300 text-[var(--text-dark)] hover:bg-gray-50 cursor-pointer"
               }`}
               onClick={() => setUserType("talent")}
             >
@@ -96,8 +96,8 @@ export function SignUpForm() {
               variant={userType === "company" ? "default" : "outline"}
               className={`flex-1 rounded-l-none ${
                 userType === "company"
-                  ? "bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)]"
-                  : "bg-[var(--text-white)] border-gray-300 text-[var(--text-dark)] font-[900] hover:bg-[gray-50]"
+                  ? "bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] cursor-pointer"
+                  : "bg-[var(--text-white)] border-gray-300 text-[var(--text-dark)] font-[900] hover:bg-[gray-50] cursor-pointer"
               }`}
               onClick={() => setUserType("company")}
             >
@@ -169,7 +169,7 @@ export function SignUpForm() {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -199,7 +199,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="confirmPassword"
-                className="text-sm font-medium text-[var(--text-dark)]"
+                className="text-sm font-medium text-[var(--text-dark)] cursor-pointer"
               >
                 Confirm password
               </Label>
@@ -244,17 +244,17 @@ export function SignUpForm() {
             {/* Sign up button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 mt-6"
+              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 mt-6 cursor-pointer"
             >
               Sign Up
             </Button>
 
             {/* Login link */}
-            <p className="text-center text-sm text-gray-500 mt-4">
+            <p className="text-center text-sm text-[var(--text-light)] mt-4">
               Already a user?{" "}
               <a
                 href="#"
-                className="text-[var(--primary)] hover:text-teal-700 font-medium"
+                className="text-[var(--primary)] hover:text-teal-700 font-medium cursor-pointer"
               >
                 Login
               </a>
