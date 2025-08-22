@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -17,12 +16,22 @@ import {
   CommandList,
 } from "@/components/ui/command";
 
-export function LocationInput({ formData, handleInputChange }: any) {
+interface LocationInputProps {
+  formData: { location: string };
+  handleInputChange: (field: string, value: string) => void;
+}
+
+export function LocationInput({ formData, handleInputChange }: LocationInputProps) {
   const [cities, setCities] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchCities = async (query: string) => {
-    if (query.length < 2) return;
+    if (query.length < 2) {
+      setCities([]);
+      return;
+    }
+    
     setLoading(true);
     try {
       const res = await fetch(
@@ -35,32 +44,38 @@ export function LocationInput({ formData, handleInputChange }: any) {
         }
       );
       const data = await res.json();
-      const results = data.data.map(
-        (city: any) => `${city.city}, ${city.country}`
-      );
+      type City = { city: string; country: string };
+      const results = data.data?.map(
+        (city: City) => `${city.city}, ${city.country}`
+      ) || [];
       setCities(results);
     } catch (err) {
       console.error("Error fetching cities:", err);
+      setCities([]);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    fetchCities(value);
+  };
+
+  const handleSelectCity = (city: string) => {
+    handleInputChange("location", city);
+    setSearchQuery(""); 
+    setCities([]); 
+  };
+
   return (
     <div>
-      <Label
-        htmlFor="location"
-        className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-      >
-        Location
-      </Label>
-
       <Popover>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
-            className="w-full justify-between text-[var(--text-light)]"
+            className="w-full justify-between text-[var(--text-dark)]"
           >
             {formData.location || "Select or type a location"}
           </Button>
@@ -70,11 +85,8 @@ export function LocationInput({ formData, handleInputChange }: any) {
           <Command>
             <CommandInput
               placeholder="Type or search location..."
-              value={formData.location}
-              onValueChange={(val) => {
-                handleInputChange("location", val);
-                fetchCities(val);
-              }}
+              value={searchQuery}
+              onValueChange={handleSearchChange}
             />
             <CommandList>
               {loading && <p className="p-2 text-sm text-[var(--text-light)]">Loading...</p>}
@@ -84,7 +96,7 @@ export function LocationInput({ formData, handleInputChange }: any) {
                   <CommandItem
                     key={loc}
                     value={loc}
-                    onSelect={() => handleInputChange("location", loc)}
+                    onSelect={() => handleSelectCity(loc)}
                   >
                     {loc}
                   </CommandItem>

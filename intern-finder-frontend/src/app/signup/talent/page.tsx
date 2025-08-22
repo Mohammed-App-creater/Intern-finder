@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import TalentForm from "@/components/pages/signup/talent-form";
-import TalentFinalForm from "@/components/pages/signup/talent-final-form";
+import TalentForm from "@/components/pages/signup/talent/talent-form";
+import TalentFinalForm from "@/components/pages/signup/talent/talent-final-form";
 
 export default function Talent() {
   const [currentStep, setCurrentStep] = useState(1);
