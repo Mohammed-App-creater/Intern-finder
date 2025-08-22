@@ -178,7 +178,7 @@ export default function ContactInfoForm({
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
       >
         <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
           Help us reach the right person when the perfect intern comes along!

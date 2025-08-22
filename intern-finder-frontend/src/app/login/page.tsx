@@ -37,7 +37,7 @@ export default function LoginForm() {
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-30 text-[var(--text-white)]"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-30 text-[var(--text-white)] z-10"
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">

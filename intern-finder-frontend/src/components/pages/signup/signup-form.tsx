@@ -274,7 +274,7 @@ export function SignUpForm() {
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3 z-10"
       >
         <div className="text-left text-[var(--text-white)] max-w-lg">
           <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
