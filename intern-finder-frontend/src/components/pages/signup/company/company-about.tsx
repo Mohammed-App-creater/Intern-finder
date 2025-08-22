@@ -111,7 +111,7 @@ export default function ContactInfoForm({
                   </Label>
                   <Select
                     value={formData.teamSize}
-                    onValueChange={(value) =>
+                    onValueChange={(value: string) =>
                       handleInputChange("teamSize", value)
                     }
                   >

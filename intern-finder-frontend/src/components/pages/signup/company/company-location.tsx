@@ -126,7 +126,7 @@ export default function CompanyLocationForm({
               </Label>
               <Select
                 value={formData.workType}
-                onValueChange={(value) => handleInputChange("workType", value)}
+                onValueChange={(value: string) => handleInputChange("workType", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Remote" />
