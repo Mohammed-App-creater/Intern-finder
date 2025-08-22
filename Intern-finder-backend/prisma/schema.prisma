@@ -40,34 +40,42 @@ enum ApplicationStatus {
 //// ===== MODELS ===== ////
 
 model Company {
-  id            String                 @id @default(uuid())
-  companyName   String
-  email         String                 @unique
-  password      String
-  linkedinUrl   String?
-  githubUrl     String?
-  websiteUrl    String?
-  foundedAt     DateTime?
-  employeeCount String? // could be number or range
-  locations     String[] // multiple locations
-  industries    String[] // multiple industries
-  logoUrl       String?
-  description   String?
-  techStack     String[] // plain array
-  contact       String?
-  images        String[] // company pictures
-  team          Json? // [{profilePic, name, position, socialLinks}]
-  jobs          Job[] // relation: one company -> many jobs
-  dashboard     CompanyDashboardStats?
+  id               String                 @id @default(uuid())
+  companyName      String
+  email            String                 @unique
+  password         String
+  phone            String?
+  linkedinUrl      String?
+  instagram        String?
+  websiteUrl       String?
+  foundedAt        DateTime?
+  employeeCount    String? // could be number or range
+  headQuarter      String? // multiple locations
+  branches         String[] // multiple branches
+  industries       String[] // multiple industries
+  organizationType String?
+  workEnvironment  String?
+  logoUrl          String?
+  description      String?
+  techStack        String[] // plain array
+  contactName      String?
+  contactEmail     String?
+  contactPhone     String?
+  contactJobTitle  String?
+  images           String[] // company pictures
+  teamSize         String?
+  team             Json? // [{profilePic, name, position, socialLinks}]
+  jobs             Job[] // relation: one company -> many jobs
+  dashboard        CompanyDashboardStats?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Talent {
-  id                 String           @id @default(uuid())
+  id                 String                @id @default(uuid())
   fullName           String
-  email              String           @unique
+  email              String                @unique
   password           String
   phoneNumber        String?
   languages          String[] // array of languages
@@ -90,13 +98,13 @@ model Talent {
   address            String?
   yearsExperience    Int?
   resumeUrl          String?
-  availableForWork   Boolean          @default(false)
+  availableForWork   Boolean               @default(false)
   settings           Json? // small settings flags
   applications       JobApplication[] // relation: one talent -> many applications
+  dashboard          TalentDashboardStats?
 
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  TalentDashboardStats TalentDashboardStats?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Job {
