@@ -4,31 +4,27 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Plus, User } from "lucide-react";
-import { LocationInput } from "@/components/common/location";
+import { Plus } from "lucide-react";
 import Logo from "@/components/icons/logo.png";
+import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface CompanyFormProps {
-  onSubmit: (data: any) => void;
-  initialData?: any;
+  onSubmit: (data: object) => void;
+  initialData?: object;
 }
 
-export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps) {
+export default function CompanyForm({
+  onSubmit,
+  initialData,
+}: CompanyFormProps) {
   const [formData, setFormData] = useState({
     organization: "",
     industry: "",
-    fieldOfStudy: "",
     website: "",
     location: "",
-    ...initialData
+    ...initialData,
   });
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -50,7 +46,12 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
   return (
     <div className="min-h-screen flex">
       {/* Left side - Teal background with text */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]">
+      <motion.div
+        initial={{ x: 800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]"
+      >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
           <Image
@@ -69,32 +70,47 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
         <div className="flex justify-center">
           <div className="max-w-150">
             <h1 className="flex justify-center text-7xl font-bold leading-tight">
-              Let&apos;s build your company profile and connect you with the next generation of talent
+              Let&apos;s build your company profile and connect you with the
+              next generation of talent
             </h1>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right side - Form */}
-      <div className="flex-1 p-8 flex flex-col justify-center">
+      <motion.div
+        initial={{ x: -800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 p-8 flex flex-col justify-center"
+      >
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
           <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-8">
             Tell us about your company or institution
           </h2>
 
-          {/* Profile Picture Upload */}
+          {/* Company Logo Upload */}
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
               <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
                 {profileImage ? (
-                  <img
+                  <Image
                     src={profileImage}
                     alt="Logo"
                     className="w-full h-full object-cover rounded-full"
+                    width={120}
+                    height={120}
+                    style={{ objectFit: "cover", borderRadius: "9999px" }}
+                    unoptimized
                   />
                 ) : (
-                  <User className="w-14 h-14 text-[var(--text-light)]" />
+                  <Image
+                    src={CompanyIcon}
+                    alt="Company Icon"
+                    width={50}
+                    height={50}
+                  />
                 )}
               </div>
 
@@ -127,12 +143,10 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                   document.getElementById("profileUpload")?.click()
                 }
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-5 h-5" />
               </button>
             </div>
-            <span className="text-[var(--text-dark)] font-bold">
-              Logo
-            </span>
+            <span className="text-[var(--text-dark)] font-bold">Logo</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -169,117 +183,39 @@ export default function CompanyForm({ onSubmit, initialData }: CompanyFormProps)
                 type="text"
                 placeholder="Technology"
                 value={formData.industry}
-                onChange={(e) =>
-                  handleInputChange("industry", e.target.value)
-                }
+                onChange={(e) => handleInputChange("industry", e.target.value)}
                 className="w-full"
               />
             </div>
 
-            {/* Field of Study */}
+            {/* Official Website URL */}
             <div>
               <Label
-                htmlFor="fieldOfStudy"
+                htmlFor="officialWebsiteURL"
                 className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
               >
-                Field of Study
+                Official Website URL
               </Label>
               <Input
-                id="fieldOfStudy"
+                id="website"
                 type="text"
-                placeholder="Computer Engineering"
-                value={formData.fieldOfStudy}
-                onChange={(e) =>
-                  handleInputChange("fieldOfStudy", e.target.value)
-                }
+                placeholder="www.example.com"
+                value={formData.website}
+                onChange={(e) => handleInputChange("website", e.target.value)}
                 className="w-full"
               />
             </div>
-
-            {/* Program */}
-            <div>
-              <Label
-                htmlFor="program"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Program
-              </Label>
-              <Select
-                value={formData.program}
-                onValueChange={(value) => handleInputChange("program", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Diploma" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="diploma">Diploma</SelectItem>
-                  <SelectItem value="degree">Degree</SelectItem>
-                  <SelectItem value="masters">Masters</SelectItem>
-                  <SelectItem value="phd">Phd</SelectItem>
-                  <SelectItem value="other">other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Work Type */}
-            <div>
-              <Label
-                htmlFor="workType"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Work Type
-              </Label>
-              <Select
-                value={formData.workType}
-                onValueChange={(value) => handleInputChange("workType", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Remote" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="fulltime">Remote</SelectItem>
-                  <SelectItem value="parttime">Hybrid</SelectItem>
-                  <SelectItem value="contract">On-site</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Preferred Roles */}
-            <div>
-              <Label
-                htmlFor="preferredRoles"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
-              >
-                Preferred Roles
-              </Label>
-              <Input
-                id="preferredRoles"
-                type="text"
-                placeholder="Software Development"
-                value={formData.preferredRoles}
-                onChange={(e) =>
-                  handleInputChange("preferredRoles", e.target.value)
-                }
-                className="w-full"
-              />
-            </div>
-
-            {/* Location */}
-            <LocationInput
-              formData={formData}
-              handleInputChange={handleInputChange}
-            />
 
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium"
+              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
