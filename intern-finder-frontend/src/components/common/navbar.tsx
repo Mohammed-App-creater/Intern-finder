@@ -1,11 +1,27 @@
-import React from "react";
+"use client";
+
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 
-export default function navbar() {
+export default function Navbar() {
+  const isActive = (path: string) => {
+    return pathname === path
+      ? "text-[var(--text-white)]"
+      : "text-[var(--text-light)]";
+  };
+
+  const pathname = usePathname();
+  const router = useRouter();
+  
+  const handleSignupClick = () => {
+    router.push("/signup");
+  };
+
   return (
-    <header className="flex items-center bg-black">
+    <header className="flex items-center">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -22,43 +38,59 @@ export default function navbar() {
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a
-            href="#"
-            className="hidden text-gray-300 hover:text-white transition-colors"
+          <Link
+            href="/dashboard"
+            className={`hidden hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/dashboard"
+            )}`}
           >
             Dashboard
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-white transition-colors"
+          </Link>
+          <Link
+            href="/"
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/"
+            )}`}
           >
             Home
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-white transition-colors"
+          </Link>
+          <Link
+            href="/jobs"
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/jobs"
+            )}`}
           >
             Jobs
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-white transition-colors"
+          </Link>
+          <Link
+            href="/about"
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/about"
+            )}`}
           >
             About Us
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-white transition-colors"
+          </Link>
+          <Link
+            href="/contact"
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/contact"
+            )}`}
           >
             Contact Us
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" className="text-gray-300 hover:text-white">
+          <Link
+            href={"/login"}
+            className="text-[var(--text-light)] hover:text-[var(--text-white)] cursor-pointer"
+          >
             Login
-          </Button>
-          <Button className="bg-teal-500 hover:bg-teal-600 text-white">
+          </Link>
+          <Button
+            onClick={handleSignupClick}
+            className="bg-[var(--primary)] hover:bg-teal-600 text-[var(--text-white)] cursor-pointer"
+          >
             Register
           </Button>
         </div>
