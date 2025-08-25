@@ -30,12 +30,12 @@ export default function HomePage() {
 
             {/* Right side - Content */}
             <div className="space-y-6">
-              <h1 className="text-4xl lg:text-5xl font-bold text-[var(--text-dark)] leading-tight">
+              <h1 className="text-4xl lg:text-5xl font-bold text-dark leading-tight">
                 Good Life Begins With{" "}
                 <span className="block">A Good Company</span>
               </h1>
 
-              <p className="text-[var(--text-light)] text-lg leading-relaxed max-w-md">
+              <p className="text-light text-lg leading-relaxed max-w-md">
                 Launch your career with us. We offer meaningful work, expert
                 mentorship, and a culture that fuels creativity. Develop your
                 skills, build your network, and pave your path to success. Your
@@ -45,12 +45,12 @@ export default function HomePage() {
               <div className="flex items-center gap-4 pt-4">
                 <Button 
                 onClick={() => router.push('/jobs')}
-                className="bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] px-6 py-3 cursor-pointer">
+                className="bg-primary hover:bg-teal-700 text-white px-6 py-3 cursor-pointer">
                   Search Job
                 </Button>
                 <Link
                   href="/about"
-                  className="text-[var(--primary)] hover:text-teal-700 px-6 py-3 cursor-pointer"
+                  className="text-primary hover:text-teal-700 px-6 py-3 cursor-pointer"
                 >
                   Learn more
                 </Link>
@@ -63,11 +63,11 @@ export default function HomePage() {
         <section className="container mx-auto px-4 py-16">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="space-y-2">
-              <h3 className="text-4xl font-bold text-[var(--primary)]">12k+</h3>
-              <h4 className="text-xl font-semibold text-[var(--text-dark)]">
+              <h3 className="text-4xl font-bold text-primary">12k+</h3>
+              <h4 className="text-xl font-semibold text-dark">
                 Clients worldwide
               </h4>
-              <p className="text-[var(--text-light)] text-sm">
+              <p className="text-light text-sm">
                 Partner with a global team. We leverage international expertise
                 to provide cutting-edge solutions tailored to your market. Your
                 success is our mission, everywhere.
@@ -75,11 +75,11 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-4xl font-bold text-[var(--primary)]">20k+</h3>
-              <h4 className="text-xl font-semibold text-[var(--text-dark)]">
+              <h3 className="text-4xl font-bold text-primary">20k+</h3>
+              <h4 className="text-xl font-semibold text-dark">
                 Active resume
               </h4>
-              <p className="text-[var(--text-light)] text-sm">
+              <p className="text-light text-sm">
                 Your career story, powerfully told. Build a resume that works as
                 hard as you do. Highlight skills, track applications, and get
                 hired faster. Your next opportunity is waiting.
@@ -87,11 +87,11 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-4xl font-bold text-[var(--primary)]">18k+</h3>
-              <h4 className="text-xl font-semibold text-[var(--text-dark)]">
+              <h3 className="text-4xl font-bold text-primary">18k+</h3>
+              <h4 className="text-xl font-semibold textdark">
                 Companies
               </h4>
-              <p className="text-[var(--text-light)] text-sm">
+              <p className="textlight text-sm">
                 Grow your team with our curated network of top candidates. Post
                 your internship or entry-level roles to directly access a
                 diverse pool of motivated, next-generation talent ready to make
@@ -117,12 +117,12 @@ export default function HomePage() {
 
             <div className="relative container mx-auto px-15 py-24">
               <div className="max-w-2xl space-y-6">
-                <h2 className="text-4xl lg:text-5xl font-bold text-[var(--text-white)] leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
                   Create A Better{" "}
                   <span className="block">Future For Yourself</span>
                 </h2>
 
-                <p className="text-[var(--text-white)] text-lg leading-relaxed max-w-md">
+                <p className="text-white text-lg leading-relaxed max-w-md">
                   Your next career move starts here. Explore thousands of
                   opportunities from top companies. Find a role that challenges
                   you, rewards your skills, and aligns with your ambitions.
@@ -131,7 +131,7 @@ export default function HomePage() {
                 <div className="pt-4">
                   <Button 
                   onClick={() => router.push('/jobs')}
-                  className="bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] px-6 py-3 cursor-pointer">
+                  className="bg-primary hover:bg-teal-700 text-white px-6 py-3 cursor-pointer">
                     Search Job
                   </Button>
                 </div>

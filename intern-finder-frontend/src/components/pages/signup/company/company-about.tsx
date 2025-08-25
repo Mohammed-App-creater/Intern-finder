@@ -63,10 +63,10 @@ export default function ContactInfoForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-[var(--text-light)]">
+            <span className="text-xl font-bold text-light">
               Intern Fin
             </span>
-            <span className="text-xl font-bold text-[var(--text-dark)]">
+            <span className="text-xl font-bold text-dark">
               der
             </span>
           </div>
@@ -74,7 +74,7 @@ export default function ContactInfoForm({
 
         {/* Form Content */}
         <div className="flex-1 flex flex-col mx-auto p-4 md:p-8 w-150">
-          <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
+          <h1 className="text-3xl font-bold text-dark mb-8">
             Tell us About your Organization
           </h1>
 
@@ -86,7 +86,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="bio"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Company Description
                   </Label>
@@ -105,7 +105,7 @@ export default function ContactInfoForm({
                 <div>
                   <Label
                     htmlFor="TeamSize"
-                    className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                    className="text-sm font-medium text-dark mb-2 block"
                   >
                     Team Size
                   </Label>
@@ -133,7 +133,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="link"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Social Media Link
                   </Label>
@@ -153,7 +153,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="link"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     LinkedIn
                   </Label>
@@ -174,7 +174,7 @@ export default function ContactInfoForm({
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 rounded-lg font-medium mt-8 cursor-pointer"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8 cursor-pointer"
             >
               Done!
             </Button>
@@ -189,7 +189,7 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
       >
-        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
+        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
           Share your story, what drives your mission and makes your company unique
         </h2>
       </motion.div>

@@ -8,14 +8,12 @@ import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const isActive = (path: string) => {
-    return pathname === path
-      ? "text-[var(--text-white)]"
-      : "text-[var(--text-light)]";
+    return pathname === path ? "text-white" : "text-[var(--text-light)]";
   };
 
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const handleSignupClick = () => {
     router.push("/signup");
   };
@@ -24,7 +22,10 @@ export default function Navbar() {
     <header className="flex items-center">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 cursor-pointer"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -40,7 +41,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             href="/dashboard"
-            className={`hidden hover:text-[var(--text-white)] transition-colors ${isActive(
+            className={`hidden hover:text-white transition-colors ${isActive(
               "/dashboard"
             )}`}
           >
@@ -48,15 +49,13 @@ export default function Navbar() {
           </Link>
           <Link
             href="/"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
-              "/"
-            )}`}
+            className={`hover:text-white transition-colors ${isActive("/")}`}
           >
             Home
           </Link>
           <Link
             href="/jobs"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+            className={`hover:text-white transition-colors ${isActive(
               "/jobs"
             )}`}
           >
@@ -64,7 +63,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/about"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+            className={`hover:text-white transition-colors ${isActive(
               "/about"
             )}`}
           >
@@ -72,7 +71,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/contact"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+            className={`hover:text-white transition-colors ${isActive(
               "/contact"
             )}`}
           >
@@ -83,13 +82,13 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             href={"/login"}
-            className="text-[var(--text-light)] hover:text-[var(--text-white)] cursor-pointer"
+            className="text-[var(--text-light)] hover:text-white cursor-pointer"
           >
             Login
           </Link>
           <Button
             onClick={handleSignupClick}
-            className="bg-[var(--primary)] hover:bg-teal-600 text-[var(--text-white)] cursor-pointer"
+            className="bg-primary hover:bg-teal-600 text-white cursor-pointer"
           >
             Register
           </Button>

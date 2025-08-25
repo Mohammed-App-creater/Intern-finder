@@ -47,7 +47,7 @@ export default function CompanyLocationForm({
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)] z-10"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
@@ -83,7 +83,7 @@ export default function CompanyLocationForm({
       >
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
-          <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-12">
+          <h2 className="text-2xl font-extrabold text-dark mb-12">
             Where does your company operate?
           </h2>
 
@@ -92,7 +92,7 @@ export default function CompanyLocationForm({
             <div>
               <Label
                 htmlFor="location"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Headquarters Location
               </Label>
@@ -106,7 +106,7 @@ export default function CompanyLocationForm({
             <div>
               <Label
                 htmlFor="location"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Other Branch/ Office (optional)
               </Label>
@@ -120,7 +120,7 @@ export default function CompanyLocationForm({
             <div>
               <Label
                 htmlFor="workType"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Work Environment
               </Label>
@@ -142,7 +142,7 @@ export default function CompanyLocationForm({
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
+              className="w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>

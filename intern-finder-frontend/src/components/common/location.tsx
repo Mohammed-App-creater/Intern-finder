@@ -75,7 +75,7 @@ export function LocationInput({ formData, handleInputChange }: LocationInputProp
           <Button
             variant="outline"
             role="combobox"
-            className="w-full justify-between text-[var(--text-dark)]"
+            className="w-full justify-between text-dark"
           >
             {formData.location || "Select or type a location"}
           </Button>
@@ -89,7 +89,7 @@ export function LocationInput({ formData, handleInputChange }: LocationInputProp
               onValueChange={handleSearchChange}
             />
             <CommandList>
-              {loading && <p className="p-2 text-sm text-[var(--text-light)]">Loading...</p>}
+              {loading && <p className="p-2 text-sm text-light">Loading...</p>}
               <CommandEmpty>No location found.</CommandEmpty>
               <CommandGroup>
                 {cities.map((loc) => (

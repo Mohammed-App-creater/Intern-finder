@@ -57,7 +57,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-50 text-[var(--text-white)] z-10"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-50 text-white z-10"
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
@@ -92,7 +92,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
       >
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
-          <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-8">
+          <h2 className="text-2xl font-extrabold text-dark mb-8">
             Share your skills and interests to find your perfect internship
             match
           </h2>
@@ -100,7 +100,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
           {/* Profile Picture Upload */}
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
-              <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
+              <div className="w-30 h-30 rounded-full border-2 border-primary flex items-center justify-center overflow-hidden">
                 {profileImage ? (
                   <Image
                     src={profileImage}
@@ -111,7 +111,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                     style={{ objectFit: "cover", borderRadius: "9999px" }}
                   />
                 ) : (
-                  <User className="w-14 h-14 text-[var(--text-light)]" />
+                  <User className="w-14 h-14 text-light" />
                 )}
               </div>
 
@@ -139,7 +139,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
               {/* Plus button */}
               <button
                 type="button"
-                className="absolute -bottom-1 -right-1 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-[var(--text-white)] hover:bg-teal-600 transition-colors cursor-pointer"
+                className="absolute -bottom-1 -right-1 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white hover:bg-teal-600 transition-colors cursor-pointer"
                 onClick={() =>
                   document.getElementById("profileUpload")?.click()
                 }
@@ -147,7 +147,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                 <Plus className="w-5 h-5" />
               </button>
             </div>
-            <span className="text-[var(--text-dark)] font-bold">
+            <span className="text-dark font-bold">
               Profile Picture
             </span>
           </div>
@@ -157,7 +157,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="phoneNumber"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Phone Number
               </Label>
@@ -177,7 +177,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="institution"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Institution
               </Label>
@@ -197,7 +197,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="fieldOfStudy"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Field of Study
               </Label>
@@ -217,7 +217,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="program"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Program
               </Label>
@@ -244,7 +244,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="workType"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Work Type
               </Label>
@@ -267,7 +267,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="preferredRoles"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Preferred Roles
               </Label>
@@ -287,7 +287,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             <div>
               <Label
                 htmlFor="location"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Location
               </Label>
@@ -300,7 +300,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
+              className="w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>

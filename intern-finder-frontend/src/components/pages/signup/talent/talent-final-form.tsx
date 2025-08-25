@@ -74,10 +74,10 @@ export default function TalentFinalForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-[var(--text-light)]">
+            <span className="text-xl font-bold text-light">
               Intern Fin
             </span>
-            <span className="text-xl font-bold text-[var(--text-dark)]">
+            <span className="text-xl font-bold text-dark">
               der
             </span>
           </div>
@@ -85,7 +85,7 @@ export default function TalentFinalForm({
 
         {/* Form Content */}
         <div className="flex-1 flex flex-col max-w-md mx-auto p-4 md:p-8 min-w-200">
-          <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
+          <h1 className="text-3xl font-bold text-dark mb-8">
             Let&apos;s go to the finishing steps
           </h1>
 
@@ -97,7 +97,7 @@ export default function TalentFinalForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="linkedin"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     LinkedIn
                   </Label>
@@ -117,7 +117,7 @@ export default function TalentFinalForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="website"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Personal Website
                   </Label>
@@ -137,7 +137,7 @@ export default function TalentFinalForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="bio"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Bio
                   </Label>
@@ -153,7 +153,7 @@ export default function TalentFinalForm({
 
               {/* CV Upload */}
               <div className="flex items-center justify-center">
-                <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-[var(--primary)] rounded-lg p-6 text-center bg-[var(--secondary)] w-full">
+                <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-primary rounded-lg p-6 text-center bg-[var(--secondary w-full">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -169,14 +169,14 @@ export default function TalentFinalForm({
                     <Button
                       type="button"
                       variant="default"
-                      className="flex justify-center items-center bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] text-lg px-6 py-7 rounded-xl mb-3 cursor-pointer"
+                      className="flex justify-center items-center bg-primary hover:bg-teal-700 text-white text-lg px-6 py-7 rounded-xl mb-3 cursor-pointer"
                       onClick={handleUploadClick}
                     >
                       Upload Your CV
                     </Button>
-                    <div className="text-[var(--text-dark)]">
+                    <div className="text-dark">
                       <p className="text-lg">or drop it here</p>
-                      <p className="text-xs text-[var(--text-light)] mt-1">
+                      <p className="text-xs text-light mt-1">
                         PDF, DOC or TXT files
                       </p>
                     </div>
@@ -188,7 +188,7 @@ export default function TalentFinalForm({
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 rounded-lg font-medium mt-8 cursor-pointer"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8 cursor-pointer"
             >
               Done!
             </Button>
@@ -205,7 +205,7 @@ export default function TalentFinalForm({
           transition={{ duration: 1, ease: "easeOut" }}
           className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
         >
-          <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
+          <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
             One more step for the Masterpiece profile
           </h2>
         </motion.div>

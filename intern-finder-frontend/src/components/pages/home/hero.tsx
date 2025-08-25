@@ -43,10 +43,10 @@ export default function HeroSection() {
           {/* Hero Section */}
           <main className="container mx-auto px-4 py-16 mt-30">
             <div className="flex flex-col items-center text-center mb-12">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[var(--text-white)]">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
                 Find Your Dream Job Today!
               </h1>
-              <p className="text-xl text-[var(--text-white)] mb-12">
+              <p className="text-xl text-white mb-12">
                 Connecting Talent with Opportunity: Your Gateway to Career
                 Success
               </p>
@@ -55,10 +55,10 @@ export default function HeroSection() {
               <div className="max-w-fit bg-white rounded-lg flex flex-col md:flex-row items-center gap-5 mt-5 pl-2">
                 <Input
                   placeholder="Job Title or Company"
-                  className="w-50 border-0 placeholder:text-lg text-[var(--text-dark)] placeholder:text-[var(--text-light)] text-lg focus-visible:border-0 focus-visible:ring-0"
+                  className="w-50 border-0 placeholder:text-lg text-dark placeholder:text-light text-lg focus-visible:border-0 focus-visible:ring-0"
                 />
                 <Select>
-                  <SelectTrigger className="w-full md:w-45 border-0 text-[var(--text-dark)] text-lg">
+                  <SelectTrigger className="w-full md:w-45 border-0 text-dark text-lg">
                     <SelectValue placeholder="Select Location" />
                   </SelectTrigger>
                   <SelectContent>
@@ -69,7 +69,7 @@ export default function HeroSection() {
                   </SelectContent>
                 </Select>
                 <Select>
-                  <SelectTrigger className="w-full md:w-47 border-0 text-[var(--text-dark)] text-lg">
+                  <SelectTrigger className="w-full md:w-47 border-0 text-dark text-lg">
                     <SelectValue placeholder="Select Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -79,7 +79,7 @@ export default function HeroSection() {
                     <SelectItem value="finance">Finance</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button className="bg-[var(--primary)] hover:bg-teal-600 text-[var(--text-white)] text-lg h-15 rounded-none rounded-r-lg cursor-pointer">
+                <Button className="bg-primary hover:bg-teal-600 text-white text-lg h-15 rounded-none rounded-r-lg cursor-pointer">
                   <Search className="w-4 h-4 mr-2" />
                   Search Job
                 </Button>
@@ -89,42 +89,42 @@ export default function HeroSection() {
             {/* Stats Section */}
             <div className="flex flex-col md:flex-row justify-center items-center gap-12 my-30">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-[var(--primary)] rounded-full flex items-center justify-center">
-                  <Briefcase className="w-8 h-8 text-[var(--text-white)]" />
+                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                  <Briefcase className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-[var(--text-white)]">
+                  <div className="text-3xl font-bold text-white">
                     25,850
                   </div>
-                  <div className="font-light text-[var(--text-white)]">
+                  <div className="font-light text-white">
                     Jobs
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-[var(--primary)] rounded-full flex items-center justify-center">
-                  <Users className="w-8 h-8 text-[var(--text-white)]" />
+                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                  <Users className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-[var(--text-white)]">
+                  <div className="text-3xl font-bold text-white">
                     10,250
                   </div>
-                  <div className="font-light text-[var(--text-white)] pl-1">
+                  <div className="font-light text-white pl-1">
                     Candidates
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-[var(--primary)] rounded-full flex items-center justify-center">
-                  <Building2 className="w-8 h-8 text-[var(--text-white)]" />
+                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                  <Building2 className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-[var(--text-white)]">
+                  <div className="text-3xl font-bold text-white">
                     18,400
                   </div>
-                  <div className="font-light text-[var(--text-white)] pl-1">
+                  <div className="font-light text-white pl-1">
                     Companies
                   </div>
                 </div>
@@ -135,7 +135,7 @@ export default function HeroSection() {
       </div>
       {/* Company Logos Footer */}
       <footer className="flex items-center bg-black h-25">
-          <div className="flex px-25 justify-between w-full text-[var(--text-white)]">
+          <div className="flex px-25 justify-between w-full text-white">
             <Image src={Spotify} alt="Spotify" width={150} height={150} />
             <Image src={Slack} alt="Spotify" width={150} height={150} />
             <Image src={Adobe} alt="Spotify" width={150} height={150} />

@@ -34,14 +34,14 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="bg-[var(--secondary)]">
+    <div className="bg-secondary">
       <section className="max-w-7xl mx-auto py-16 md:py-24">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-[var(--text-dark)] mb-4">
+          <h2 className="text-4xl font-bold text-dark mb-4">
             Testimonials from Our Customers
           </h2>
-          <p className="text-[var(--text-dark)] max-w-2xl mx-auto">
+          <p className="text-dark max-w-2xl mx-auto">
             The true measure of our success is the growth of our participants.
             Don&apos;t just take our word for it see what past clients have
             achieved and how the program launched their careers.
@@ -53,7 +53,7 @@ export default function Testimonials() {
           {testimonials.map((testimonial) => (
             <Card
               key={testimonial.id}
-              className="bg-[var(--text-white)] border-0 shadow-sm relative"
+              className="bg-white border-0 shadow-sm relative"
             >
               <CardContent className="p-6">
                 {/* Stars */}
@@ -67,12 +67,12 @@ export default function Testimonials() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg font-semibold text-[var(--text-dark)] mb-3">
+                <h3 className="text-lg font-semibold text-dark mb-3">
                   {testimonial.title}
                 </h3>
 
                 {/* Content */}
-                <p className="text-[var(--text-dark)] text-sm leading-relaxed mb-6 h-30">
+                <p className="text-dark text-sm leading-relaxed mb-6 h-30">
                   {testimonial.content}
                 </p>
                 <div className="flex justify-end pr-5">
@@ -94,10 +94,10 @@ export default function Testimonials() {
                       className="w-10 h-10 rounded-full"
                     />
                     <div>
-                      <p className="font-medium text-[var(--text-dark)] text-sm">
+                      <p className="font-medium text-dark text-sm">
                         {testimonial.author}
                       </p>
-                      <p className="text-[var(--text-light)] text-xs">
+                      <p className="text-light text-xs">
                         {testimonial.role}
                       </p>
                     </div>

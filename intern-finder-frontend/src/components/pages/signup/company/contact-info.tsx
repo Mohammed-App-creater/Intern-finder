@@ -61,10 +61,10 @@ export default function ContactInfoForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-[var(--text-light)]">
+            <span className="text-xl font-bold text-light">
               Intern Fin
             </span>
-            <span className="text-xl font-bold text-[var(--text-dark)]">
+            <span className="text-xl font-bold text-dark">
               der
             </span>
           </div>
@@ -72,7 +72,7 @@ export default function ContactInfoForm({
 
         {/* Form Content */}
         <div className="flex-1 flex flex-col mx-auto p-4 md:p-8 w-150">
-          <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
+          <h1 className="text-3xl font-bold text-dark mb-8">
             Contact Information
           </h1>
 
@@ -84,7 +84,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="fullName"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Full Name
                   </Label>
@@ -104,7 +104,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="jobTitle"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Job Title
                   </Label>
@@ -124,7 +124,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="emailAddress"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Email Address
                   </Label>
@@ -144,7 +144,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="phoneNumber"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Phone Number
                   </Label>
@@ -165,7 +165,7 @@ export default function ContactInfoForm({
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 rounded-lg font-medium mt-8 cursor-pointer"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8 cursor-pointer"
             >
               Continue
             </Button>
@@ -180,7 +180,7 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
       >
-        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
+        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
           Help us reach the right person when the perfect intern comes along!
         </h2>
       </motion.div>
