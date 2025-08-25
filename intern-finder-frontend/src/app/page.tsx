@@ -1,5 +1,8 @@
+import Categories from "@/components/pages/home/categories";
 import Hero from "@/components/pages/home/hero";
 import RecentJobs from "@/components/pages/home/recent-jobs";
+import Reports from "@/components/pages/home/reports";
+import Testimonial from "@/components/pages/home/testimonial";
 
 export default function Home() {
   return (
@@ -8,6 +11,9 @@ export default function Home() {
       <div className="flex justify-center">
         <RecentJobs />
       </div>
+      <Categories />
+      <Reports />
+      <Testimonial />
     </div>
   );
 }

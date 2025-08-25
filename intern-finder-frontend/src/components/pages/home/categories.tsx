@@ -55,14 +55,14 @@ const categories = [
 
 export default function Categories() {
   return (
-    <div className="min-h-screen bg-[var(--primary)] py-16 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[var(--secondary)] py-16 px-4">
+      <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-[var(--text-dark)] mb-4">
             Browse by Category
           </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-[var(--text-dark)] font-light text-lg max-w-2xl mx-auto">
             Discover exciting opportunities in today&apos;s most in-demand tech
             fields. Find your perfect role in the digital economy.
           </p>
@@ -75,16 +75,16 @@ export default function Categories() {
             return (
               <Card
                 key={index}
-                className="bg-white hover:shadow-lg transition-shadow duration-200 cursor-pointer border-0 shadow-sm"
+                className="bg-[var(--text-white)] hover:shadow-lg transition-shadow duration-200 cursor-pointer border-0 shadow-sm"
               >
                 <CardContent className="p-8 text-center">
                   <div className="mb-6">
-                    <IconComponent className="w-12 h-12 text-teal-500 mx-auto" />
+                    <IconComponent className="w-12 h-12 text-[var(--primary)] mx-auto" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <h3 className="text-xl font-semibold text-[var(--text-dark)] mb-3">
                     {category.title}
                   </h3>
-                  <p className="text-teal-500 font-medium">
+                  <p className="text-[var(--primary)] font-light bg-[var(--secondary)] p-1 rounded-[10px] w-fit h-fit mx-auto">
                     {category.jobCount}
                   </p>
                 </CardContent>
