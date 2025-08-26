@@ -111,7 +111,26 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .primary {
+    color: var(--primary);
+  }
+  .secondary {
+    color: var(--secondary);
+  }
+  .text-light {
+    color: var(--text-light);
+  }
+  .text-dark {
+    color: var(--text-dark);
+  }
+  .text-white {
+    color: var(--text-white); 
   }
 }

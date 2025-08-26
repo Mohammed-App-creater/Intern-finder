@@ -1,4 +1,5 @@
 import Categories from "@/components/pages/home/categories";
+import Footer from "@/components/common/footer";
 import Hero from "@/components/pages/home/hero";
 import RecentJobs from "@/components/pages/home/recent-jobs";
 import Reports from "@/components/pages/home/reports";
@@ -14,6 +15,7 @@ export default function Home() {
       <Categories />
       <Reports />
       <Testimonial />
+      <Footer />
     </div>
   );
 }

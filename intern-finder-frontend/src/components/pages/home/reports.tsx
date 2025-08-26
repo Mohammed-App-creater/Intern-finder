@@ -18,7 +18,7 @@ export default function HomePage() {
             <div className="relative">
               <div className="h-125 w-125 rounded-2xl bg-gradient-to-br from-slate-400 to-slate-600">
                 <Image
-                  src="/images/professional-office-environment-with-blurred-backg.png"
+                  src="/images/office_collaboration.jpg"
                   alt="Professional workplace environment"
                   width={550}
                   height={550}
