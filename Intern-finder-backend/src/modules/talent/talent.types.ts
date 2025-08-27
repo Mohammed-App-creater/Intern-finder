@@ -17,4 +17,6 @@ export interface RegisterStep2DTO {
     preferredRole: string;
     linkedinUrl: string;
     bio: string;
+    profileImageUrl?: string;
+    resumeUrl?: string;
 }

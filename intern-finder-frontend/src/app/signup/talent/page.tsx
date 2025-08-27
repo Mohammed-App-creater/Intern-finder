@@ -1,19 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import TalentForm from "@/components/pages/signup/talent-form";
-import TalentFinalForm from "@/components/pages/signup/talent-final-form";
+import TalentForm from "@/components/pages/signup/talent/talent-form";
+import TalentFinalForm from "@/components/pages/signup/talent/talent-final-form";
 
 export default function Talent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: object) => {
     setFormData({ ...formData, ...data });
     setCurrentStep(2);
   };
 
-  const handleFinalSubmit = (finalData: any) => {
+  const handleFinalSubmit = (finalData: object) => {
     // Combine all form data and submit
     const completeData = { ...formData, ...finalData };
     console.log("Complete form data:", completeData);

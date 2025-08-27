@@ -37,83 +37,74 @@ enum ApplicationStatus {
   rejected
 }
 
-enum FileKind {
-  PROFILE_IMAGE
-  CV
-}
-
 //// ===== MODELS ===== ////
 
 model Company {
-  id            String                 @id @default(uuid())
-  companyName   String
-  email         String                 @unique
-  password      String
-  linkedinUrl   String?
-  githubUrl     String?
-  websiteUrl    String?
-  foundedAt     DateTime?
-  employeeCount String? // could be number or range
-  locations     String[] // multiple locations
-  industries    String[] // multiple industries
-  logoUrl       String?
-  description   String?
-  techStack     String[] // plain array
-  contact       String?
-  images        String[] // company pictures
-  team          Json? // [{profilePic, name, position, socialLinks}]
-  jobs          Job[] // relation: one company -> many jobs
-  dashboard     CompanyDashboardStats?
+  id               String                 @id @default(uuid())
+  companyName      String
+  email            String                 @unique
+  password         String
+  phone            String?
+  linkedinUrl      String?
+  instagram        String?
+  websiteUrl       String?
+  foundedAt        DateTime?
+  employeeCount    String? // could be number or range
+  headQuarter      String? // multiple locations
+  branches         String[] // multiple branches
+  industries       String[] // multiple industries
+  organizationType String?
+  workEnvironment  String?
+  logoUrl          String?
+  description      String?
+  techStack        String[] // plain array
+  contactName      String?
+  contactEmail     String?
+  contactPhone     String?
+  contactJobTitle  String?
+  images           String[] // company pictures
+  teamSize         String?
+  team             Json? // [{profilePic, name, position, socialLinks}]
+  jobs             Job[] // relation: one company -> many jobs
+  dashboard        CompanyDashboardStats?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Talent {
-  id               String                @id @default(uuid())
-  fullName         String
-  email            String                @unique
-  password         String
-  phoneNumber      String?
-  languages        String[] // array of languages
-  linkedinUrl      String?
-  personalWebsite  String?
-  instagramUrl     String?
-  aboutMe          String?
-  experiences      Json? // [{title, company, env, period, location, desc}]
-  education        Json? // [{institution, program, field, year, desc}]
-  skills           String[] // array of skills
-  gender           Gender?
-  profileImageId   String?               @unique
-  profileImage     File?                 @relation("TalentProfileImage", fields: [profileImageId], references: [id])
-  rating           Float?
-  address          String?
-  yearsExperience  Int?
-  resumeId         String?               @unique
-  resume           File?                 @relation("TalentCV", fields: [resumeId], references: [id])
-  availableForWork Boolean               @default(false)
-  settings         Json? // small settings flags
-  applications     JobApplication[] // relation: one talent -> many applications
-  dashboard        TalentDashboardStats?
-  files            File[]
+  id                 String                @id @default(uuid())
+  fullName           String
+  email              String                @unique
+  password           String
+  phoneNumber        String?
+  languages          String[] // array of languages
+  linkedinUrl        String?
+  personalWebsite    String?
+  instagramUrl       String?
+  locations          String?
+  fieldOfStudy       String? // e.g., Computer Science, Design
+  program            String?
+  workingEnvironment String?
+  bio                String?
+  preferredRole      String?
+  aboutMe            String?
+  experiences        Json? // [{title, company, env, period, location, desc}]
+  education          Json? // [{institution, program, field, year, desc}]
+  skills             String[] // array of skills
+  gender             Gender?
+  profileImageUrl    String?
+  rating             Float?
+  address            String?
+  yearsExperience    Int?
+  resumeUrl          String?
+  availableForWork   Boolean               @default(false)
+  settings           Json? // small settings flags
+  applications       JobApplication[] // relation: one talent -> many applications
+  dashboard          TalentDashboardStats?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model File {
-  id                 String   @id @default(uuid())
-  key                String   @unique // object storage key (e.g., s3 path)
-  bucket             String
-  mimeType           String
-  sizeBytes          Int
-  kind               FileKind
-  uploaded           Boolean  @default(false) // flip true on confirm
-  talent             Talent?  @relation(fields: [talentId], references: [id])
-  talentId           String?
-  profileImageTalent Talent?  @relation("TalentProfileImage")
-  resumeTalent       Talent?  @relation("TalentCV")
-  createdAt          DateTime @default(now())
 }
 
 model Job {

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -52,9 +53,17 @@ export function SignUpForm() {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
-      <div className="flex-1 bg-white p-8 flex flex-col">
+      <motion.div
+        initial={{ x: 800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 p-8 flex flex-col"
+      >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8 cursor-pointer"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -63,17 +72,13 @@ export function SignUpForm() {
             priority
           />
           <div className="flex">
-            <span className="text-xl font-medium text-[var(--text-light)]">
-              Intern Fin
-            </span>
-            <span className="text-xl font-medium text-[var(--text-dark)]">
-              der
-            </span>
+            <span className="text-xl font-medium text-light">Intern Fin</span>
+            <span className="text-xl font-medium text-dark">der</span>
           </div>
         </div>
 
         <div className="max-w-md mx-auto w-full">
-          <h1 className="text-2xl font-[900] text-[var(--text-dark)] mb-8 text-center">
+          <h1 className="text-2xl font-[900] text-dark mb-8 text-center">
             Sign Up
           </h1>
 
@@ -84,8 +89,8 @@ export function SignUpForm() {
               variant={userType === "talent" ? "default" : "outline"}
               className={`flex-1 rounded-r-none ${
                 userType === "talent"
-                  ? "bg-[var(--primary)] hover:bg-teal-700 text-white"
-                  : "bg-white font-bold border-gray-300 text-[var(--text-dark)] hover:bg-gray-50"
+                  ? "bg-primary hover:bg-teal-700 text-white cursor-pointer"
+                  : "bg-white font-bold border-gray-300 text-dark hover:bg-gray-50 cursor-pointer"
               }`}
               onClick={() => setUserType("talent")}
             >
@@ -96,8 +101,8 @@ export function SignUpForm() {
               variant={userType === "company" ? "default" : "outline"}
               className={`flex-1 rounded-l-none ${
                 userType === "company"
-                  ? "bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)]"
-                  : "bg-[var(--text-white)] border-gray-300 text-[var(--text-dark)] font-[900] hover:bg-[gray-50]"
+                  ? "bg-primary hover:bg-teal-700 text-white cursor-pointer"
+                  : "bg-text-white border-gray-300 text-dark font-[900] hover:bg-[gray-50] cursor-pointer"
               }`}
               onClick={() => setUserType("company")}
             >
@@ -105,7 +110,7 @@ export function SignUpForm() {
             </Button>
           </div>
 
-          <h2 className="text-xl font-[900] text-[var(--text-dark)] mb-6">
+          <h2 className="text-xl font-[900] text-dark mb-6">
             Let&apos;s get you started
           </h2>
 
@@ -114,7 +119,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="fullName"
-                className="text-sm font-medium text-[var(--text-dark)]"
+                className="text-sm font-medium text-dark"
               >
                 Full name
               </Label>
@@ -130,10 +135,7 @@ export function SignUpForm() {
 
             {/* Email */}
             <div>
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-[var(--text-dark)]"
-              >
+              <Label htmlFor="email" className="text-sm font-medium text-dark">
                 Email address
               </Label>
               <Input
@@ -150,7 +152,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="password"
-                className="text-sm font-medium text-[var(--text-dark)]"
+                className="text-sm font-medium text-dark"
               >
                 Create password
               </Label>
@@ -169,13 +171,13 @@ export function SignUpForm() {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-[var(--text-light)]" />
+                    <EyeOff className="h-4 w-4 text-light" />
                   ) : (
-                    <Eye className="h-4 w-4 text-[var(--text-light)]" />
+                    <Eye className="h-4 w-4 text-light" />
                   )}
                 </Button>
               </div>
@@ -186,7 +188,7 @@ export function SignUpForm() {
                   <p
                     key={index}
                     className={`text-xs ${
-                      req.met ? "text-green-600" : "text-[var(--text-light)]"
+                      req.met ? "text-green-600" : "text-light"
                     }`}
                   >
                     {req.text}
@@ -199,7 +201,7 @@ export function SignUpForm() {
             <div>
               <Label
                 htmlFor="confirmPassword"
-                className="text-sm font-medium text-[var(--text-dark)]"
+                className="text-sm font-medium text-dark cursor-pointer"
               >
                 Confirm password
               </Label>
@@ -222,9 +224,9 @@ export function SignUpForm() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4 text-[var(--text-light)]" />
+                    <EyeOff className="h-4 w-4 text-light" />
                   ) : (
-                    <Eye className="h-4 w-4 text-[var(--text-light)]" />
+                    <Eye className="h-4 w-4 text-light" />
                   )}
                 </Button>
               </div>
@@ -244,34 +246,39 @@ export function SignUpForm() {
             {/* Sign up button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 mt-6"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
             >
               Sign Up
             </Button>
 
             {/* Login link */}
-            <p className="text-center text-sm text-gray-500 mt-4">
+            <p className="text-center text-sm text-light mt-4">
               Already a user?{" "}
               <a
-                href="#"
-                className="text-[var(--primary)] hover:text-teal-700 font-medium"
+                href="/login"
+                className="text-primary hover:text-teal-700 font-medium cursor-pointer"
               >
                 Login
               </a>
             </p>
           </form>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right side - Quote */}
-      <div className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3">
-        <div className="text-left text-[var(--text-white)] max-w-lg">
-          <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
+      <motion.div
+        initial={{ x: -800, opacity: 1 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3 z-10"
+      >
+        <div className="text-left text-white max-w-lg">
+          <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-white w-150">
             &quot;Creativity is intelligence having fun&quot;
           </blockquote>
           <cite className="text-lg font-medium">- Albert Einstein</cite>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
