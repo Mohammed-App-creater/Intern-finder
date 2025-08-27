@@ -60,7 +60,10 @@ export function SignUpForm() {
         className="flex-1 p-8 flex flex-col"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8 cursor-pointer"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -69,12 +72,8 @@ export function SignUpForm() {
             priority
           />
           <div className="flex">
-            <span className="text-xl font-medium text-light">
-              Intern Fin
-            </span>
-            <span className="text-xl font-medium text-dark">
-              der
-            </span>
+            <span className="text-xl font-medium text-light">Intern Fin</span>
+            <span className="text-xl font-medium text-dark">der</span>
           </div>
         </div>
 
@@ -136,10 +135,7 @@ export function SignUpForm() {
 
             {/* Email */}
             <div>
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-dark"
-              >
+              <Label htmlFor="email" className="text-sm font-medium text-dark">
                 Email address
               </Label>
               <Input
