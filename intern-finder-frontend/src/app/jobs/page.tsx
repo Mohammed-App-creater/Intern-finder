@@ -1,5 +1,6 @@
 import JobCard from "@/components/common/job-card";
 import Navbar from "@/components/common/navbar";
+import CompanyCards from "@/components/pages/jobs/company-card";
 import Filter from "@/components/pages/jobs/filter";
 import { Button } from "@/components/ui/button";
 import {
@@ -151,6 +152,7 @@ export default function Jobs() {
           </section>
         </div>
       </div>
+      <CompanyCards />
     </section>
   );
 }
