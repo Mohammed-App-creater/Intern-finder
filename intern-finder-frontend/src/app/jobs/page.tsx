@@ -1,6 +1,7 @@
 import JobCard from "@/components/common/job-card";
 import Navbar from "@/components/common/navbar";
 import Filter from "@/components/pages/jobs/filter";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -61,6 +62,36 @@ export default function Jobs() {
       salary: "$50000-$65000",
       location: "Los Angeles, USA",
     },
+    {
+      timeAgo: "10 min ago",
+      title: "Forward Security Director",
+      company: "Reach, Schrage and Schmitt Co",
+      logo: "/images/Logo_1.png",
+      industry: "Hotels & Tourism",
+      employmentType: "Full time",
+      salary: "$40000-$45000",
+      location: "New York, USA",
+    },
+    {
+      timeAgo: "25 min ago",
+      title: "Senior Frontend Developer",
+      company: "Tech Innovations Inc",
+      logo: "/images/Logo_2.png",
+      industry: "Software Development",
+      employmentType: "Full time",
+      salary: "$75000-$90000",
+      location: "San Francisco, USA",
+    },
+    {
+      timeAgo: "1 hour ago",
+      title: "Marketing Manager",
+      company: "Global Marketing Solutions",
+      logo: "/images/Logo_3.png",
+      industry: "Marketing & Advertising",
+      employmentType: "Full time",
+      salary: "$60000-$70000",
+      location: "Chicago, USA",
+    },
   ];
 
   return (
@@ -97,6 +128,27 @@ export default function Jobs() {
               <JobCard key={index} job={job} />
             ))}
           </div>
+          {/* pagination */}
+          <section className="flex justify-end my-10">
+            <div className="flex md:gap-145 sm:gap-45">
+              <div className="flex justify-center gap-5 items-center mb-10 cursor-pointer">
+                <Button className="h-10 font-extrabold">1</Button>
+                <Button
+                  className="h-10 border-1 border-text-light font-extrabold text-light hover:bg-secondary hover:text-light cursor-pointer"
+                  variant="outline"
+                >
+                  2
+                </Button>
+              </div>
+              <Button
+                className="flex gap-3 h-10 border-1 border-text-light font-extrabold text-light hover:bg-secondary hover:text-light cursor-pointer"
+                variant="outline"
+              >
+                <span>Next</span>
+                <span className="text-lg">&gt;</span>
+              </Button>
+            </div>
+          </section>
         </div>
       </div>
     </section>

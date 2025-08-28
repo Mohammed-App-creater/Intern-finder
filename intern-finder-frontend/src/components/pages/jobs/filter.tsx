@@ -44,7 +44,7 @@ const datePosted = [
 
 const tags = ["engineering", "design", "value", "marketing", "management", "soft", "construction"]
   return (
-    <div className="w-70 bg-secondary p-6 rounded-md">
+    <div className="w-70 bg-secondary p-6 rounded-md h-fit">
       {/* Search by Job Title */}
       <div className="mb-6">
         <h3 className="text-dark font-medium mb-3">Search by Job Title</h3>
@@ -52,7 +52,7 @@ const tags = ["engineering", "design", "value", "marketing", "management", "soft
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
           <Input
             placeholder="Job title or company"
-            className="pl-10 border-gray-300"
+            className="pl-10"
           />
         </div>
       </div>
@@ -61,7 +61,7 @@ const tags = ["engineering", "design", "value", "marketing", "management", "soft
       <div className="mb-6">
         <h3 className="text-dark font-medium mb-3">Location</h3>
         <Select>
-          <SelectTrigger className="border-gray-300 w-full">
+          <SelectTrigger className="w-full">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-light" />
               <SelectValue placeholder="Choose city" />
