@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface CompanyLocationFormProps {
   onSubmit: (data: object) => void;
@@ -30,6 +31,8 @@ export default function CompanyLocationForm({
     workType: "",
     ...initialData,
   });
+
+  const router = useRouter();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -50,7 +53,10 @@ export default function CompanyLocationForm({
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -126,7 +132,9 @@ export default function CompanyLocationForm({
               </Label>
               <Select
                 value={formData.workType}
-                onValueChange={(value: string) => handleInputChange("workType", value)}
+                onValueChange={(value: string) =>
+                  handleInputChange("workType", value)
+                }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Remote" />

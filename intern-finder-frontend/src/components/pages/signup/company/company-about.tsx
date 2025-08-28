@@ -8,8 +8,15 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   companyDescription: string;
@@ -35,6 +42,8 @@ export default function ContactInfoForm({
     ...initialData,
   });
 
+  const router = useRouter();
+
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -54,7 +63,10 @@ export default function ContactInfoForm({
         className="flex-1 flex flex-col p-8 gap-25"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -63,12 +75,8 @@ export default function ContactInfoForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-light">
-              Intern Fin
-            </span>
-            <span className="text-xl font-bold text-dark">
-              der
-            </span>
+            <span className="text-xl font-bold text-light">Intern Fin</span>
+            <span className="text-xl font-bold text-dark">der</span>
           </div>
         </div>
 
@@ -124,7 +132,9 @@ export default function ContactInfoForm({
                       <SelectItem value="50-100">50-100</SelectItem>
                       <SelectItem value="101-200">100-200</SelectItem>
                       <SelectItem value="201-500">201-500</SelectItem>
-                      <SelectItem value="more than 500">more than 500</SelectItem>
+                      <SelectItem value="more than 500">
+                        more than 500
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -190,7 +200,8 @@ export default function ContactInfoForm({
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
       >
         <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
-          Share your story, what drives your mission and makes your company unique
+          Share your story, what drives your mission and makes your company
+          unique
         </h2>
       </motion.div>
     </div>

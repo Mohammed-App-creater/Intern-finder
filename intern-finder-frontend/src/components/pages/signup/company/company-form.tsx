@@ -9,6 +9,7 @@ import Logo from "@/components/icons/logo.png";
 import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface CompanyFormProps {
   onSubmit: (data: object) => void;
@@ -26,6 +27,8 @@ export default function CompanyForm({
     location: "",
     ...initialData,
   });
+
+  const router = useRouter();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
@@ -53,7 +56,10 @@ export default function CompanyForm({
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"

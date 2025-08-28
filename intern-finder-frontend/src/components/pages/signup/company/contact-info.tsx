@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   fullName: string;
@@ -33,6 +34,8 @@ export default function ContactInfoForm({
     ...initialData,
   });
 
+  const router = useRouter();
+  
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -52,7 +55,10 @@ export default function ContactInfoForm({
         className="flex-1 flex flex-col p-8 gap-25"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -61,12 +67,8 @@ export default function ContactInfoForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-light">
-              Intern Fin
-            </span>
-            <span className="text-xl font-bold text-dark">
-              der
-            </span>
+            <span className="text-xl font-bold text-light">Intern Fin</span>
+            <span className="text-xl font-bold text-dark">der</span>
           </div>
         </div>
 
