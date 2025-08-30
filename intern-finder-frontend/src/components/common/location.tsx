@@ -75,7 +75,7 @@ export function LocationInput({ formData, handleInputChange }: LocationInputProp
           <Button
             variant="outline"
             role="combobox"
-            className="w-full justify-between text-dark"
+            className="w-full justify-between text-dark cursor-pointer"
           >
             {formData.location || "Select or type a location"}
           </Button>

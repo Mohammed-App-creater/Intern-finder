@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider"; 
 import { MapPin, Search } from "lucide-react";
 import { useState } from "react";
+import { LocationInput } from "@/components/common/location";
 
 export default function Filter() {
     const [salaryRange, setSalaryRange] = useState([0, 60000])
@@ -42,17 +43,17 @@ const datePosted = [
   { name: "Last 30 Days", count: 10 },
 ]
 
-const tags = ["engineering", "design", "value", "marketing", "management", "soft", "construction"]
+const tags = ["Engineering", "Design", "Value", "Marketing", "Management", "Soft", "Construction"]
   return (
     <div className="w-70 bg-secondary p-6 rounded-md h-fit">
       {/* Search by Job Title */}
       <div className="mb-6">
         <h3 className="text-dark font-medium mb-3">Search by Job Title</h3>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4 bg-text-white" />
           <Input
             placeholder="Job title or company"
-            className="pl-10"
+            className="pl-10 bg-text-white"
           />
         </div>
       </div>
@@ -60,20 +61,13 @@ const tags = ["engineering", "design", "value", "marketing", "management", "soft
       {/* Location */}
       <div className="mb-6">
         <h3 className="text-dark font-medium mb-3">Location</h3>
-        <Select>
-          <SelectTrigger className="w-full">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-light" />
-              <SelectValue placeholder="Choose city" />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="new-york">New York</SelectItem>
-            <SelectItem value="los-angeles">Los Angeles</SelectItem>
-            <SelectItem value="chicago">Chicago</SelectItem>
-          </SelectContent>
-        </Select>
+        <LocationInput formData={{
+        location: ""
+      }} handleInputChange={function (field: string, value: string): void {
+        throw new Error("Function not implemented.");
+      } } />
       </div>
+
 
       {/* Category */}
       <div className="mb-6">
@@ -96,7 +90,7 @@ const tags = ["engineering", "design", "value", "marketing", "management", "soft
         </div>
         <Button
           variant="outline"
-          className="w-full mt-3 bg-primary text-white hover:bg-primary/90"
+          className="w-full mt-3 bg-primary text-white hover:bg-primary/90 hover:text-white"
         >
           Show More
         </Button>
@@ -187,7 +181,7 @@ const tags = ["engineering", "design", "value", "marketing", "management", "soft
             <Badge
               key={tag}
               variant="secondary"
-              className="bg-secondary text-primary"
+              className="bg-[#3096891A] text-primary"
             >
               {tag}
             </Badge>
