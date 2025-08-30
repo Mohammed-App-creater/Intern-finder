@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import Link from "next/link";
@@ -8,7 +8,12 @@ import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const isActive = (path: string) => {
-    return pathname === path ? "text-white" : "text-[var(--text-light)]";
+    if (path === "/") {
+      return pathname === path ? "text-white" : "text-[var(--text-light)]";
+    }
+    return pathname.startsWith(path)
+      ? "text-white"
+      : "text-[var(--text-light)]";
   };
 
   const pathname = usePathname();

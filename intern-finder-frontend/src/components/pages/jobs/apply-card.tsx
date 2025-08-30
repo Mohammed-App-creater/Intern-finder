@@ -59,7 +59,7 @@ export default function JobCard({ job }: JobCardProps) {
             <span>{job.location}</span>
           </div>
         </div>
-        <Button className="bg-primary hover:bg-teal-600  text-white text-md w-63 p-2">
+        <Button className="bg-primary hover:bg-teal-600  text-white text-md w-70 p-2">
           Apply Job
         </Button>
       </div>

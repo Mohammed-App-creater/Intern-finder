@@ -85,10 +85,13 @@ export default function JobDetail() {
           <div>
             <h2 className="text-2xl font-bold mb-4">Job Description</h2>
             <p className="text-lg text-light mb-6">
-              We are looking for a Forward Security Director to lead our
-              security team and ensure the safety of our organization. The ideal
-              candidate will have extensive experience in security management,
-              risk assessment, and crisis response.
+              We are looking for a Forward Security Director with 5+ years of
+              security management experience and expertise in risk assessment,
+              crisis response, and team leadership. The ideal candidate will
+              have a strong background in both physical and information
+              security, proficiency with tools like SIEM, access control
+              systems, and knowledge of frameworks such as NIST. Relevant
+              certifications (e.g., CISSP, CPP) are highly desirable.
             </p>
             <h2 className="text-2xl font-semibold mb-3">
               Key Responsibilities
@@ -157,8 +160,8 @@ export default function JobDetail() {
             </div>
             <h1 className="text-4xl font-bold mb-4">Related Jobs</h1>
             <p className="text-lg text-light mb-6">
-              We are looking for a Forward Security Director to lead our
-              security team and ensure the safety.
+              Explore similar opportunities that match your interests and
+              skills.
             </p>
             {/* Related Job Cards */}
             <div className="space-y-4 mb-30">
@@ -233,6 +236,13 @@ export default function JobDetail() {
                     </p>
                   </div>
                 </div>
+                <Image
+                  src={"/images/Newyork_location.png"}
+                  alt={"Location Image"}
+                  width={300}
+                  height={300}
+                  className="rounded-lg"
+                />
               </CardContent>
             </Card>
 
