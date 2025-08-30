@@ -2,7 +2,7 @@ import { Bookmark, Briefcase, Clock, DollarSign, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image"
 
-interface ApplyCardProps {
+interface JobCardProps {
   job: {
     timeAgo: string;
     title: string;
@@ -15,33 +15,33 @@ interface ApplyCardProps {
   };
 }
 
-export default function ApplyCard({ job }: ApplyCardProps) {
+export default function JobCard({ job }: JobCardProps) {
   return (
-    <div className="flex flex-col rounded-lg p-6 shadow-md">
+    <div className="flex flex-col rounded-lg py-6 gap-2">
       <div className="flex justify-between pb-2">
-        <span className="text-sm text-primary font-medium bg-secondary p-1 rounded-[8px] w-fit h-fit">
+        <span className="text-sm text-primary font-medium bg-secondary p-2 rounded-[8px] w-fit h-fit">
           {job.timeAgo}
         </span>
         <button className="cursor-pointer">
-          <Bookmark className="w-6 h-6 text-light" />
+          <Bookmark className="w-8 h-8 text-light" />
         </button>
       </div>
       <div className="flex items-start gap-4 flex-1">
         <Image
           src={job.logo}
           alt="Company Logo"
-          width={40}
-          height={40}
+          width={60}
+          height={60}
         />
         <div className="flex-1">
-          <h3 className="text-xl font-semibold text-dark mb-1">
+          <h3 className="text-3xl font-semibold text-dark mb-1">
             {job.title}
           </h3>
-          <p className="text-dark font-light mb-4">{job.company}</p>
+          <p className="text-xl text-dark font-light mb-4">{job.company}</p>
         </div>
       </div>
       <div className="flex items-center justify-between gap-2">
-        <div className="flex flex-wrap items-center gap-4 text-sm text-light">
+        <div className="flex flex-wrap items-center gap-6 text-lg text-light">
           <div className="flex items-center gap-1">
             <Briefcase className="w-4 h-4 primary" />
             <span>{job.industry}</span>
@@ -59,8 +59,8 @@ export default function ApplyCard({ job }: ApplyCardProps) {
             <span>{job.location}</span>
           </div>
         </div>
-        <Button className="bg-primary hover:bg-teal-600  text-white cursor-pointer">
-          Job Details
+        <Button className="bg-primary hover:bg-teal-600  text-white text-md w-63 p-2">
+          Apply Job
         </Button>
       </div>
     </div>

@@ -4,7 +4,7 @@ import Logo from "@/components/icons/logo.png";
 export default function Footer() {
   return (
     <footer className="bg-black py-12 px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-20">
         {/* Main footer content */}
         <div className="flex mb-8">
           {/* Job branding section */}
