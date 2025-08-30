@@ -3,28 +3,28 @@ import Image from "next/image";
 const companies = [
   {
     name: "Instagram",
-    icon: "/images/Logo_1.png",
+    icon: "/images/Instagram_icon.png",
     description:
       "Elit velit mauris aliquam est diam. Leo sagittis consectetur diam morbi erat",
     openJobs: 8,
   },
   {
     name: "Tesla",
-    icon: "🚗",
+    icon: "/images/Tesla_icon.png",
     description:
       "At pellentesque amet odio cras imperdiet nisl. Ac magna aliquet massa leo",
     openJobs: 18,
   },
   {
     name: "McDonald's",
-    icon: "🍟",
+    icon: "/images/MCdonald_icon.png",
     description:
       "Odio aliquet tellus tellus maecenas. Faucibus in viverra venenatis phasellus",
     openJobs: 12,
   },
   {
     name: "Apple",
-    icon: "🍎",
+    icon: "/images/Apple_icon.png",
     description:
       "Et odio sem tellus ultrices posuere consequat. Tristique nascetur sapien",
     openJobs: 9,
@@ -33,7 +33,7 @@ const companies = [
 
 export default function CompanyCard() {
   return (
-    <div className="min-h-screen bg-secondary py-16 px-4">
+    <div className="bg-secondary pt-20 pb-30">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -49,7 +49,7 @@ export default function CompanyCard() {
           {companies.map((company, index) => (
             <Card
               key={index}
-              className="border-0 shadow-sm hover:shadow-md transition-shadow w-fit"
+              className="border-0 shadow-sm hover:shadow-md transition-shadow w-fit h-fit"
             >
               <CardContent className="flex flex-col items-center p-6 text-center">
                 {/* Company Icon */}
@@ -72,7 +72,7 @@ export default function CompanyCard() {
                 </p>
 
                 {/* Open Jobs */}
-                <p className="text-primary font-medium">
+                <p className="text-primary font-medium bg-secondary px-3 py-1 rounded-full">
                   {company.openJobs} open jobs
                 </p>
               </CardContent>

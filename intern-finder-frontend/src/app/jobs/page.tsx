@@ -1,3 +1,4 @@
+import Footer from "@/components/common/footer";
 import JobCard from "@/components/common/job-card";
 import Navbar from "@/components/common/navbar";
 import CompanyCards from "@/components/pages/jobs/company-card";
@@ -112,7 +113,7 @@ export default function Jobs() {
           <div className="flex justify-between items-center mb-6">
             <p className="text-light">Showing 6-6 of 10 results</p>
             <Select defaultValue="latest">
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-40 cursor-pointer">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -153,6 +154,7 @@ export default function Jobs() {
         </div>
       </div>
       <CompanyCards />
+      <Footer />
     </section>
   );
 }
