@@ -5,6 +5,7 @@ import errorHandler from '@/middlewares/errorHandler';
 import storageRoutes from "./modules/storage/storage.routes";
 import talentRoutes from "./modules/talent/talent.routes";
 import companyRoutes from "./modules/company/company.routes";
+import jobRoutes from "./modules/job/job.routes";
 
 
 
@@ -24,6 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/storage", storageRoutes);
 app.use("/api/talent", talentRoutes);
 app.use("/api/company", companyRoutes);
+app.use("/api/job", jobRoutes);
 
 // Health check endpoint
 app.get("/health", (req: Request, res: Response) => {

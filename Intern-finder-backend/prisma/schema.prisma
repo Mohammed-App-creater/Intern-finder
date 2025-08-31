@@ -117,7 +117,7 @@ model Job {
   salaryRange        String?
   responsibilities   String?
   description        String
-  professionalSkills String?
+  professionalSkills String[]
   tags               String[]
   minExperienceYears Int?
   degree             String?
