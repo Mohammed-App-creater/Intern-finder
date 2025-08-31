@@ -67,8 +67,9 @@ export default function JobCard({ job }: JobCardProps) {
         <JobApplicationForm
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
-          jobTitle="Corporate Solutions Executive"
-          companyName="Corporate Solutions"
+          jobTitle="Forward Security Director"
+          companyName="Reach, Schrage and Schmitt Co"
+          logo="/images/Logo_1.png"
         />
       </div>
     </div>

@@ -134,3 +134,27 @@
     color: var(--text-white); 
   }
 }
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4FC3B6;
+  border-radius: 16px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3da89c;
+}
+
+* {
+  scrollbar-width: thick;
+  scrollbar-color: #4FC3B6 transparent;
+}
