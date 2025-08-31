@@ -6,6 +6,7 @@ import storageRoutes from "./modules/storage/storage.routes";
 import talentRoutes from "./modules/talent/talent.routes";
 import companyRoutes from "./modules/company/company.routes";
 import jobRoutes from "./modules/job/job.routes";
+import analyticsRoutes from "./modules/analytics/analytics.routes";
 
 
 
@@ -26,6 +27,7 @@ app.use("/api/storage", storageRoutes);
 app.use("/api/talent", talentRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/job", jobRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // Health check endpoint
 app.get("/health", (req: Request, res: Response) => {

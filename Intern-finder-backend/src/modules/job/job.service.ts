@@ -1,24 +1,39 @@
 import prisma from "@/utils/prisma"; // adjust path
-import { z } from "zod";
-import { createJobSchema } from "./job.validation";
+import { CreateJobInput } from "./job.validation";
 
-type CreateJobInput = z.infer<typeof createJobSchema>;
+
 
 export const createJob = async (companyId: string, data: CreateJobInput) => {
-    try{
-    const company = await prisma.company.findUnique({
-        where: { id: companyId },
-    });
-    if (!company) throw new Error("Company not found");
-
-    return prisma.job.create({
-        data: {
-            companyId,
-            ...data,
-        },
-    });
+    try {
+        return prisma.job.create({
+            data: {
+                companyId,
+                ...data,
+            },
+        });
     } catch (error) {
         console.error("Error creating job:", error);
         throw new Error("Failed to create job");
     }
 };
+
+export const getAllJobs = async () => {
+    try {
+        return prisma.job.findMany();
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        throw new Error("Failed to fetch jobs");
+    }
+};
+
+export const getJobsByCompanyId = async (companyId: string) => {
+    try {
+        return prisma.job.findMany({
+            where: { companyId },
+        });
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        throw new Error("Failed to fetch jobs");
+    }
+};
+

@@ -21,3 +21,5 @@ export const createJobSchema = z.object({
 export const companyIdSchema = z.object({
     companyId: z.uuid(),
 });
+
+export type CreateJobInput = z.infer<typeof createJobSchema>;

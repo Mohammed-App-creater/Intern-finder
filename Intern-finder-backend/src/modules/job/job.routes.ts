@@ -1,9 +1,68 @@
 import { Router } from "express";
-import {  createJobController } from "./job.controller";
+import { createJobController, getAllJobsController, getJobsByCompanyIdController } from "./job.controller";
 import { validate } from "@/middlewares/validate";
 import { companyIdSchema, createJobSchema } from "./job.validation";
 
 const router = Router();
+
+// GET /api/job
+/**
+ * @openapi
+ * /job/:
+ *   get:
+ *     summary: Get all jobs
+ *     tags:
+ *       - Job
+ *     responses:
+ *       200:
+ *         description: List of jobs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Job'
+ *                 message:
+ *                   type: string
+ */
+router.get("/", getAllJobsController);
+
+// GET /job/:companyId/jobs
+/**
+ * @openapi
+ * /job/{companyId}/jobs:
+ *   get:
+ *     summary: Get jobs by company ID
+ *     tags:
+ *       - Job
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UUID of the company
+ *     responses:
+ *       200:
+ *         description: Jobs for the company
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Job'
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ */
+router.get("/:companyId/jobs", validate(companyIdSchema, "params"), getJobsByCompanyIdController);
 
 // POST /companies/:companyId/create
 /**
@@ -111,4 +170,6 @@ const router = Router();
  */
 router.post("/:companyId/create", validate(companyIdSchema, "params"), validate(createJobSchema, "body"), createJobController);
 
+
 export default router;
+
