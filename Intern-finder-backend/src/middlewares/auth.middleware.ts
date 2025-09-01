@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { decodeToken } from '@/utils/jwt'
+import { decodeToken } from '../utils/jwt'
 
 export interface AuthRequest extends Request {
   user?: { id: string }; // decoded token payload

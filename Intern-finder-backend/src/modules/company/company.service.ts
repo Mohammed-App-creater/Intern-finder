@@ -1,5 +1,5 @@
-import { RegisterStep1DTO, RegisterStep2DTO } from "./company.types";
-import prisma from "@/utils/prisma";
+import { RegisterStep1DTO, RegisterStep2DTO } from "./company.validation";
+import prisma from "../../utils/prisma";
 
 export const registerStep1 = async (data: RegisterStep1DTO) => {
     const existingCompany = await prisma.company.findUnique({

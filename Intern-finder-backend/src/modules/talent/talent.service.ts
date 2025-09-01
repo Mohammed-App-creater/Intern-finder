@@ -1,5 +1,5 @@
 import { RegisterStep1DTO, RegisterStep2DTO } from "./talent.types";
-import prisma from "@/utils/prisma";
+import prisma from "../../utils/prisma";
 
 export const registerStep1 = async (data: RegisterStep1DTO) => {
     // Check if email already exists
@@ -43,7 +43,7 @@ export const registerStep2 = async (talentId: string, data: RegisterStep2DTO) =>
             profileImageUrl: data.profileImageUrl,
             resumeUrl: data.resumeUrl,
         },
-        
+
     });
     return talent;
 };
