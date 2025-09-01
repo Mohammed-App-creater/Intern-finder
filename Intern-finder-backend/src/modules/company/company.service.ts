@@ -52,4 +52,20 @@ export const registerStep2 = async (companyId: string, data: RegisterStep2DTO) =
         },
     });
     return company;
-}; 
+};
+
+
+export const topCompany = async () => {
+    const companies = await prisma.company.findMany({
+        orderBy: {
+            employeeCount: "desc",
+        },
+        take: 5,
+        include: {
+            _count: {
+                select: { jobs: true },
+            },
+        },
+    });
+    return companies;
+};

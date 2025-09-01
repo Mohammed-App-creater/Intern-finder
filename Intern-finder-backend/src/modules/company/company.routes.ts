@@ -162,4 +162,8 @@ router.post("/register/step1", validate(RegisterStep1Schema, "body"), companyCon
  */
 router.post("/register/step2", validate(RegisterStep2Schema, "body"), companyController.registerStep2Handler);
 
+
+router.get("/top", companyController.topCompanyHandler);
+
+
 export default router; 

@@ -13,6 +13,11 @@ const options: swaggerJSDoc.Options = {
     servers: [
       {
         url: "http://localhost:5000/api", // adjust your base path
+        description: "Development server",
+      },
+      {
+        url: "https://intern-finder-qom0.onrender.com/api",
+        description: "Production server",
       },
     ],
   },
