@@ -2,7 +2,9 @@ import Image from "next/image";
 import Navbar from "@/components/common/navbar";
 import { HowItWorks } from "@/components/pages/about/how-it-works";
 import FAQ from "@/components/pages/about/FAQ";
-import { Award, Building, CircleStar, Users } from "lucide-react";
+import { Award, CircleStar, Star, Medal } from "lucide-react";
+import VideoPreview from "@/components/pages/about/video-preview";
+import Footer from "@/components/common/footer";
 
 export default function About() {
   return (
@@ -55,6 +57,8 @@ export default function About() {
       </section>
       {/* How it Works */}
       <HowItWorks />
+      {/* Video Preview Section */}
+      <VideoPreview />
       {/* FAQ Section */}
       <FAQ />
       {/* Working With The Best Section */}
@@ -64,11 +68,35 @@ export default function About() {
             {/* Images Grid */}
             <div className="flex gap-4 h-full w-full min-h-150">
               <div className="h-full w-full space-y-4">
-                <div className="h-full w-full bg-gray-300 rounded-lg"></div>
+                <Image
+                  src={
+                    "https://knowledge.wharton.upenn.edu/wp-content/uploads/2022/11/11.16.22-dollars-change-employee-owned-companies-GettyImages-1132823844-900x612.jpg"
+                  }
+                  alt={"Workers Image"}
+                  width={250}
+                  height={500}
+                  className="h-full w-full rounded-lg"
+                />
               </div>
               <div className="h-full w-full flex flex-col space-y-4">
-                <div className="bg-gray-400 rounded-lg h-[65%]"></div>
-                <div className="bg-gray-300 rounded-lg h-[35%]"></div>
+                <Image
+                  src={
+                    "https://knowledge.wharton.upenn.edu/wp-content/uploads/2022/11/11.16.22-dollars-change-employee-owned-companies-GettyImages-1132823844-900x612.jpg"
+                  }
+                  alt={"Workers Image"}
+                  width={250}
+                  height={500}
+                  className="rounded-lg h-[65%]"
+                />
+                <Image
+                  src={
+                    "https://knowledge.wharton.upenn.edu/wp-content/uploads/2022/11/11.16.22-dollars-change-employee-owned-companies-GettyImages-1132823844-900x612.jpg"
+                  }
+                  alt={"Workers Image"}
+                  width={250}
+                  height={500}
+                  className="rounded-lg h-[35%]"
+                />
               </div>
             </div>
 
@@ -88,29 +116,38 @@ export default function About() {
               {/* Features Grid */}
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex items-center gap-5">
-                  <CircleStar className="w-10 h-10 text-primary font-light" />
-                  <span className="text-dark font-bold text-xl">Quality Job</span>
+                  <CircleStar className="w-10 h-10 text-primary font-light stroke-1" />
+                  <span className="text-dark font-bold text-xl">
+                    Quality Job
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Users className="w-10 h-10 text-primary" />
-                  <span className="text-dark font-bold text-xl">Resume Builder</span>
+                  <Medal className="w-10 h-10 text-primary stroke-1" />
+                  <span className="text-dark font-bold text-xl">
+                    Resume Builder
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Building className="w-10 h-10 text-primary" />
-                  <span className="text-dark font-bold text-xl">Top Companies</span>
+                  <Star className="w-10 h-10 text-primary stroke-1" />
+                  <span className="text-dark font-bold text-xl">
+                    Top Companies
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-5">
-                  <Award className="w-10 h-10 text-primary" />
-                  <span className="text-dark font-bold text-xl">Top Talents</span>
+                  <Award className="w-10 h-10 text-primary stroke-1" />
+                  <span className="text-dark font-bold text-xl">
+                    Top Talents
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <Footer />
     </section>
   );
 }
