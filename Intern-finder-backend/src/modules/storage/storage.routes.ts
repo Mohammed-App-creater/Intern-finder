@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { uploadProfilePicture, uploadResume } from "./storage.controller";
-import { upload } from "@/middlewares/upload";
-import { validate } from "@/middlewares/validate";
+import { upload } from "../../middlewares/upload";
+import { validate } from "../../middlewares/validate";
 import {
     uploadResumeValidation,
     uploadProfilePictureValidation,

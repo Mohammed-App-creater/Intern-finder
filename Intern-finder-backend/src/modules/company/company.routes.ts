@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validate } from "@/middlewares/validate";
+import { validate } from "../../middlewares/validate";
 import { RegisterStep1Schema, RegisterStep2Schema } from "./company.validation";
 import * as companyController from "./company.controller";
 

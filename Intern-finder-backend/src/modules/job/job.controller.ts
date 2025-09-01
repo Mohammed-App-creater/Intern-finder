@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import prisma from "@/utils/prisma";
+import prisma from "../../utils/prisma";
 import { createJobSchema } from "./job.validation";
 import { createJob, getJobsByCompanyId } from "./job.service"
-import { errorResponse, successResponse } from "@/utils/response";
+import { errorResponse, successResponse } from "../../utils/response";
 
 export const createJobController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -13,7 +13,7 @@ export const createJobController = async (req: Request, res: Response, next: Nex
             where: { id: companyId },
         });
         if (!company) return res.status(400).json(errorResponse("Company not found", 400));
-  
+
         const job = await createJob(companyId, parsedData);
 
         res.status(201).json(successResponse(job, "Job created"));

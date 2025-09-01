@@ -22,4 +22,17 @@ export const companyIdSchema = z.object({
     companyId: z.uuid(),
 });
 
+
+export const jobFiltersSchema = z.object({
+  search: z.string().optional(),
+  location: z.string().optional(),
+  categories: z.array(z.string()).optional(),
+  minExperienceYears: z.coerce.number().int().nonnegative().optional(),
+  datePosted: z.enum(["today", "week", "month"]).optional(),
+  salaryMin: z.coerce.number().nonnegative().optional(),
+  salaryMax: z.coerce.number().nonnegative().optional(),
+  tags: z.array(z.string()).optional(),
+});
+
+export type JobFilters = z.infer<typeof jobFiltersSchema>;
 export type CreateJobInput = z.infer<typeof createJobSchema>;

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createJobController, getAllJobsController, getJobsByCompanyIdController } from "./job.controller";
-import { validate } from "@/middlewares/validate";
+import { validate } from "../../middlewares/validate";
 import { companyIdSchema, createJobSchema } from "./job.validation";
 
 const router = Router();
@@ -10,9 +10,62 @@ const router = Router();
  * @openapi
  * /job/:
  *   get:
- *     summary: Get all jobs
+ *     summary: Get all jobs with optional filters
  *     tags:
  *       - Job
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search by job title
+ *       - in: query
+ *         name: location
+ *         schema:
+ *           type: string
+ *         description: Filter by job location
+ *       - in: query
+ *         name: categories
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *         style: form
+ *         explode: true
+ *         description: Filter by categories (multiple allowed)
+ *       - in: query
+ *         name: minExperienceYears
+ *         schema:
+ *           type: integer
+ *           minimum: 0
+ *         description: Minimum experience required (years)
+ *       - in: query
+ *         name: datePosted
+ *         schema:
+ *           type: string
+ *           enum: [today, week, month]
+ *         description: Filter by date posted
+ *       - in: query
+ *         name: salaryMin
+ *         schema:
+ *           type: integer
+ *           minimum: 0
+ *         description: Minimum salary filter
+ *       - in: query
+ *         name: salaryMax
+ *         schema:
+ *           type: integer
+ *           minimum: 0
+ *         description: Maximum salary filter
+ *       - in: query
+ *         name: tags
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *         style: form
+ *         explode: true
+ *         description: Filter by tags (multiple allowed)
  *     responses:
  *       200:
  *         description: List of jobs

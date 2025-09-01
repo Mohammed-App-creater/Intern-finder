@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -114,7 +114,8 @@ model Job {
   environmentType    String
   categories         String[]
   salaryType         SalaryType
-  salaryRange        String?
+  minSalary          String?
+  maxSalary          String?
   responsibilities   String?
   description        String
   professionalSkills String[]

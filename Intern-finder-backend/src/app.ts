@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { setupSwagger } from "./config/swagger";
-import errorHandler from '@/middlewares/errorHandler';
+import errorHandler from './middlewares/errorHandler';
 import storageRoutes from "./modules/storage/storage.routes";
 import talentRoutes from "./modules/talent/talent.routes";
 import companyRoutes from "./modules/company/company.routes";

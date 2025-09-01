@@ -1,6 +1,6 @@
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import r2 from "../../config/r2";
-import env from "@/config/env";
+import env from "../../config/env";
 import { getSignedUrl as awsGetSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const BUCKET = env.R2_BUCKET;

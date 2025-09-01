@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { errorResponse, successResponse } from "@/utils/response";
+import { errorResponse, successResponse } from "../../utils/response";
 import { getAllAnalytics } from "./analytics.service";
 
 
@@ -8,7 +8,6 @@ export const getAnalyticsController = async (req: Request, res: Response, next: 
         const analytics = await getAllAnalytics();
         res.status(200).json(successResponse(analytics));
     } catch (error: any) {
-        // forward error to central error handler
-        next(error);
+        errorResponse(error);
     }
 };
