@@ -1,27 +1,24 @@
-import { CompanySizeFilter } from "@/components/pages/dashboard/comany-size-filter";
-import { CompaniesGrid } from "@/components/pages/dashboard/companies-grid";
-import { CompaniesHeader } from "@/components/pages/dashboard/companies-header";
-import { IndustryFilter } from "@/components/pages/dashboard/industry-filter";
-import { PopularTags } from "@/components/pages/dashboard/popular-tags";
-import { Pagination } from "@/components/common/pagination";
-import { SearchBar } from "@/components/pages/dashboard/search-bar";
+import { DashboardHeader } from "@/components/pages/dashboard/dashboard-header";
+import { DashboardGreeting } from "@/components/pages/dashboard/dashboard-greeting";
+import { StatusCards } from "@/components/pages/dashboard/status-cards";
+import { JobStatusChart } from "@/components/pages/dashboard/job-status-card";
+import { UpcomingInterviews } from "@/components/pages/dashboard/upcoming-interviews";
+import { RecentApplications } from "@/components/pages/dashboard/recent-applications";
 
 export default function Dashboard() {
   return (
     <main className="flex-1 p-8 mb-5 mt-2">
-      <h1 className="text-3xl font-bold text-dark mb-8">Browse Companies</h1>
-      <SearchBar />
-      <PopularTags />
-      <div className="flex gap-8">
-        <aside className="w-64 flex-shrink-0">
-          <IndustryFilter />
-          <CompanySizeFilter />
-        </aside>
-        <div className="flex-1">
-          <CompaniesHeader />
-          <CompaniesGrid />
-          <Pagination />
+      <div className="space-y-6">
+        <DashboardHeader />
+        <DashboardGreeting />
+
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <StatusCards />
+          <JobStatusChart />
+          <UpcomingInterviews />
         </div>
+        <RecentApplications />
       </div>
     </main>
   );

@@ -12,9 +12,11 @@ export default function DashboardLayout({
       <div className="bg-black">
         <Navbar />
       </div>
-      <div className="flex">
+      <div className="flex w-full">
         <Sidebar />
-        <div>{children}</div>
+        <div className="w-[calc(100%)]"> 
+          {children}
+        </div>
       </div>
       <Footer />
     </div>
