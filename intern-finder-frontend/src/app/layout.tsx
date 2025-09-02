@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "@/components/common/providers";
 
 export const metadata: Metadata = {
   title: "Intern Finder",
@@ -13,15 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          rel="icon"
-          href="/images/favicon.png"
-          type="image/x-icon"
-        />
+        <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
