@@ -14,7 +14,7 @@ export default function DashboardLayout({
       </div>
       <div className="flex w-full">
         <Sidebar />
-        <div className="w-[calc(100%)]"> 
+        <div className="w-[calc(100%)] font-['Epilogue']">
           {children}
         </div>
       </div>

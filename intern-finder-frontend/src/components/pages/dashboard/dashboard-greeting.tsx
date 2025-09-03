@@ -3,7 +3,7 @@ import { Calendar } from "lucide-react";
 
 export function DashboardGreeting() {
   return (
-    <div>
+    <div className="font-['Clash_Display']">
       <div className="flex justify-between">
         <h2 className="text-xl font-medium text-dark">Good morning, Jake</h2>
         <Button
