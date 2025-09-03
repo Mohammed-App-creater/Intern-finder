@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CircularProgress } from "@/components/pages/dashboard/circular-progress";
+import { ArrowRight } from "lucide-react";
 
 export function JobStatusChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-dark">Jobs Applied Status</CardTitle>
+        <CardTitle className="text-2xl font-bold text-dark">
+          Jobs Applied Status
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="flex items-center gap-10">
@@ -28,9 +31,12 @@ export function JobStatusChart() {
             </div>
           </div>
         </div>
-        <Button variant="link" className="mt-4 text-primary p-0 h-auto text-lg">
-          View All Applications →
-        </Button>
+        <div className="flex items-center mt-6 text-center">
+          <Button variant="link" className="text-primary text-lg">
+            View all Applications
+          </Button>
+          <ArrowRight className="text-primary" />
+        </div>
       </CardContent>
     </Card>
   );

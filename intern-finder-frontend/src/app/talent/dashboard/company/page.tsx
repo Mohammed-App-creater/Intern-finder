@@ -9,7 +9,7 @@ import { SearchBar } from "@/components/pages/dashboard/company-search/search-ba
 export default function Dashboard() {
   return (
     <main className="flex-1 p-8 mb-5 mt-2">
-      <h1 className="text-3xl font-bold text-dark mb-8">Browse Companies</h1>
+      <h1 className="text-3xl font-bold text-dark mb-8 font-['Clash_Display']">Browse Companies</h1>
       <SearchBar />
       <PopularTags />
       <div className="flex gap-8">

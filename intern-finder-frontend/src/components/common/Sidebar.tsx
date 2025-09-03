@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LayoutDashboard,
   MessageSquare,
@@ -11,28 +13,101 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import SidebarRectangle from "@/components/icons/sidebar_rectangle.png";
 import UserProfile from "@/components/common/user-profile";
+import { usePathname, useRouter } from "next/navigation";
+
 interface SidebarProps {
   className?: string;
 }
 
 export function Sidebar({ className }: SidebarProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Handle navigation with conditional path building
+  const handleNavigation = (href: string) => {
+    // Check if we're in a talent or client dashboard
+    if (
+      pathname.startsWith("/talent/dashboard") ||
+      pathname.startsWith("/client/dashboard")
+    ) {
+      // Extract the base path (/talent/dashboard or /client/dashboard)
+      const basePath = pathname.split("/").slice(0, 3).join("/");
+      // Navigate to basePath + href (e.g., /talent/dashboard/company)
+      router.push(`${basePath}${href}`);
+    } else {
+      // Default navigation
+      router.push(href);
+    }
+  };
+
+  // Helper function to determine if a path is active
+  const isActive = (href: string, isDashboard: boolean = false) => {
+    if (isDashboard) {
+      // For dashboard, check if we're exactly at /dashboard or /dashboard/ with nothing after
+      return (
+        pathname === "/talent/dashboard" ||
+        pathname === "/client/dashboard" ||
+        pathname === "/talent/dashboard/" ||
+        pathname === "/client/dashboard/"
+      );
+    }
+
+    // For other links, check if the path includes the href
+    return pathname.includes(href);
+  };
+
   const navigationItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: false },
-    { icon: MessageSquare, label: "Messages", active: false },
-    { icon: FileText, label: "My Applications", active: false },
-    { icon: Search, label: "Company", active: true },
-    { icon: User, label: "My Profile", active: false },
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      href: "",
+      active: isActive("", true), // Special case for dashboard
+    },
+    {
+      icon: MessageSquare,
+      label: "Messages",
+      href: "/messages",
+      active: isActive("/messages"),
+    },
+    {
+      icon: FileText,
+      label: "My Applications",
+      href: "/applications",
+      active: isActive("/applications"),
+    },
+    {
+      icon: Search,
+      label: "Company",
+      href: "/company",
+      active: isActive("/company"),
+    },
+    {
+      icon: User,
+      label: "My Profile",
+      href: "/profile",
+      active: isActive("/profile"),
+    },
   ];
 
   const settingsItems = [
-    { icon: Settings, label: "Setting", active: false },
-    { icon: HelpCircle, label: "Support", active: false },
+    {
+      icon: Settings,
+      label: "Setting",
+      href: "/settings",
+      active: isActive("/settings"),
+    },
+    {
+      icon: HelpCircle,
+      label: "Support",
+      href: "/support",
+      active: isActive("/support"),
+    },
   ];
 
   return (
     <div
       className={cn(
-        "w-70 bg-secondary border-r border-border h-170 flex flex-col rounded-lg my-10 ml-10 py-2 flex-shrink-0",
+        "w-70 bg-secondary border-r border-border h-170 flex flex-col rounded-lg my-10 ml-10 pb-2 flex-shrink-0",
         className
       )}
     >
@@ -55,13 +130,13 @@ export function Sidebar({ className }: SidebarProps) {
                     alt={"Sidebar Rectangle Icon"}
                   />
                 </div>
-                <a
-                  href="#"
+                <button
+                  onClick={() => handleNavigation(item.href)}
                   className={cn(
-                    "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full",
+                    "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
                     item.active
                       ? "bg-[#30968930] text-primary font-medium px-4"
-                      : "text-dark px-4 hover:bg-secondary hover:text-dark"
+                      : "text-dark px-4 hover:bg-primary/10"
                   )}
                 >
                   <item.icon
@@ -71,7 +146,7 @@ export function Sidebar({ className }: SidebarProps) {
                     )}
                   />
                   {item.label}
-                </a>
+                </button>
               </div>
             </li>
           ))}
@@ -86,13 +161,13 @@ export function Sidebar({ className }: SidebarProps) {
           <ul className="space-y-1">
             {settingsItems.map((item) => (
               <li key={item.label}>
-                <a
-                  href="#"
+                <button
+                  onClick={() => handleNavigation(item.href)}
                   className={cn(
-                    "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full",
+                    "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
                     item.active
                       ? "bg-[#30968930] text-primary font-medium px-4"
-                      : "text-dark px-4 hover:bg-secondary hover:text-dark"
+                      : "text-dark px-4 hover:bg-primary/10"
                   )}
                 >
                   <item.icon
@@ -102,7 +177,7 @@ export function Sidebar({ className }: SidebarProps) {
                     )}
                   />
                   {item.label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

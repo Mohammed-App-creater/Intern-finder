@@ -5,7 +5,7 @@ export function DashboardGreeting() {
   return (
     <div className="font-['Clash_Display']">
       <div className="flex justify-between">
-        <h2 className="text-xl font-medium text-dark">Good morning, Jake</h2>
+        <h2 className="text-xl font-bold text-dark">Good morning, Jake</h2>
         <Button
           variant="outline"
           className="flex items-center gap-5 text-sm text-light"

@@ -9,11 +9,11 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getStatusStyles = (status: string) => {
     switch (status) {
       case "In Review":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+        return "text-yellow-400 border-yellow-400"
       case "Interviewed":
-        return "bg-secondary text-secondary border-green-200"
+        return "text-primary border-primary"
       case "Declined":
-        return "bg-red-100 text-red-800 border-red-200"
+        return "text-red-400 border-red-400"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
@@ -22,7 +22,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
+        "flex items-center px-2.5 py-1 rounded-full text-xs font-medium border",
         getStatusStyles(status),
         className,
       )}
