@@ -1,10 +1,10 @@
-import { CompanySizeFilter } from "@/components/pages/dashboard/company-search/comany-size-filter";
-import { CompaniesGrid } from "@/components/pages/dashboard/company-search/companies-grid";
-import { CompaniesHeader } from "@/components/pages/dashboard/company-search/companies-header";
-import { IndustryFilter } from "@/components/pages/dashboard/company-search/industry-filter";
-import { PopularTags } from "@/components/pages/dashboard/company-search/popular-tags";
+import { CompanySizeFilter } from "@/components/pages/dashboard/talent/company-search/comany-size-filter";
+import { CompaniesGrid } from "@/components/pages/dashboard/talent/company-search/companies-grid";
+import { CompaniesHeader } from "@/components/pages/dashboard/talent/company-search/companies-header";
+import { IndustryFilter } from "@/components/pages/dashboard/talent/company-search/industry-filter";
+import { PopularTags } from "@/components/pages/dashboard/talent/company-search/popular-tags";
 import { Pagination } from "@/components/common/pagination";
-import { SearchBar } from "@/components/pages/dashboard/company-search/search-bar";
+import { SearchBar } from "@/components/pages/dashboard/talent/company-search/search-bar";
 
 export default function Dashboard() {
   return (

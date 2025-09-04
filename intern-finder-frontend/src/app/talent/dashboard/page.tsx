@@ -1,9 +1,9 @@
-import { DashboardHeader } from "@/components/pages/dashboard/dashboard-header";
-import { DashboardGreeting } from "@/components/pages/dashboard/dashboard-greeting";
-import { StatusCards } from "@/components/pages/dashboard/status-cards";
-import { JobStatusChart } from "@/components/pages/dashboard/job-status-card";
-import { UpcomingInterviews } from "@/components/pages/dashboard/upcoming-interviews";
-import { RecentApplications } from "@/components/pages/dashboard/recent-applications";
+import { DashboardHeader } from "@/components/pages/dashboard/talent/dashboard-header";
+import { DashboardGreeting } from "@/components/pages/dashboard/talent/dashboard-greeting";
+import { StatusCards } from "@/components/pages/dashboard/talent/status-cards";
+import { JobStatusChart } from "@/components/pages/dashboard/talent/job-status-card";
+import { UpcomingInterviews } from "@/components/pages/dashboard/talent/upcoming-interviews";
+import { RecentApplications } from "@/components/pages/dashboard/talent/recent-applications";
 
 export default function Dashboard() {
   return (

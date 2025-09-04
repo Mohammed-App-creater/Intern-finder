@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { StatusBadge } from "@/components/pages/dashboard/status-badge";
+import { StatusBadge } from "@/components/common/status-badge";
 import { MoreHorizontal, ArrowRight } from "lucide-react";
 
 const applications = [

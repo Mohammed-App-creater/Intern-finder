@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CircularProgress } from "@/components/pages/dashboard/circular-progress";
+import { CircularProgress } from "@/components/pages/dashboard/talent/circular-progress";
 import { ArrowRight } from "lucide-react";
 
 export function JobStatusChart() {
