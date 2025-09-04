@@ -29,5 +29,27 @@ export const RegisterStep2Schema = z.object({
     teamSize: z.enum(["1-10", "11-50", "51-200", "201-500", "500+"]),
 });
 
+export const CompanyLoginSchema = z.object({
+    email: z.email("Invalid email address").nonempty("Email is required"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+export const CompanyIdSchema = z.object({
+    companyId: z.uuid("Invalid company ID"),
+});
+
+export const GetAllCompaniesSchema = z.object({
+    page: z.string().transform((val) => parseInt(val, 10)).pipe(z.number().min(1, "Page must be at least 1")).default(() => 1),
+    limit: z.string().transform((val) => parseInt(val, 10)).pipe(z.number().min(1, "Limit must be at least 1").max(100, "Limit cannot exceed 100")).default(() => 10),
+    search: z.string().optional(),
+    location: z.string().optional(),
+    industries: z.string().transform((val) => val ? val.split(",").map(item => item.trim()) : []).optional(),
+    teamSize: z.string().transform((val) => val ? val.split(",").map(item => item.trim()) : []).optional(),
+    sortBy: z.enum(["companyName", "employeeCount", "createdAt"]).default("createdAt"),
+    sortOrder: z.enum(["asc", "desc"]).default("desc"),
+});
+
 export type RegisterStep1DTO = z.infer<typeof RegisterStep1Schema>;
-export type RegisterStep2DTO = z.infer<typeof RegisterStep2Schema>; 
+export type RegisterStep2DTO = z.infer<typeof RegisterStep2Schema>;
+export type CompanyLoginDTO = z.infer<typeof CompanyLoginSchema>;
+export type GetAllCompaniesDTO = z.infer<typeof GetAllCompaniesSchema>; 

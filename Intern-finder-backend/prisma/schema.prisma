@@ -37,6 +37,14 @@ enum ApplicationStatus {
   rejected
 }
 
+enum NotificationType {
+  NEW_JOB // worker gets notified a new job is posted
+  JOB_RESPONSE // worker gets notified about application response
+  COMPANY_REQUEST // worker invited by a company
+  ALERT // system / admin alerts
+  NEW_CANDIDATE // company gets notified a worker applied
+}
+
 //// ===== MODELS ===== ////
 
 model Company {
@@ -68,8 +76,9 @@ model Company {
   jobs             Job[] // relation: one company -> many jobs
   dashboard        CompanyDashboardStats?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Notification Notification[]
 }
 
 model Talent {
@@ -94,6 +103,7 @@ model Talent {
   skills             String[] // array of skills
   gender             Gender?
   profileImageUrl    String?
+  backgroundImageUrl String?
   rating             Float?
   address            String?
   yearsExperience    Int?
@@ -103,8 +113,10 @@ model Talent {
   applications       JobApplication[] // relation: one talent -> many applications
   dashboard          TalentDashboardStats?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Notification Notification[]
+  Settings     Settings?
 }
 
 model Job {
@@ -135,11 +147,13 @@ model Job {
 }
 
 model JobApplication {
-  id        String            @id @default(uuid())
-  jobId     String
-  talentId  String
-  status    ApplicationStatus @default(pending)
-  appliedAt DateTime          @default(now())
+  id             String            @id @default(uuid())
+  jobId          String
+  talentId       String
+  status         ApplicationStatus @default(pending)
+  appliedAt      DateTime          @default(now())
+  additionalInfo Json?
+  resumeUrl      String?
 
   job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
@@ -168,4 +182,30 @@ model TalentDashboardStats {
   upcomingInterview Json?
 
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  createdAt DateTime         @default(now())
+  isRead    Boolean          @default(false)
+
+  talentId String?
+  talent   Talent? @relation(fields: [talentId], references: [id], onDelete: Cascade)
+
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id             String  @id @default(uuid())
+  application    Boolean @default(true)
+  job            Boolean @default(true)
+  recommendation Boolean @default(true)
+  alert          Boolean @default(true)
+  talentId       String  @unique
+  talent         Talent  @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
