@@ -181,13 +181,13 @@ export function MessagingInterface() {
   const [messageInput, setMessageInput] = useState("");
 
   return (
-    <div className="flex flex-col h-100">
+    <div className="flex flex-col h-screen">
       <h1 className="text-3xl font-bold text-dark mb-8 font-['Clash_Display']">
         Messages
       </h1>
       <div className="flex">
         {/* Left Sidebar - Messages List */}
-        <div className="w-80 border-r border-t border-b border-border bg-card overflow-y-scroll h-[68%]">
+        <div className="w-80 border-r border-t border-b border-border bg-card overflow-y-scroll h-3/4">
           <div className="flex items-center px-12 py-6 border-b border-border">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
@@ -241,7 +241,7 @@ export function MessagingInterface() {
         </div>
 
         {/* Right Main Area - Conversation */}
-        <div className="flex-1 flex flex-col h-[68%]">
+        <div className="flex-1 flex flex-col h-3/4">
           {/* Header */}
           <div className="flex items-center justify-between p-3 border-b border-t border-border bg-card">
             <div className="flex items-center gap-3">
