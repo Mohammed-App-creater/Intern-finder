@@ -192,3 +192,72 @@ export const getAllCompany = async (params: GetAllCompaniesDTO) => {
         }
     };
 };
+
+export const getCompanyById = async (companyId: string) => {
+    const company = await prisma.company.findUnique({
+        where: { id: companyId },
+        select: {
+            id: true,
+            companyName: true,
+            email: true,
+            phone: true,
+            linkedinUrl: true,
+            instagram: true,
+            websiteUrl: true,
+            employeeCount: true,
+            headQuarter: true,
+            branches: true,
+            industries: true,
+            logoUrl: true,
+            description: true,
+            techStack: true,
+            contactName: true,
+            contactEmail: true,
+            contactPhone: true,
+            contactJobTitle: true,
+            teamSize: true,
+            createdAt: true,
+            updatedAt: true,
+            _count: {
+                select: {
+                    jobs: true
+                }
+            }
+        }
+    });
+    if (!company) {
+        throw new Error("Company not found");
+    }
+    return company;
+};
+
+export const updateCompany = async (companyId: string, data: Partial<RegisterStep2DTO>) => {
+    const company = await prisma.company.update({
+        where: { id: companyId },
+        data,
+        select: {
+            id: true,
+            companyName: true,
+            email: true,
+            phone: true,
+            linkedinUrl: true,
+            instagram: true,
+            websiteUrl: true,
+            employeeCount: true,
+            headQuarter: true,
+            branches: true,
+            industries: true,
+            logoUrl: true,
+            description: true,
+            techStack: true,
+            contactName: true,
+            contactEmail: true,
+            contactPhone: true,
+            contactJobTitle: true,
+            teamSize: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+    return company;
+};

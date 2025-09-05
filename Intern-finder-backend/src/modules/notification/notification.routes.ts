@@ -30,9 +30,118 @@ const router = Router();
  */
 router.get("/stream", authenticate, subscribeToNotifications);
 
+/**
+ * @openapi
+ * /notifications/talent:
+ *   get:
+ *     summary: Get talent notifications
+ *     description: Fetch notifications for the authenticated talent user. Returns a JSON envelope with success, data and error fields.
+ *     tags:
+ *       - Notifications
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Array of notifications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       message:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ *       '401':
+ *         description: Unauthorized
+ */
 router.get("/talent", authenticate, getTalentNotifications);
+
+/**
+ * @openapi
+ * /notifications/company:
+ *   get:
+ *     summary: Get company notifications
+ *     description: Fetch notifications for the authenticated company user. Returns a JSON envelope with success, data and error fields.
+ *     tags:
+ *       - Notifications
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Array of notifications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       message:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                 error:
+ *                   type: string
+ *                   nullable: true
+ *                   example: null
+ *       '401':
+ *         description: Unauthorized
+ */
 router.get("/company", authenticate, getCompanyNotifications);
 
+/**
+ * @openapi
+ * /notifications/debug/ping:
+ *   get:
+ *     summary: Debug ping for notifications SSE
+ *     description: Broadcasts a test notification to all connected SSE clients and returns a simple JSON response. No authentication required.
+ *     tags:
+ *       - Notifications
+ *     responses:
+ *       '200':
+ *         description: Ping sent
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                   example: true
+ */
 router.get("/debug/ping", (req, res) => {
   sseManager.broadcast("notification", { message: "Hello from server!" });
   res.json({ ok: true });
