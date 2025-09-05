@@ -15,7 +15,7 @@ export default function NotificationsTab() {
 
   return (
     <div className="space-y-8">
-      <div>
+      <div className="border-b mb-10 pb-10">
         <h2 className="text-lg font-semibold text-dark mb-2">
           Basic Information
         </h2>
@@ -24,13 +24,17 @@ export default function NotificationsTab() {
         </p>
       </div>
 
-      <div>
-        <h3 className="text-base font-medium text-dark mb-6">Notifications</h3>
-        <p className="text-light text-sm mb-6">
-          Customize your preferred notification settings
-        </p>
+      <div className="flex justify-between max-w-4xl">
+        <div>
+          <h3 className="text-base font-medium text-dark mb-6">
+            Notifications
+          </h3>
+          <p className="max-w-50 text-light text-sm mb-6">
+            Customize your preferred notification settings
+          </p>
+        </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 max-w-sm">
           <div className="flex items-start gap-3">
             <Checkbox
               id="applications"
@@ -103,13 +107,12 @@ export default function NotificationsTab() {
               </p>
             </div>
           </div>
+          <div className="flex justify-start">
+            <Button className="bg-primary hover:bg-primary/90 text-white px-8">
+              Update Notification
+            </Button>
+          </div>
         </div>
-      </div>
-
-      <div className="flex justify-start">
-        <Button className="bg-primary hover:bg-primary/90 text-white px-8">
-          Update Email
-        </Button>
       </div>
     </div>
   );

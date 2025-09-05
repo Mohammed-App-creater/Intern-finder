@@ -5,6 +5,7 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { Bell, Dot, MessageSquare } from "lucide-react";
 
 export default function Navbar() {
   const isActive = (path: string) => {
@@ -46,7 +47,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             href="/dashboard"
-            className={`hidden hover:text-white transition-colors ${isActive(
+            className={`hover:text-white transition-colors ${isActive(
               "/dashboard"
             )}`}
           >
@@ -97,6 +98,16 @@ export default function Navbar() {
           >
             Register
           </Button>
+        </div>
+        <div className="flex items-center gap-8">
+          <div className="relative cursor-pointer hover:scale-120">
+            <Bell className="text-light" />
+            <Dot className="absolute top-[-90%] left-[-30%] text-red-500 w-12 h-12" />
+          </div>
+          <div className="relative cursor-pointer hover:scale-120">
+            <MessageSquare className="text-light hover:text-white" />
+            <Dot className="absolute top-[-90%] left-[-10%] text-red-500 w-12 h-12" />
+          </div>
         </div>
       </div>
     </header>
