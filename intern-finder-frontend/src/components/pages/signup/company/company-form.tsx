@@ -9,6 +9,7 @@ import Logo from "@/components/icons/logo.png";
 import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface CompanyFormProps {
   onSubmit: (data: object) => void;
@@ -26,6 +27,8 @@ export default function CompanyForm({
     location: "",
     ...initialData,
   });
+
+  const router = useRouter();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
@@ -50,10 +53,13 @@ export default function CompanyForm({
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-[var(--text-white)]"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -86,14 +92,14 @@ export default function CompanyForm({
       >
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
-          <h2 className="text-2xl font-extrabold text-[var(--text-dark)] mb-8">
+          <h2 className="text-2xl font-extrabold text-dark mb-8">
             Tell us about your company or institution
           </h2>
 
           {/* Company Logo Upload */}
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
-              <div className="w-30 h-30 rounded-full border-2 border-[var(--primary)] flex items-center justify-center overflow-hidden">
+              <div className="w-30 h-30 rounded-full border-2 border-primary flex items-center justify-center overflow-hidden">
                 {profileImage ? (
                   <Image
                     src={profileImage}
@@ -138,7 +144,7 @@ export default function CompanyForm({
               {/* Plus button */}
               <button
                 type="button"
-                className="absolute -bottom-1 -right-1 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-[var(--text-white)] hover:bg-teal-600 transition-colors cursor-pointer"
+                className="absolute -bottom-1 -right-1 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white hover:bg-teal-600 transition-colors cursor-pointer"
                 onClick={() =>
                   document.getElementById("profileUpload")?.click()
                 }
@@ -146,7 +152,7 @@ export default function CompanyForm({
                 <Plus className="w-5 h-5" />
               </button>
             </div>
-            <span className="text-[var(--text-dark)] font-bold">Logo</span>
+            <span className="text-dark font-bold">Logo</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -154,7 +160,7 @@ export default function CompanyForm({
             <div>
               <Label
                 htmlFor="organization"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Organization Type
               </Label>
@@ -174,7 +180,7 @@ export default function CompanyForm({
             <div>
               <Label
                 htmlFor="industry"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Industry/Field
               </Label>
@@ -192,7 +198,7 @@ export default function CompanyForm({
             <div>
               <Label
                 htmlFor="officialWebsiteURL"
-                className="text-sm font-medium text-[var(--text-dark)] mb-2 block"
+                className="text-sm font-medium text-dark mb-2 block"
               >
                 Official Website URL
               </Label>
@@ -209,7 +215,7 @@ export default function CompanyForm({
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] text-[var(--text-white)] py-3 mt-2 font-medium cursor-pointer"
+              className="w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer"
             >
               Continue
             </Button>

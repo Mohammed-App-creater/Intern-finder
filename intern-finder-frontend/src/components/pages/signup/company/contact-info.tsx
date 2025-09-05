@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   fullName: string;
@@ -33,6 +34,8 @@ export default function ContactInfoForm({
     ...initialData,
   });
 
+  const router = useRouter();
+  
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -52,7 +55,10 @@ export default function ContactInfoForm({
         className="flex-1 flex flex-col p-8 gap-25"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -61,18 +67,14 @@ export default function ContactInfoForm({
             priority
           />
           <div className="flex">
-            <span className="text-xl font-bold text-[var(--text-light)]">
-              Intern Fin
-            </span>
-            <span className="text-xl font-bold text-[var(--text-dark)]">
-              der
-            </span>
+            <span className="text-xl font-bold text-light">Intern Fin</span>
+            <span className="text-xl font-bold text-dark">der</span>
           </div>
         </div>
 
         {/* Form Content */}
         <div className="flex-1 flex flex-col mx-auto p-4 md:p-8 w-150">
-          <h1 className="text-3xl font-bold text-[var(--text-dark)] mb-8">
+          <h1 className="text-3xl font-bold text-dark mb-8">
             Contact Information
           </h1>
 
@@ -84,7 +86,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="fullName"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Full Name
                   </Label>
@@ -104,7 +106,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="jobTitle"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Job Title
                   </Label>
@@ -124,7 +126,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="emailAddress"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Email Address
                   </Label>
@@ -144,7 +146,7 @@ export default function ContactInfoForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="phoneNumber"
-                    className="text-sm font-medium text-[var(--text-dark)]"
+                    className="text-sm font-medium text-dark"
                   >
                     Phone Number
                   </Label>
@@ -165,7 +167,7 @@ export default function ContactInfoForm({
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 rounded-lg font-medium mt-8 cursor-pointer"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8 cursor-pointer"
             >
               Continue
             </Button>
@@ -178,9 +180,9 @@ export default function ContactInfoForm({
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
       >
-        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-[var(--text-white)] max-w-170">
+        <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
           Help us reach the right person when the perfect intern comes along!
         </h2>
       </motion.div>

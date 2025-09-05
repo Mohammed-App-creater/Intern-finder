@@ -26,7 +26,6 @@ export default function LoginForm() {
     e.preventDefault();
     // Handle login logic here
     console.log("Login attempt with:", formData);
-    // For demo purposes, redirect to dashboard
     router.push("/dashboard");
   };
 
@@ -37,10 +36,13 @@ export default function LoginForm() {
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-30 text-[var(--text-white)]"
+        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-30 text-white z-10"
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-8">
+        <div
+          onClick={() => router.push("/")}
+          className="flex items-center gap-2 mb-8 cursor-pointer"
+        >
           <Image
             src={Logo}
             alt="Company Logo"
@@ -55,8 +57,8 @@ export default function LoginForm() {
 
         {/* Main text */}
         <div className="flex justify-center">
-          <div className="text-left text-[var(--text-white)] max-w-lg">
-            <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-[var(--text-white)] w-150">
+          <div className="text-left text-white max-w-lg">
+            <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-white w-150">
               &quot;Small daily improvements over time lead to stunning
               results&quot;
             </blockquote>
@@ -73,17 +75,14 @@ export default function LoginForm() {
         className="flex-1 bg-white p-8 flex flex-col justify-center"
       >
         <div className="max-w-md mx-auto w-full">
-          <h1 className="text-2xl font-[900] text-[var(--text-dark)] mb-8 text-center">
+          <h1 className="text-2xl font-[900] text-dark mb-8 text-center">
             Welcome back!
           </h1>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Email */}
             <div>
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-[var(--text-dark)]"
-              >
+              <Label htmlFor="email" className="text-sm font-medium text-dark">
                 Email address
               </Label>
               <Input
@@ -100,7 +99,7 @@ export default function LoginForm() {
             <div>
               <Label
                 htmlFor="password"
-                className="text-sm font-medium text-[var(--text-dark)]"
+                className="text-sm font-medium text-dark"
               >
                 Password
               </Label>
@@ -123,9 +122,9 @@ export default function LoginForm() {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-[var(--text-light)]" />
+                    <EyeOff className="h-4 w-4 text-light" />
                   ) : (
-                    <Eye className="h-4 w-4 text-[var(--text-light)]" />
+                    <Eye className="h-4 w-4 text-light" />
                   )}
                 </Button>
               </div>
@@ -134,7 +133,7 @@ export default function LoginForm() {
               <div className="mt-2 text-right">
                 <a
                   href="/forgot-password"
-                  className="text-xs text-[var(--primary)] hover:text-teal-700 cursor-pointer"
+                  className="text-xs text-primary hover:text-teal-700 cursor-pointer"
                 >
                   Forgot password?
                 </a>
@@ -144,17 +143,17 @@ export default function LoginForm() {
             {/* Login button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--primary)] hover:bg-teal-700 text-[var(--text-white)] py-3 mt-6 cursor-pointer"
+              className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
             >
               Login
             </Button>
 
             {/* Sign up link */}
-            <p className="text-center text-sm text-[var(--text-light)] mt-4">
+            <p className="text-center text-sm text-light mt-4">
               Don&apos;t have an account?{" "}
               <a
                 href="/signup"
-                className="text-[var(--primary)] hover:text-teal-700 font-medium cursor-pointer"
+                className="text-primary hover:text-teal-700 font-medium cursor-pointer"
               >
                 Sign up
               </a>
