@@ -65,7 +65,7 @@ export default function ContactInfoForm({
         {/* Logo */}
         <div
           onClick={() => router.push("/")}
-          className="flex items-center gap-2 mb-8"
+          className="flex items-center gap-2 mb-8 cursor-pointer"
         >
           <Image
             src={Logo}
@@ -74,7 +74,7 @@ export default function ContactInfoForm({
             height={30}
             priority
           />
-          <div className="flex">
+          <div className="flex cursor-pointer">
             <span className="text-xl font-bold text-light">Intern Fin</span>
             <span className="text-xl font-bold text-dark">der</span>
           </div>

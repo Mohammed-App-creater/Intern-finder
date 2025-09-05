@@ -115,18 +115,20 @@ export function SignUpForm() {
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Full name */}
+            {/* Full name / Company Name */}
             <div>
               <Label
                 htmlFor="fullName"
                 className="text-sm font-medium text-dark"
               >
-                Full name
+                {userType === "company" ? "Company Name" : "Full name"}
               </Label>
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Ada Tiger"
+                placeholder={
+                  userType === "company" ? "GoldenAge Technology PLC" : "Ada Tiger"
+                }
                 value={formData.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                 className="mt-1"
@@ -249,6 +251,12 @@ export function SignUpForm() {
               className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
             >
               Sign Up
+            </Button>
+            <Button
+              type="submit"
+              className="w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
+            >
+              Continue with Google
             </Button>
 
             {/* Login link */}

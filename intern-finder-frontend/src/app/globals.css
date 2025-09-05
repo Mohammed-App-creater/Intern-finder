@@ -8,6 +8,7 @@
 @theme inline {
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-white: var(--white);
   --color-text-dark: var(--text-dark);
   --color-text-light: var(--text-light);
   --color-text-white: var(--text-white);
@@ -53,6 +54,7 @@
 :root {
   --primary: #309689;
   --secondary: #EBF5F4;
+  --white: #FFFFFF;
 
   --text-dark: #25324B;
   --text-light: #7C8493;
@@ -83,6 +85,7 @@
 .dark {
   --primary: #4FC3B6;
   --secondary: #2A3B3A;
+  --white:#1E1E1E;
 
   --text-dark: #FFFFFF;
   --text-light: #A0AEC0;
@@ -125,6 +128,9 @@
   }
   .secondary {
     color: var(--secondary);
+  }
+  .white {
+    color: var(--white);
   }
   .text-light {
     color: var(--text-light);
