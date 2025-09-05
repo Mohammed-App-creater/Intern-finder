@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createJobController, getAllJobsController, getJobsByCompanyIdController } from "./job.controller";
+import { createJobController, getAllJobsController, getJobByIdController, getJobsByCompanyIdController } from "./job.controller";
 import { validate } from "../../middlewares/validate";
-import { companyIdSchema, createJobSchema } from "./job.validation";
+import { companyIdSchema, createJobSchema, jobIdSchema } from "./job.validation";
 
 const router = Router();
 
@@ -82,6 +82,8 @@ const router = Router();
  *                   type: string
  */
 router.get("/", getAllJobsController);
+
+
 
 // GET /job/:companyId/jobs
 /**
@@ -222,6 +224,8 @@ router.get("/:companyId/jobs", validate(companyIdSchema, "params"), getJobsByCom
  *         description: Internal server error
  */
 router.post("/:companyId/create", validate(companyIdSchema, "params"), validate(createJobSchema, "body"), createJobController);
+
+router.get("/:jobId", validate(jobIdSchema, "params"), getJobByIdController);
 
 
 export default router;

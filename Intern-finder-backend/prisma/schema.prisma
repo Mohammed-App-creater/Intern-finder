@@ -25,6 +25,11 @@ enum JobStatus {
   closed
 }
 
+enum StatAction {
+  VIEW
+  APPLIED
+}
+
 enum SalaryType {
   free
   paid
@@ -126,8 +131,8 @@ model Job {
   environmentType    String
   categories         String[]
   salaryType         SalaryType
-  minSalary          String?
-  maxSalary          String?
+  minSalary          Int?
+  maxSalary          Int?
   responsibilities   String?
   description        String
   professionalSkills String[]
@@ -138,6 +143,7 @@ model Job {
   status             JobStatus        @default(live)
   capacity           Int?
   requiredSkills     String[]
+  viewCount          Int              @default(0) 
   applications       JobApplication[] // one job -> many applications
 
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -158,6 +164,26 @@ model JobApplication {
   job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
+
+model JobStat {
+  id        String   @id @default(uuid())
+  jobId     String
+  companyId String
+  action    StatAction
+  createdAt DateTime @default(now())
+}
+
+model DailySummary {
+  id        String   @id @default(uuid())
+  companyId String
+  day       DateTime
+  views     Int
+  applied   Int
+  createdAt DateTime @default(now())
+
+  @@unique([companyId, day])   // ✅ composite unique index
+}
+
 
 model CompanyDashboardStats {
   id                String @id @default(uuid())

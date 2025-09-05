@@ -38,6 +38,10 @@ export const CompanyIdSchema = z.object({
     companyId: z.uuid("Invalid company ID"),
 });
 
+export const CompanyIdOptionalSchema = z.object({
+    companyId: z.uuid("Invalid company ID here ").optional(),
+});
+
 export const GetAllCompaniesSchema = z.object({
     page: z.string().transform((val) => parseInt(val, 10)).pipe(z.number().min(1, "Page must be at least 1")).default(() => 1),
     limit: z.string().transform((val) => parseInt(val, 10)).pipe(z.number().min(1, "Limit must be at least 1").max(100, "Limit cannot exceed 100")).default(() => 10),
