@@ -1,11 +1,10 @@
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import prisma from "../../utils/prisma";
-import { jwt } from "zod/v4/classic/external.cjs";
-import { hashPassword, verifyPassword } from "../../utils/hash";
+import { verifyPassword } from "../../utils/hash";
 import { generateToken } from "../../utils/jwt";
 import { errorResponse, successResponse } from "../../utils/response";
-import { validate } from "@/middlewares/validate";
+import { validate } from "../../middlewares/validate";
 import { z } from "zod";
 
 
