@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
-import prisma from "@/utils/prisma";
+import prisma from "../../utils/prisma";
 import { jwt } from "zod/v4/classic/external.cjs";
 import { hashPassword, verifyPassword } from "../../utils/hash";
 import { generateToken } from "../../utils/jwt";
