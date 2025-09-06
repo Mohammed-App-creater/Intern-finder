@@ -9,6 +9,7 @@ import jobRoutes from "./modules/job/job.routes";
 import analyticsRoutes from "./modules/analytics/analytics.routes";
 import jobApplicationRoutes from "./modules/jobApplication/jobAppliccation.routes";
 import notificationRoutes from "./modules/notification/notification.routes";
+import authRoutes from "./modules/auth/auth.route";
 
 
 
@@ -26,6 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/storage", storageRoutes);
+app.use("/api/auth", authRoutes)
 app.use("/api/talent", talentRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/job", jobRoutes);

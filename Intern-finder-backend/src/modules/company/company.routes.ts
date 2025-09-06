@@ -376,8 +376,8 @@ router.get("/:companyId", validate(CompanyIdOptionalSchema, "params"), companyCo
 
 router.patch("/:companyId", validate(CompanyIdSchema, "params"), validate(UpdateCompanySchema, "body"), companyController.updateCompanyHandler);
 
-// Company Dashboard routs
 
+// Company Dashboard routs
 
 router.get("/dashboard/:companyId/top-status", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardTopStatusHandler);
 
@@ -387,5 +387,10 @@ router.get("/dashboard/:companyId/monthly-status", validate(CompanyIdSchema, "pa
 
 router.get("/dashboard/:companyId/yearly-status", validate(CompanyIdSchema, "params"), companyController.getYearlyStatsController);
 
+router.get("/dashboard/:companyId/open-jobs", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardOpenJobsCountController);
+
+router.get("/dashboard/:companyId/applications-summary", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardApplicationSummery);
+
+router.get("/dashboard/:companyId/job-updates", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardJobUpdate);
 
 export default router; 

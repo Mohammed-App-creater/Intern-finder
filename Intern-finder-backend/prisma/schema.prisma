@@ -37,7 +37,9 @@ enum SalaryType {
 
 enum ApplicationStatus {
   pending
+  shortlisted
   interview
+  offered
   accepted
   rejected
 }
