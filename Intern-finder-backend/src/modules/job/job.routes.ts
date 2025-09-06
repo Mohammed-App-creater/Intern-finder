@@ -225,8 +225,54 @@ router.get("/:companyId/jobs", validate(companyIdSchema, "params"), getJobsByCom
  */
 router.post("/:companyId/create", validate(companyIdSchema, "params"), validate(createJobSchema, "body"), createJobController);
 
+/**
+ * @openapi
+ * /job/{jobId}:
+ *   get:
+ *     summary: Get a single job by its ID
+ *     tags:
+ *       - Job
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UUID of the job to retrieve
+ *     responses:
+ *       200:
+ *         description: Job fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Job'
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request or invalid ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get("/:jobId", validate(jobIdSchema, "params"), getJobByIdController);
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ErrorResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         status:
+ *           type: integer
+ *           format: int32
+ */
 
 export default router;
 

@@ -369,28 +369,313 @@ router.post("/login", validate(CompanyLoginSchema, "body"), companyController.lo
 
 router.use(authenticate);
 
+/**
+ * @openapi
+ * /api/company/top:
+ *   get:
+ *     summary: Get top companies (e.g., most active or featured)
+ *     tags:
+ *       - Company
+ *     responses:
+ *       '200':
+ *         description: Array of top companies
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Company'
+ *                 error:
+ *                   type: null
+ */
 router.get("/top", companyController.topCompanyHandler);
 
 
+/**
+ * @openapi
+ * /api/company/{companyId}:
+ *   get:
+ *     summary: Get a company by ID (public if companyId omitted returns own company)
+ *     tags:
+ *       - Company
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: false
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Company ID (optional)
+ *     responses:
+ *       '200':
+ *         description: Company object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Company'
+ *       '404':
+ *         description: Company not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get("/:companyId", validate(CompanyIdOptionalSchema, "params"), companyController.getCompanyByIdHandler);
 
+
+/**
+ * @openapi
+ * /api/company/{companyId}:
+ *   patch:
+ *     summary: Update a company (authenticated)
+ *     tags:
+ *       - Company
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Company ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CompanyUpdate'
+ *     responses:
+ *       '200':
+ *         description: Updated company
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Company'
+ *                 error:
+ *                   type: null
+ *       '400':
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.patch("/:companyId", validate(CompanyIdSchema, "params"), validate(UpdateCompanySchema, "body"), companyController.updateCompanyHandler);
 
 
-// Company Dashboard routs
+// Company Dashboard routes
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/top-status:
+ *   get:
+ *     summary: Get top-level dashboard status for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       '200':
+ *         description: Company dashboard top stats
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/CompanyDashboardStats'
+ *                 error:
+ *                   type: null
+ */
 router.get("/dashboard/:companyId/top-status", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardTopStatusHandler);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/weekly-status:
+ *   get:
+ *     summary: Get weekly dashboard stats for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: day
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Anchor day for the week (ISO date)
+ *     responses:
+ *       '200':
+ *         description: Weekly stats
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/WeeklyStatsResponse'
+ */
 router.get("/dashboard/:companyId/weekly-status", validate(CompanyIdSchema, "params"), companyController.getMiddleStatsController);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/monthly-status:
+ *   get:
+ *     summary: Get monthly dashboard stats for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: day
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Anchor day for the month (ISO date)
+ *     responses:
+ *       '200':
+ *         description: Monthly stats
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MonthlyStatsResponse'
+ */
 router.get("/dashboard/:companyId/monthly-status", validate(CompanyIdSchema, "params"), companyController.getMonthlyStatsController);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/yearly-status:
+ *   get:
+ *     summary: Get yearly dashboard stats with comparison for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: day
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Anchor day for the year (ISO date)
+ *     responses:
+ *       '200':
+ *         description: Yearly stats with comparison
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/YearlyStatsResponse'
+ */
 router.get("/dashboard/:companyId/yearly-status", validate(CompanyIdSchema, "params"), companyController.getYearlyStatsController);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/open-jobs:
+ *   get:
+ *     summary: Get open jobs count for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       '200':
+ *         description: Open jobs count
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: integer
+ *                 error:
+ *                   type: null
+ */
 router.get("/dashboard/:companyId/open-jobs", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardOpenJobsCountController);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/applications-summary:
+ *   get:
+ *     summary: Get applications summary grouped by status for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       '200':
+ *         description: Applications summary
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApplicationsSummaryResponse'
+ */
 router.get("/dashboard/:companyId/applications-summary", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardApplicationSummery);
 
+/**
+ * @openapi
+ * /api/company/dashboard/{companyId}/job-updates:
+ *   get:
+ *     summary: Get latest job updates for a company
+ *     tags:
+ *       - Company Dashboard
+ *     parameters:
+ *       - in: path
+ *         name: companyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       '200':
+ *         description: List of recent job updates
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/JobUpdatesResponse'
+ */
 router.get("/dashboard/:companyId/job-updates", validate(CompanyIdSchema, "params"), companyController.getCompanyDashboardJobUpdate);
+
+
+
 
 export default router; 
