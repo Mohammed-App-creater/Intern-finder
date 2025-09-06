@@ -147,6 +147,18 @@ export default function LoginForm() {
             >
               Login
             </Button>
+            <Button
+              type="submit"
+              className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
+            >
+              <Image
+                src={"https://cdn-icons-png.flaticon.com/128/281/281764.png"}
+                alt={"Google Icon"}
+                width={20}
+                height={20}
+              />
+              <div>Continue with Google</div>
+            </Button>
 
             {/* Sign up link */}
             <p className="text-center text-sm text-light mt-4">

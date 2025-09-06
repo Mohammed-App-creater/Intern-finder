@@ -127,7 +127,9 @@ export function SignUpForm() {
                 id="fullName"
                 type="text"
                 placeholder={
-                  userType === "company" ? "GoldenAge Technology PLC" : "Ada Tiger"
+                  userType === "company"
+                    ? "GoldenAge Technology PLC"
+                    : "Ada Tiger"
                 }
                 value={formData.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
@@ -254,9 +256,10 @@ export function SignUpForm() {
             </Button>
             <Button
               type="submit"
-              className="w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
+              className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
             >
-              Continue with Google
+              <Image src={"https://cdn-icons-png.flaticon.com/128/281/281764.png"} alt={"Google Icon"} width={20} height={20}/>
+              <div>Continue with Google</div>
             </Button>
 
             {/* Login link */}
