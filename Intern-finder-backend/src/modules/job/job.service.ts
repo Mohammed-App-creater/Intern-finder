@@ -1,8 +1,14 @@
 import prisma from "../../utils/prisma"; // adjust path
-import { CreateJobInput, JobFilters, jobFiltersSchema } from "./job.validation";
+import { CreateJobInput, JobFilters } from "./job.validation";
 import { Prisma } from "@prisma/client/wasm";
 
 
+
+export const logJobStat = async (jobId: string, companyId: string, action: "VIEW" | "APPLIED") => {
+  return prisma.jobStat.create({
+    data: { jobId, companyId, action },
+  });
+};
 
 export const createJob = async (companyId: string, data: CreateJobInput) => {
   try {
@@ -57,14 +63,14 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
     if (filters.salaryMin !== undefined) {
       salaryConditions.push({
         minSalary: {
-          gte: filters.salaryMin.toString(), // still string in DB
+          gte: filters.salaryMin, // still string in DB
         },
       });
     }
     if (filters.salaryMax !== undefined) {
       salaryConditions.push({
         maxSalary: {
-          lte: filters.salaryMax.toString(),
+          lte: filters.salaryMax,
         },
       });
     }
@@ -79,6 +85,23 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
 
     return await prisma.job.findMany({
       where,
+      select: {
+        id: true,
+        title: true,
+        categories: true,
+        tags: true,
+        location: true,
+        minSalary: true,
+        maxSalary: true,
+        environmentType: true,
+        createdAt: true,
+        company: {
+          select: {
+            id: true,
+            companyName: true,
+          },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
   } catch (error) {
@@ -87,14 +110,37 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
   }
 };
 
-export const getJobsByCompanyId = async (companyId: string) => {
+export const getJobById = async (jobId: string) => {
   try {
-    return prisma.job.findMany({
-      where: { companyId },
+    const job = await prisma.job.update({
+      where: { id: jobId },
+      data: { viewCount: { increment: 1 } },
+      include: {
+        company: { select: { id: true, companyName: true } },
+      },
     });
-  } catch (error) {
-    console.error("Error fetching jobs:", error);
-    throw new Error("Failed to fetch jobs");
+
+    // Fire-and-forget everything
+    (async () => {
+      try { 
+          await logJobStat(jobId, job.companyId, "VIEW");
+      } catch (err) {
+        console.error("Notification failed:", err);
+      }
+    })();
+
+    return job;
+  } catch {
+    throw new Error("Job not found");
   }
+
+};
+
+export const getJobsByCompanyId = async (companyId: string) => {
+  const company = await prisma.company.findUnique({ where: { id: companyId } });
+  if (!company) throw new Error("Company not found");
+
+  const jobs = await prisma.job.findMany({ where: { companyId } });
+  return jobs;
 };
 

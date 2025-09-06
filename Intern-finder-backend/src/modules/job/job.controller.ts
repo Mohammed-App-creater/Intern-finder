@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../utils/prisma";
 import { createJobSchema } from "./job.validation";
-import { createJob, getJobsByCompanyId } from "./job.service"
+import { createJob, getJobsByCompanyId, getAllJobs, getJobById } from "./job.service"
 import { errorResponse, successResponse } from "../../utils/response";
 
 export const createJobController = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,7 +28,7 @@ export const createJobController = async (req: Request, res: Response, next: Nex
 
 export const getAllJobsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const jobs = await prisma.job.findMany();
+        const jobs = await getAllJobs(req.query);
         res.status(200).json(successResponse(jobs, "Jobs fetched"));
     } catch (error) {
         console.error(error);
@@ -50,3 +50,15 @@ export const getJobsByCompanyIdController = async (req: Request, res: Response, 
         next(error);
     }
 };
+
+export const getJobByIdController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { jobId } = req.params;
+        const job = await getJobById(jobId);
+        res.status(200).json(successResponse(job, "Job fetched"));
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
