@@ -12,6 +12,40 @@ import { z } from "zod";
 const router = Router();
 
 
+/**
+ * @openapi
+ * /api/auth/login:
+ *   post:
+ *     summary: Login (talent or company)
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       '200':
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       '400':
+ *         description: Invalid credentials
+ */
+
+
 export const login = async (email: string, password: string) => {
   // Try to find in company
   const company = await prisma.company.findUnique({ where: { email } });
