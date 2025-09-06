@@ -96,8 +96,8 @@ export const loginController = async (req: Request, res: Response, next: NextFun
 }
 
 export const LoginSchema = z.object({
-    email: z.email("Invalid email address").nonempty("Email is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.email("Invalid email address").nonempty("Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 router.post("/login", validate(LoginSchema), loginController);
