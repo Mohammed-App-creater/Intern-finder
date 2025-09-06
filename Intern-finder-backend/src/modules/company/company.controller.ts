@@ -1,4 +1,4 @@
-import { errorResponse, successResponse } from "@/utils/response";
+import { errorResponse, successResponse } from "../../utils/response";
 import { registerStep1, registerStep2, topCompany, loginCompany, getAllCompany, getCompanyById, updateCompany, companyDashboardTopStats, companyDashboardMiddleStats, getWeeklySummary, getMonthlySummary, getYearlySummaryWithComparison, companyDashboardOpenJobs, companyDashboardApplicationSummary, getLatestJobsUpdate } from "./company.service";
 import { NextFunction, Request, Response } from "express";
 
