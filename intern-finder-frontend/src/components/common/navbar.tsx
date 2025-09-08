@@ -5,8 +5,8 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { Dot, MessageSquare } from "lucide-react";
-import { NotificationPopup } from "../layout/notification";
+import { NotificationPopup } from "../layout/notification-popup";
+import { MessagesPopup } from "../layout/messages-popup";
 
 export default function Navbar() {
   const isActive = (path: string) => {
@@ -102,10 +102,7 @@ export default function Navbar() {
         </div>
         <div className="flex items-center gap-8">
           <NotificationPopup />
-          <div className="relative cursor-pointer hover:scale-120">
-            <MessageSquare className="text-light hover:text-white" />
-            <Dot className="absolute top-[-90%] left-[-10%] text-red-500 w-12 h-12" />
-          </div>
+          <MessagesPopup />
         </div>
       </div>
     </header>
