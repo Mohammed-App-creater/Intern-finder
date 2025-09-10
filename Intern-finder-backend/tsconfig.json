@@ -8,6 +8,8 @@
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": "src",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["express", "node"],
     "paths": {
       "@/*": ["*"]
     }

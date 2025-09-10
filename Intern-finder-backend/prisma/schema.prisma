@@ -25,6 +25,11 @@ enum JobStatus {
   closed
 }
 
+enum StatAction {
+  VIEW
+  APPLIED
+}
+
 enum SalaryType {
   free
   paid
@@ -32,9 +37,19 @@ enum SalaryType {
 
 enum ApplicationStatus {
   pending
+  shortlisted
   interview
+  offered
   accepted
   rejected
+}
+
+enum NotificationType {
+  NEW_JOB // worker gets notified a new job is posted
+  JOB_RESPONSE // worker gets notified about application response
+  COMPANY_REQUEST // worker invited by a company
+  ALERT // system / admin alerts
+  NEW_CANDIDATE // company gets notified a worker applied
 }
 
 //// ===== MODELS ===== ////
@@ -68,8 +83,9 @@ model Company {
   jobs             Job[] // relation: one company -> many jobs
   dashboard        CompanyDashboardStats?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Notification Notification[]
 }
 
 model Talent {
@@ -94,6 +110,7 @@ model Talent {
   skills             String[] // array of skills
   gender             Gender?
   profileImageUrl    String?
+  backgroundImageUrl String?
   rating             Float?
   address            String?
   yearsExperience    Int?
@@ -103,9 +120,26 @@ model Talent {
   applications       JobApplication[] // relation: one talent -> many applications
   dashboard          TalentDashboardStats?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Notification Notification[]
+  Settings     Settings?
 }
+
+model OAuthAccount {
+  id           String   @id @default(uuid())
+  provider     String   // e.g. "google", "github"
+  providerId   String   // provider's unique id for the user
+  providerData Json?    // raw profile payload if you like
+  email        String?  // provider email (for quick lookup)
+  talentId     String? 
+  companyId    String?
+  createdAt    DateTime @default(now())
+
+  @@unique([provider, providerId])
+  @@index([email])
+}
+
 
 model Job {
   id                 String           @id @default(uuid())
@@ -114,8 +148,8 @@ model Job {
   environmentType    String
   categories         String[]
   salaryType         SalaryType
-  minSalary          String?
-  maxSalary          String?
+  minSalary          Int?
+  maxSalary          Int?
   responsibilities   String?
   description        String
   professionalSkills String[]
@@ -126,6 +160,7 @@ model Job {
   status             JobStatus        @default(live)
   capacity           Int?
   requiredSkills     String[]
+  viewCount          Int              @default(0) 
   applications       JobApplication[] // one job -> many applications
 
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -135,15 +170,37 @@ model Job {
 }
 
 model JobApplication {
-  id        String            @id @default(uuid())
-  jobId     String
-  talentId  String
-  status    ApplicationStatus @default(pending)
-  appliedAt DateTime          @default(now())
+  id             String            @id @default(uuid())
+  jobId          String
+  talentId       String
+  status         ApplicationStatus @default(pending)
+  appliedAt      DateTime          @default(now())
+  additionalInfo Json?
+  resumeUrl      String?
 
   job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
+
+model JobStat {
+  id        String   @id @default(uuid())
+  jobId     String
+  companyId String
+  action    StatAction
+  createdAt DateTime @default(now())
+}
+
+model DailySummary {
+  id        String   @id @default(uuid())
+  companyId String
+  day       DateTime
+  views     Int
+  applied   Int
+  createdAt DateTime @default(now())
+
+  @@unique([companyId, day])   // ✅ composite unique index
+}
+
 
 model CompanyDashboardStats {
   id                String @id @default(uuid())
@@ -168,4 +225,30 @@ model TalentDashboardStats {
   upcomingInterview Json?
 
   talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  createdAt DateTime         @default(now())
+  isRead    Boolean          @default(false)
+
+  talentId String?
+  talent   Talent? @relation(fields: [talentId], references: [id], onDelete: Cascade)
+
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id             String  @id @default(uuid())
+  application    Boolean @default(true)
+  job            Boolean @default(true)
+  recommendation Boolean @default(true)
+  alert          Boolean @default(true)
+  talentId       String  @unique
+  talent         Talent  @relation(fields: [talentId], references: [id], onDelete: Cascade)
 }
