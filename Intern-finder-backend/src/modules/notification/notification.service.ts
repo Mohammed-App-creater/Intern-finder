@@ -77,4 +77,12 @@ export class NotificationService {
       orderBy: { createdAt: "desc" },
     });
   }
+
+  static async isRead(notificationId: string) {
+    const notification = await prisma.notification.update({
+      where: { id: notificationId },
+      data: { isRead: true },
+    });
+    return notification;
+  }
 }

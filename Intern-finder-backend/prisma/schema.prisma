@@ -126,6 +126,21 @@ model Talent {
   Settings     Settings?
 }
 
+model OAuthAccount {
+  id           String   @id @default(uuid())
+  provider     String   // e.g. "google", "github"
+  providerId   String   // provider's unique id for the user
+  providerData Json?    // raw profile payload if you like
+  email        String?  // provider email (for quick lookup)
+  talentId     String? 
+  companyId    String?
+  createdAt    DateTime @default(now())
+
+  @@unique([provider, providerId])
+  @@index([email])
+}
+
+
 model Job {
   id                 String           @id @default(uuid())
   companyId          String
