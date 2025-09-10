@@ -102,7 +102,7 @@ export function NotificationPopup() {
         );
       case "shortlisted":
         return (
-          <Badge className="border-primary/50 text-primary/50 text-xs px-4 py-1 rounded-2xl">
+          <Badge className="text-primary border-primary text-xs px-4 py-1 rounded-2xl">
             Shortlisted
           </Badge>
         );
@@ -123,10 +123,10 @@ export function NotificationPopup() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-105 p-0 bg-white border border-gray-200 shadow-lg"
+        className="w-105 p-0 bg-white border shadow-lg"
         sideOffset={8}
       >
-        <div className="p-4 border-b border-gray-100">
+        <div className="p-4 border-b">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-dark">Notifications</h3>
             <Button
@@ -144,7 +144,7 @@ export function NotificationPopup() {
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className="p-4 border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
+              className="p-4 border-b hover:bg-secondary transition-colors cursor-pointer"
             >
               <div className="flex gap-3">
                 <Avatar className="h-10 w-10 flex-shrink-0">
@@ -152,7 +152,7 @@ export function NotificationPopup() {
                     src={notification.user.avatar || "/placeholder.svg"}
                     alt={notification.user.name}
                   />
-                  <AvatarFallback className="bg-gray-200 text-dark text-sm">
+                  <AvatarFallback className="text-dark text-sm">
                     {notification.user.initials}
                   </AvatarFallback>
                 </Avatar>
@@ -172,7 +172,7 @@ export function NotificationPopup() {
                   </p>
 
                   {notification.details && (
-                    <div className="bg-gray-50 p-3 mt-2 border-l-6 border-purple-500">
+                    <div className="p-3 mt-2 border-l-6 border-purple-500">
                       <h4 className="font-medium text-dark text-sm mb-2">
                         Interview - Jake Gyll
                       </h4>
@@ -203,7 +203,7 @@ export function NotificationPopup() {
                         </div>
 
                         <div className="flex items-center gap-3 text-sm">
-                          <div className="h-8 w-8 bg-purple-100 rounded-full flex items-center justify-center">
+                          <div className="h-8 w-8 bg-secondary rounded-full flex items-center justify-center">
                             <User className="h-3 w-3 text-purple-600" />
                           </div>
                           <div className="flex flex-col gap-1">

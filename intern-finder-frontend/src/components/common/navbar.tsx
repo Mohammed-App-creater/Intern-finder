@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { NotificationPopup } from "../layout/notification-popup";
 import { MessagesPopup } from "../layout/messages-popup";
+import { ThemeToggle } from "../layout/theme-toggle";
 
 export default function Navbar() {
   const isActive = (path: string) => {
@@ -24,6 +25,7 @@ export default function Navbar() {
   const handleSignupClick = () => {
     router.push("/signup");
   };
+
 
   return (
     <header className="flex items-center">
@@ -48,7 +50,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             href="/dashboard"
-            className={`hover:text-white transition-colors ${isActive(
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
               "/dashboard"
             )}`}
           >
@@ -56,13 +58,13 @@ export default function Navbar() {
           </Link>
           <Link
             href="/"
-            className={`hover:text-white transition-colors ${isActive("/")}`}
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive("/")}`}
           >
             Home
           </Link>
           <Link
             href="/jobs"
-            className={`hover:text-white transition-colors ${isActive(
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
               "/jobs"
             )}`}
           >
@@ -70,7 +72,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/about"
-            className={`hover:text-white transition-colors ${isActive(
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
               "/about"
             )}`}
           >
@@ -78,7 +80,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/contact"
-            className={`hover:text-white transition-colors ${isActive(
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
               "/contact"
             )}`}
           >
@@ -89,7 +91,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             href={"/login"}
-            className="text-[var(--text-light)] hover:text-white cursor-pointer"
+            className="text-[var(--text-light)] hover:text-[var(--text-white)] cursor-pointer"
           >
             Login
           </Link>
@@ -103,6 +105,7 @@ export default function Navbar() {
         <div className="flex items-center gap-8">
           <NotificationPopup />
           <MessagesPopup />
+          <ThemeToggle />
         </div>
       </div>
     </header>

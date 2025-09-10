@@ -110,10 +110,10 @@ export function MessagesPopup() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-96 p-0 bg-white border border-gray-200 shadow-lg"
+        className="w-96 p-0 bg-white border shadow-lg"
         sideOffset={8}
       >
-        <div className="p-4 border-b border-gray-100">
+        <div className="p-4 border-b">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-dark">Messages</h3>
             <Button
@@ -131,8 +131,8 @@ export function MessagesPopup() {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`p-4 border-b border-gray-50 hover:bg-gray-50/50 transition-colors cursor-pointer ${
-                message.status === "unread" ? "bg-blue-50/30" : ""
+              className={`p-4 border-b transition-colors cursor-pointer ${
+                message.status === "unread" ? "bg-secondary" : ""
               }`}
               onClick={() => markAsRead(message.id)}
             >
@@ -143,7 +143,7 @@ export function MessagesPopup() {
                       src={message.sender.avatar || "/placeholder.svg"}
                       alt={message.sender.name}
                     />
-                    <AvatarFallback className="bg-gray-200 text-dark text-sm">
+                    <AvatarFallback className="text-dark text-sm">
                       {message.sender.initials}
                     </AvatarFallback>
                   </Avatar>
@@ -154,7 +154,7 @@ export function MessagesPopup() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 mb-1">
-                    <div className="flex-1">
+                    <div className="flex-1 flex flex-col gap-1">
                       <div className="flex items-center justify-between">
                         <p
                           className={`text-sm font-medium ${
@@ -165,7 +165,7 @@ export function MessagesPopup() {
                         >
                           {message.sender.name}
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-5">
                           <p className="text-xs text-light">
                             {message.timestamp}
                           </p>
@@ -206,7 +206,7 @@ export function MessagesPopup() {
           ))}
         </div>
 
-        <div className="p-3 border-t border-gray-100">
+        <div className="p-3 border-t 0">
           <Button
             variant="none"
             className="w-full text-primary hover:text-primary/80 text-sm"

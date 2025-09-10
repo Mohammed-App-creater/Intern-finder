@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export function ProfileHeader() {
   return (
-    <div className="relative rounded-sm border-1">
+    <div className="relative rounded-sm border-1 bg-white">
       <Image
         src={"/images/Header_Photo.png"}
         alt={"Header Photo"}

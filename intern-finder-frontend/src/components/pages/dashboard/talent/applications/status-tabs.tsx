@@ -12,7 +12,7 @@ const statusData = [
 export function StatusTabs() {
   return (
     <div className="mb-6">
-      <div className="flex gap-1 border-b border-gray-200">
+      <div className="flex gap-1 border-b">
         {statusData.map((status) => (
           <Button
             key={status.label}

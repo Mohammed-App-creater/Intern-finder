@@ -46,9 +46,7 @@ export function Sidebar({ className }: SidebarProps) {
       // For dashboard, check if we're exactly at /dashboard or /dashboard/ with nothing after
       return (
         pathname === "/talent/dashboard" ||
-        pathname === "/client/dashboard" ||
-        pathname === "/talent/dashboard/" ||
-        pathname === "/client/dashboard/"
+        pathname === "/client/dashboard" 
       );
     }
 
@@ -61,7 +59,7 @@ export function Sidebar({ className }: SidebarProps) {
       icon: LayoutDashboard,
       label: "Dashboard",
       href: "",
-      active: isActive("", true), // Special case for dashboard
+      active: isActive("", true), 
     },
     {
       icon: MessageSquare,
@@ -99,7 +97,7 @@ export function Sidebar({ className }: SidebarProps) {
     {
       icon: HelpCircle,
       label: "Support",
-      href: "/support",
+      href: "/#",
       active: isActive("/support"),
     },
   ];

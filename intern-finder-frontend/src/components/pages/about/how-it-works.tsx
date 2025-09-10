@@ -37,7 +37,7 @@ export function HowItWorks() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, index) => (
-            <div key={index} className="text-center rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300 bg-text-white">
+            <div key={index} className="text-center rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300 bg-white">
               <div className="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
                 <step.icon className="w-8 h-8 text-teal-600" />
               </div>
