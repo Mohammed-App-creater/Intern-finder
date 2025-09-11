@@ -97,7 +97,7 @@ export function ApplicationsTable() {
           </thead>
           <tbody className="divide-y">
             {applications.map((application) => (
-              <tr key={application.id} className="hover:bg-secondary">
+              <tr key={application.id} className="hover:bg-secondary border-none">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-light">
                   {application.id}
                 </td>

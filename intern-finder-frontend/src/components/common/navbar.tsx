@@ -49,7 +49,7 @@ export default function Navbar() {
 
         <nav className="hidden md:flex items-center gap-8">
           <Link
-            href="/dashboard"
+            href="client/dashboard"
             className={`hover:text-[var(--text-white)] transition-colors ${isActive(
               "/dashboard"
             )}`}

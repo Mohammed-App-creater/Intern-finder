@@ -45,8 +45,7 @@ export function Sidebar({ className }: SidebarProps) {
     if (isDashboard) {
       // For dashboard, check if we're exactly at /dashboard or /dashboard/ with nothing after
       return (
-        pathname === "/talent/dashboard" ||
-        pathname === "/client/dashboard" 
+        pathname === "/talent/dashboard" || pathname === "/client/dashboard"
       );
     }
 
@@ -59,31 +58,36 @@ export function Sidebar({ className }: SidebarProps) {
       icon: LayoutDashboard,
       label: "Dashboard",
       href: "",
-      active: isActive("", true), 
+      active: isActive("", true),
+      isDashboard: true,
     },
     {
       icon: MessageSquare,
       label: "Messages",
       href: "/messages",
       active: isActive("/messages"),
+      isDashboard: false,
     },
     {
       icon: FileText,
       label: "My Applications",
       href: "/applications",
       active: isActive("/applications"),
+      isDashboard: false,
     },
     {
       icon: Search,
       label: "Company",
       href: "/company",
       active: isActive("/company"),
+      isDashboard: false,
     },
     {
       icon: User,
       label: "My Profile",
       href: "/profile",
       active: isActive("/profile"),
+      isDashboard: false,
     },
   ];
 
@@ -113,13 +117,13 @@ export function Sidebar({ className }: SidebarProps) {
         <ul className="space-y-1 mb-4">
           {navigationItems.map((item) => (
             <li key={item.label}>
-              <div className="flex h-full w-full">
+              <div className="relative flex h-full w-full">
                 {/* Vertical Line */}
                 <div
                   className={cn(
                     "hidden",
                     item.active
-                      ? "flex items-center transition-colors bg-[#30968930]"
+                      ? "absolute top-2 flex items-center transition-colors"
                       : ""
                   )}
                 >
@@ -133,7 +137,9 @@ export function Sidebar({ className }: SidebarProps) {
                   className={cn(
                     "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
                     item.active
-                      ? "bg-[#30968930] text-primary font-medium px-4"
+                      ? item.isDashboard
+                        ? "bg-[#30968930] text-primary font-medium px-4 rounded-t-lg"
+                        : "bg-[#30968930] text-primary font-medium px-4"
                       : "text-dark px-4 hover:bg-primary/10"
                   )}
                 >
@@ -159,23 +165,39 @@ export function Sidebar({ className }: SidebarProps) {
           <ul className="space-y-1">
             {settingsItems.map((item) => (
               <li key={item.label}>
-                <button
-                  onClick={() => handleNavigation(item.href)}
-                  className={cn(
-                    "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
-                    item.active
-                      ? "bg-[#30968930] text-primary font-medium px-4"
-                      : "text-dark px-4 hover:bg-primary/10"
-                  )}
-                >
-                  <item.icon
+                <div className="relative flex h-full w-full">
+                  {/* Vertical Line for Settings Items */}
+                  <div
                     className={cn(
-                      "w-5 h-5 text-dark",
-                      item.active ? "text-primary" : ""
+                      "hidden",
+                      item.active
+                        ? "absolute top-2 flex items-center transition-colors"
+                        : ""
                     )}
-                  />
-                  {item.label}
-                </button>
+                  >
+                    <Image
+                      src={SidebarRectangle}
+                      alt={"Sidebar Rectangle Icon"}
+                    />
+                  </div>
+                  <button
+                    onClick={() => handleNavigation(item.href)}
+                    className={cn(
+                      "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
+                      item.active
+                        ? "bg-[#30968930] text-primary font-medium px-4"
+                        : "text-dark px-4 hover:bg-primary/10"
+                    )}
+                  >
+                    <item.icon
+                      className={cn(
+                        "w-5 h-5 text-dark",
+                        item.active ? "text-primary" : ""
+                      )}
+                    />
+                    {item.label}
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
