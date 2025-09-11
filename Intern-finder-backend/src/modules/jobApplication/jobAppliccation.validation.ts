@@ -2,9 +2,9 @@ import { z } from "zod";
 
 // Body: create application
 export const createApplicationSchema = z.object({
-    jobId: z.string().uuid(),
+    jobId: z.uuid(),
     additionalInfo: z.any().optional(),
-    resumeUrl: z.string().url().optional(),
+    resumeUrl: z.url().optional(),
 });
 
 // Params: application id

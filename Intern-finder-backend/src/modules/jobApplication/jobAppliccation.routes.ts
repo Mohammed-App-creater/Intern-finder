@@ -58,12 +58,7 @@ const router = Router();
  *         description: Validation or business error
  */
 // Talent creates an application
-router.post(
-    "/",
-    authenticate,
-    validate(createApplicationSchema, "body"),
-    createApplication
-);
+router.post("/", authenticate, validate(createApplicationSchema, "body"), createApplication  );
 
 /**
  * @openapi

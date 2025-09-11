@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+import morgan from "morgan";
 import { setupSwagger } from "./config/swagger";
 import errorHandler from './middlewares/errorHandler';
 import storageRoutes from "./modules/storage/storage.routes";
@@ -18,6 +19,7 @@ const app = express();
 
 
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 setupSwagger(app);

@@ -8,17 +8,17 @@ import ENV from "../../config/env"
 export const login = async (email: string, password: string) => {
   // Try to find in company
   const company = await prisma.company.findUnique({ where: { email } });
-  let role: "company" | "talent" | null = null;
+  let role: "TALENT" | "COMPANY" | "ADMIN" | null = null;
   let user: any = null;
 
   if (company) {
-    role = "company";
+    role = "COMPANY";
     user = company;
   } else {
     // If not found in company, check talent
     const talent = await prisma.talent.findUnique({ where: { email } });
     if (talent) {
-      role = "talent";
+      role = "TALENT";
       user = talent;
     }
   }
@@ -37,8 +37,6 @@ export const login = async (email: string, password: string) => {
 
   return { token, user: safe, role };
 };
-
-
 
 // Google OAuth client
 export const googleClient = new AuthorizationCode({

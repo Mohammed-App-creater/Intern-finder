@@ -309,7 +309,8 @@ export const registerStep2 = async (companyId: string, data: RegisterStep2DTO) =
       password: true,
     },
   });
-  return company;
+  const token = generateToken(company.id);
+  return {token, company };
 };
 
 export const topCompany = async () => {
