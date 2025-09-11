@@ -44,6 +44,22 @@ enum ApplicationStatus {
   rejected
 }
 
+enum InterviewStatus {
+  SCHEDULED
+  In_REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum InterviewType {
+  PHONE
+  WRITTEN
+  SKILL
+  FINAL
+  ONSITE
+  VIDEO
+}
+
 enum NotificationType {
   NEW_JOB // worker gets notified a new job is posted
   JOB_RESPONSE // worker gets notified about application response
@@ -83,9 +99,30 @@ model Company {
   jobs             Job[] // relation: one company -> many jobs
   dashboard        CompanyDashboardStats?
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Notification Notification[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Notification  Notification[]
+  CompanyMember CompanyMember[]
+  Interview     Interview[]
+}
+
+/// new: company team members (company can add talents as team members)
+model CompanyMember {
+  id        String  @id @default(uuid())
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  talentId String
+  talent   Talent @relation(fields: [talentId], references: [id])
+
+  role    String? // "Recruiter", "Hiring Manager", "Interviewer", etc.
+  isAdmin Boolean @default(false)
+  active  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([companyId, talentId])
 }
 
 model Talent {
@@ -120,26 +157,29 @@ model Talent {
   applications       JobApplication[] // relation: one talent -> many applications
   dashboard          TalentDashboardStats?
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Notification Notification[]
-  Settings     Settings?
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  Notification          Notification[]
+  Settings              Settings?
+  CompanyMember         CompanyMember[]
+  InterviewerAssignment InterviewerAssignment[]
+  InterviewFeedback     InterviewFeedback[]
+  InterviewNote         InterviewNote[]
 }
 
 model OAuthAccount {
   id           String   @id @default(uuid())
-  provider     String   // e.g. "google", "github"
-  providerId   String   // provider's unique id for the user
-  providerData Json?    // raw profile payload if you like
-  email        String?  // provider email (for quick lookup)
-  talentId     String? 
+  provider     String // e.g. "google", "github"
+  providerId   String // provider's unique id for the user
+  providerData Json? // raw profile payload if you like
+  email        String? // provider email (for quick lookup)
+  talentId     String?
   companyId    String?
   createdAt    DateTime @default(now())
 
   @@unique([provider, providerId])
   @@index([email])
 }
-
 
 model Job {
   id                 String           @id @default(uuid())
@@ -160,7 +200,7 @@ model Job {
   status             JobStatus        @default(live)
   capacity           Int?
   requiredSkills     String[]
-  viewCount          Int              @default(0) 
+  viewCount          Int              @default(0)
   applications       JobApplication[] // one job -> many applications
 
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -178,16 +218,103 @@ model JobApplication {
   additionalInfo Json?
   resumeUrl      String?
 
-  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  talent Talent @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  job       Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  talent    Talent      @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  Interview Interview[]
 }
 
 model JobStat {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   jobId     String
   companyId String
   action    StatAction
+  createdAt DateTime   @default(now())
+}
+
+// Interview event created by a company (companyId) for an application (candidate)
+model Interview {
+  id        String  @id @default(uuid())
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  applicationId String // link to job application (candidate)
+  // If your application model is JobApplication, update the relation accordingly:
+  application   JobApplication @relation(fields: [applicationId], references: [id])
+
+  type   InterviewType
+  status InterviewStatus @default(In_REVIEW)
+
+  startTime               DateTime
+  endTime                 DateTime
+  timezone                String? // IANA tz
+  locationType            String? // ROOM | VIRTUAL | OFFICE
+  locationDetails         String? // room name or meeting link
+  externalCalendarEventId String?
+
+  createdByCompanyId String // company who created (redundant but explicit)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // relations
+  interviewers InterviewerAssignment[]
+  feedbacks    InterviewFeedback[]
+  notes        InterviewNote[]
+
+  @@index([companyId])
+  @@index([applicationId])
+  @@index([startTime, endTime])
+}
+
+model InterviewerAssignment {
+  id          String    @id @default(uuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id])
+
+  // the assigned person is a Talent (a company member)
+  talentId String
+  talent   Talent @relation(fields: [talentId], references: [id])
+
+  role      String? // e.g. "Interviewer", "Panel Lead"
   createdAt DateTime @default(now())
+
+  @@unique([interviewId, talentId])
+  @@index([talentId])
+}
+
+model InterviewFeedback {
+  id          String    @id @default(uuid())
+  interviewId String
+  interview   Interview @relation(fields: [interviewId], references: [id])
+
+  // interviewer as Talent
+  interviewerId String
+  interviewer   Talent @relation(fields: [interviewerId], references: [id])
+
+  rating         Int?
+  recommendation String? // "Proceed", "Reject", etc.
+  comments       String?
+  createdAt      DateTime @default(now())
+}
+
+model InterviewNote {
+  id          String     @id @default(uuid())
+  interviewId String? // attach to specific interview
+  interview   Interview? @relation(fields: [interviewId], references: [id])
+
+  applicationId  String? // attach to application/stage (if needed)
+  // author (company team member = Talent)
+  authorTalentId String?
+  authorTalent   Talent? @relation(fields: [authorTalentId], references: [id])
+
+  content   String
+  isPrivate Boolean         @default(true) // internal by default
+  parentId  String?
+  parent    InterviewNote?  @relation("NoteReplies", fields: [parentId], references: [id])
+  replies   InterviewNote[] @relation("NoteReplies")
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([authorTalentId])
 }
 
 model DailySummary {
@@ -198,9 +325,8 @@ model DailySummary {
   applied   Int
   createdAt DateTime @default(now())
 
-  @@unique([companyId, day])   // ✅ composite unique index
+  @@unique([companyId, day])
 }
-
 
 model CompanyDashboardStats {
   id                String @id @default(uuid())
