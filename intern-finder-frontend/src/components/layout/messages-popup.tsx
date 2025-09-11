@@ -131,9 +131,7 @@ export function MessagesPopup() {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`p-4 border-b transition-colors cursor-pointer ${
-                message.status === "unread" ? "bg-secondary" : ""
-              }`}
+              className={`p-4 border-b transition-colors cursor-pointer`}
               onClick={() => markAsRead(message.id)}
             >
               <div className="flex gap-3">
