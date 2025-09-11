@@ -37,6 +37,143 @@ const options: swaggerJSDoc.Options = {
         },
       },
       schemas: {
+        ApplicationsListResponse: {
+          type: "object",
+          properties: {
+            total: { type: "integer" },
+            page: { type: "integer" },
+            limit: { type: "integer" },
+            items: {
+              type: "array",
+              items: { $ref: "#/components/schemas/JobApplicationListItem" },
+            },
+          },
+        },
+        JobApplicationListItem: {
+          type: "object",
+          properties: {
+            applicationId: { type: "string", format: "uuid" },
+            appliedAt: { type: "string", format: "date-time" },
+            status: { type: "string", enum: ["pending", "shortlisted", "interview", "offered", "accepted", "rejected"] },
+            talent: { $ref: "#/components/schemas/Talent" },
+            job: { type: "object", properties: { id: { type: "string", format: "uuid" }, title: { type: "string" } } },
+          },
+        },
+        ApplicationDetails: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            job: { $ref: "#/components/schemas/Job" },
+            talent: { $ref: "#/components/schemas/Talent" },
+            status: { type: "string", enum: ["pending", "shortlisted", "interview", "offered", "accepted", "rejected"] },
+            appliedAt: { type: "string", format: "date-time" },
+            Interview: { type: "array", items: { type: "object", properties: { id: { type: "string" }, type: { type: "string" }, status: { type: "string" }, startTime: { type: "string", format: "date-time" } } } },
+            feedbackScore: { type: ["number", "null"], nullable: true },
+            _count: { type: "object", properties: { InterviewNote: { type: "integer" } } },
+          },
+        },
+        UpdateApplicationStageRequest: {
+          type: "object",
+          properties: {
+            stageKey: { type: "string", enum: ["pending", "shortlisted", "interview", "offered", "accepted", "rejected"] },
+            reason: { type: "string" },
+            notifyCandidate: { type: "boolean" },
+          },
+          required: ["stageKey"],
+        },
+        AddApplicationNoteRequest: {
+          type: "object",
+          properties: {
+            content: { type: "string" },
+            isPrivate: { type: "boolean" },
+            parentId: { type: "string", format: "uuid" },
+          },
+          required: ["content"],
+        },
+        InterviewNote: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            applicationId: { type: "string", format: "uuid" },
+            authorTalentId: { type: "string", format: "uuid", nullable: true },
+            content: { type: "string" },
+            isPrivate: { type: "boolean" },
+            parentId: { type: "string", format: "uuid", nullable: true },
+            replies: { type: "array", items: { $ref: "#/components/schemas/InterviewNote" } },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        NotesListResponse: {
+          type: "object",
+          properties: {
+            notes: { type: "array", items: { $ref: "#/components/schemas/InterviewNote" } },
+          },
+        },
+        Interview: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            companyId: { type: "string", format: "uuid" },
+            applicationId: { type: "string", format: "uuid" },
+            type: { type: "string", enum: ["PHONE", "WRITTEN", "SKILL", "FINAL", "ONSITE", "VIDEO"] },
+            status: { type: "string", enum: ["SCHEDULED", "In_REVIEW", "COMPLETED", "CANCELLED"] },
+            startTime: { type: "string", format: "date-time" },
+            endTime: { type: "string", format: "date-time" },
+            timezone: { type: "string" },
+            locationType: { type: "string" },
+            locationDetails: { type: "string" },
+            externalCalendarEventId: { type: "string" },
+            createdByCompanyId: { type: "string", format: "uuid" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        InterviewCreateRequest: {
+          type: "object",
+          properties: {
+            applicationId: { type: "string", format: "uuid" },
+            type: { type: "string", enum: ["PHONE", "WRITTEN", "SKILL", "FINAL", "ONSITE", "VIDEO"] },
+            startTime: { type: "string", format: "date-time" },
+            endTime: { type: "string", format: "date-time" },
+            timezone: { type: "string" },
+            locationType: { type: "string" },
+            locationDetails: { type: "string" },
+            interviewerTalentIds: { type: "array", items: { type: "string", format: "uuid" } },
+          },
+          required: ["applicationId", "type", "startTime", "endTime"],
+        },
+        InterviewerAssignment: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            interviewId: { type: "string", format: "uuid" },
+            talentId: { type: "string", format: "uuid" },
+            role: { type: "string" },
+            createdAt: { type: "string", format: "date-time" },
+          },
+        },
+        InterviewFeedback: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            interviewId: { type: "string", format: "uuid" },
+            interviewerId: { type: "string", format: "uuid" },
+            rating: { type: "integer" },
+            recommendation: { type: "string" },
+            comments: { type: "string" },
+            createdAt: { type: "string", format: "date-time" },
+          },
+        },
+        InterviewListResponse: {
+          type: "object",
+          properties: {
+            items: { type: "array", items: { $ref: "#/components/schemas/Interview" } },
+            total: { type: "integer" },
+            page: { type: "integer" },
+            limit: { type: "integer" },
+          },
+        },
         FileResponse: {
           type: "object",
           properties: {
@@ -104,7 +241,7 @@ const options: swaggerJSDoc.Options = {
             talentId: { type: "string", format: "uuid" },
             status: {
               type: "string",
-              enum: ["pending", "interview", "accepted", "rejected"],
+              enum: ["pending", "shortlisted", "interview", "offered", "accepted", "rejected"],
             },
             appliedAt: { type: "string", format: "date-time" },
             additionalInfo: {},

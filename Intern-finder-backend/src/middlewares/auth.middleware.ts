@@ -17,7 +17,7 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   try {
     const decoded = decodeToken(token);
     if (decoded && typeof decoded === 'object' && 'id' in decoded && typeof (decoded as any).id === 'string') {
-      req.user = { id: (decoded as any).id, role: (decoded as any).role, email: (decoded as any).email }; // attach user info to request
+      req.user = decoded; // attach user info to request
       next();
     } else {
       return res.status(401).json({ message: "Unauthorized: Invalid token payload" });

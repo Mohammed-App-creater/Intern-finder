@@ -1,6 +1,6 @@
 import prisma from "../../utils/prisma"; // adjust path
 import { NotificationService } from "../notification/notification.service";
-import { NotificationType, ApplicationStatus } from "@prisma/client";
+import { NotificationType, ApplicationStatus, Prisma } from "@prisma/client";
 
 export class JobApplicationService {
     static async createApplication(talentId: string, jobId: string, additionalInfo?: any, resumeUrl?: string) {
@@ -36,20 +36,6 @@ export class JobApplicationService {
             where: { talentId },
             orderBy: { appliedAt: "desc" },
             include: { job: true },
-        });
-    }
-
-    static async listJobApplicationsForCompany(companyId: string, jobId: string) {
-        // Ensure the job belongs to the company
-        const job = await prisma.job.findFirst({ where: { id: jobId, companyId }, select: { id: true } });
-        if (!job) {
-            throw new Error("Job not found or not owned by company");
-        }
-
-        return prisma.jobApplication.findMany({
-            where: { jobId },
-            orderBy: { appliedAt: "desc" },
-            include: { talent: true },
         });
     }
 
@@ -98,6 +84,100 @@ export class JobApplicationService {
         }
 
         return updated;
+    }
+
+    static async listJobApplicationsForCompany(
+        companyId: string,
+        params: {
+            jobId?: string;
+            stage?: string;
+            q?: string;
+            page?: number;
+            limit?: number;
+            sortBy?: "appliedAt" | "stage";
+            order?: "asc" | "desc";
+        }
+    ) {
+        const { jobId, stage, q, page = 1, limit = 20, sortBy = "appliedAt", order = "desc" } = params;
+
+        // If jobId provided, ensure the job belongs to company
+        if (jobId) {
+            const job = await prisma.job.findFirst({ where: { id: jobId, companyId }, select: { id: true } });
+            if (!job) throw new Error("Job not found or not owned by company");
+        }
+
+        const where: Prisma.JobApplicationWhereInput = {
+            ...(jobId ? { jobId } : { job: { companyId } }), // if jobId set filter by jobId, else all jobs for company
+            ...(stage ? { stage } : {}),
+            ...(q
+                ? {
+                    OR: [
+                        { talent: { fullName: { contains: q, mode: "insensitive" } } },
+                        { talent: { email: { contains: q, mode: "insensitive" } } },
+                    ],
+                }
+                : {}),
+        };
+
+        const total = await prisma.jobApplication.count({ where });
+
+        const items = await prisma.jobApplication.findMany({
+            where,
+            orderBy: { [sortBy]: order },
+            skip: (page - 1) * limit,
+            take: limit,
+            select: {
+                id: true,
+                appliedAt: true,
+                // talent brief info (left panel list requirements)
+                talent: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        profileImageUrl: true,
+                        rating: true,
+                    },
+                },
+                // job role/title
+                job: {
+                    select: {
+                        id: true,
+                        title: true,
+                        // if you have `role` field, include it here instead or in addition
+                    },
+                },
+
+                // interview 
+
+                Interview: {
+                    select: {
+                        status: true,
+                    }
+                }
+            },
+        });
+
+        return { total, page, limit, items };
+    }
+
+
+    // add a note to application (stage-level note)
+    static async addApplicationNote(companyId: string, applicationId: string, authorTalentId: string, payload: { content: string; isPrivate?: boolean; parentId?: string }) {
+        // ensure application belongs to company
+        const app = await prisma.jobApplication.findFirst({ where: { id: applicationId, job: { companyId } }, select: { id: true } });
+        if (!app) throw new Error("Application not found or not owned by company");
+
+        const note = await prisma.interviewNote.create({
+            data: {
+                applicationId,
+                authorTalentId,
+                content: payload.content,
+                isPrivate: payload.isPrivate ?? true,
+                parentId: payload.parentId ?? null,
+            },
+        });
+
+        return note;
     }
 }
 

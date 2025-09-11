@@ -11,6 +11,7 @@ import analyticsRoutes from "./modules/analytics/analytics.routes";
 import jobApplicationRoutes from "./modules/jobApplication/jobAppliccation.routes";
 import notificationRoutes from "./modules/notification/notification.routes";
 import authRoutes from "./modules/auth/auth.route";
+import applicationsRoutes from "./modules/applications/applications.routes";
 
 
 
@@ -36,6 +37,7 @@ app.use("/api/job", jobRoutes);
 app.use("/api/job-application", jobApplicationRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/applications", applicationsRoutes);
 
 // Health check endpoint
 app.get("/health", (req: Request, res: Response) => {

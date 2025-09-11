@@ -3,6 +3,8 @@ import prisma from "../../utils/prisma";
 import { verifyPassword } from "../../utils/hash";
 import { generateToken } from "../../utils/jwt";
 import ENV from "../../config/env"
+import { JwtUserPayload } from "@/types/User";
+
 
 
 export const login = async (email: string, password: string) => {
@@ -32,11 +34,41 @@ export const login = async (email: string, password: string) => {
     throw new Error("Invalid email or password");
   }
 
-  const token = generateToken(user.id); // include role in token
+  // build JWT payload
+  const payload: JwtUserPayload = {
+    id: user.id,
+    email: user.email,
+    role,
+    username: user.username,
+
+    // extra fields
+    talentId: role === "TALENT" ? user.id : undefined,
+    companyId: role === "COMPANY" ? user.id : undefined,
+    companyMember: false, // will check next
+  };
+
+  // If this is a talent, check if they are in CompanyMember
+  if (role === "TALENT") {
+    const membership = await prisma.companyMember.findFirst({
+      where: { talentId: user.id, active: true },
+    });
+
+    if (membership) {
+      payload.companyId = membership.companyId;
+      payload.companyMember = true;
+    }
+  }
+
+  if (role === "COMPANY") {
+    payload.companyMember = true;
+  }
+
+  const token = generateToken(payload);
   const { password: _password, ...safe } = user as any;
 
   return { token, user: safe, role };
 };
+
 
 // Google OAuth client
 export const googleClient = new AuthorizationCode({
@@ -90,8 +122,37 @@ export const handleOAuthLogin = async (provider: "google" | "github", profile: a
   const user = talent || company;
   const type = talent ? "talent" : "company";
 
-  const token = generateToken(user!.id);
+  // build JWT payload
+  const payload: JwtUserPayload = {
+    id: user?.id || "",
+    email: user?.email || "",
+    role: talent ? "TALENT" : "COMPANY",
+    username: user?.email,
+
+    // extra fields
+    talentId: talent ? user?.id : undefined,
+    companyId: company ? user?.id : undefined,
+    companyMember: false, // will check next
+  };
+
+  // If this is a talent, check if they are in CompanyMember
+  if (talent && user) {
+    const membership = await prisma.companyMember.findFirst({
+      where: { talentId: user.id, active: true },
+    });
+
+    if (membership) {
+      payload.companyId = membership.companyId;
+      payload.companyMember = true;
+    }
+  }
+
+  if (company) {
+    payload.companyMember = true;
+  }
+
+  const token = generateToken(payload);
   const { password: _password, ...safe } = user as any;
 
   return { token, user: safe, type };
-}
+} 

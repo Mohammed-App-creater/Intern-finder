@@ -2,6 +2,7 @@ import { RegisterStep1DTO, RegisterStep2DTO, GetAllCompaniesDTO } from "./compan
 import prisma from "../../utils/prisma";
 import { hashPassword, verifyPassword } from "../../utils/hash";
 import { generateToken } from "../../utils/jwt";
+import { JwtUserPayload } from "@/types/User";
 
 // corn jobs simulation 
 
@@ -309,8 +310,21 @@ export const registerStep2 = async (companyId: string, data: RegisterStep2DTO) =
       password: true,
     },
   });
-  const token = generateToken(company.id);
-  return {token, company };
+  // Build JWT payload for a company
+  const payload: JwtUserPayload = {
+    id: company.id,
+    email: company.email,
+    role: "COMPANY",
+    username: company.companyName, // optional if you want to treat name as username
+
+    companyId: company.id,
+    companyMember: true, 
+  };
+
+  const token = generateToken(payload);
+
+
+  return { token, company };
 };
 
 export const topCompany = async () => {
@@ -337,7 +351,18 @@ export const loginCompany = async (email: string, password: string) => {
   if (!isValid) {
     throw new Error("Invalid email or password");
   }
-  const token = generateToken(company.id);
+  // Build JWT payload for a company
+  const payload: JwtUserPayload = {
+    id: company.id,
+    email: company.email,
+    role: "COMPANY",
+    username: company.companyName, // optional if you want to treat name as username
+
+    companyId: company.id,
+    companyMember: true, // company accounts aren’t "members"
+  };
+
+  const token = generateToken(payload);
   const { password: _password, ...safe } = company as any;
   return { token, user: safe };
 };

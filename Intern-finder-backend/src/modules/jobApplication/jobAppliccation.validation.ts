@@ -9,7 +9,17 @@ export const createApplicationSchema = z.object({
 
 // Params: application id
 export const applicationIdParamSchema = z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
+});
+
+export const listApplicationsQuerySchema = z.object({
+  jobId: z.string().uuid().optional(),
+  stage: z.string().optional(), 
+  q: z.string().optional(), 
+  page: z.coerce.number().int().positive().optional().default(1),
+  limit: z.coerce.number().int().positive().max(100).optional().default(20),
+  sortBy: z.enum(["appliedAt", "stage"]).optional().default("appliedAt"),
+  order: z.enum(["asc", "desc"]).optional().default("desc"),
 });
 
 // Body: update status
@@ -19,7 +29,6 @@ export const updateStatusSchema = z.object({
 
 // Params: job id
 export const jobIdParamSchema = z.object({
-    jobId: z.string().uuid(),
+    jobId: z.uuid(),
 });
-
 

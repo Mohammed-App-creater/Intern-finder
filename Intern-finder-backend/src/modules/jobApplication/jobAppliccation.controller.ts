@@ -32,8 +32,7 @@ export const listMyApplications = async (req: Request, res: Response, next: Next
 export const listJobApplicationsForCompany = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const companyId = req.user?.id as string;
-        const { jobId } = req.params as { jobId: string };
-        const apps = await JobApplicationService.listJobApplicationsForCompany(companyId, jobId);
+        const apps = await JobApplicationService.listJobApplicationsForCompany(companyId, req.params);
         return res.json(successResponse(apps));
     } catch (err: any) {
         next(err);
