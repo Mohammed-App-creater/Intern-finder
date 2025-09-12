@@ -19,7 +19,6 @@ export default function Dashboard() {
                 <p className="text-light">Jobs Opened</p>
               </div>
             </div>
-            <div>Applicants Summary</div>
           </div>
         </div>
       </div>

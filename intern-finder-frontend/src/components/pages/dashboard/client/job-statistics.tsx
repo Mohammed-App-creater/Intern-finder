@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { JobMetrics } from "@/components/pages/dashboard/client/job-metrics";
 
 const chartData = [
   { day: "Mon", jobView: 80, jobApplied: 60 },
@@ -21,8 +22,10 @@ export function JobStatistics() {
             </h3>
             <p className="text-light text-sm">Showing Jobstatistic Jul 19-25</p>
           </div>
-          <div className="flex gap-2 mt-4 text-sm text-primary bg-secondary border  " >
-            <button className="font-medium bg-white p-2 cursor-pointer">Week</button>
+          <div className="flex gap-2 mt-4 text-sm text-primary bg-secondary border  ">
+            <button className="font-medium bg-white p-2 cursor-pointer">
+              Week
+            </button>
             <button className="p-2 cursor-pointer">Month</button>
             <button className="p-2 cursor-pointer">Year</button>
           </div>
@@ -35,10 +38,10 @@ export function JobStatistics() {
           <button className="text-light cursor-pointer">Jobs Applied</button>
         </div>
       </div>
-      <div className="flex items-end gap-2 h-48 mb-4">
+      <div className="flex items-end gap-5 mb-4">
         {chartData.map((data, index) => (
           <div key={index} className="flex flex-col items-center flex-1">
-            <div className="flex flex-col items-center justify-end h-40 w-full gap-1">
+            <div className="flex flex-col items-center justify-end h-90 w-15 gap-1">
               <div
                 className="bg-blue-800 w-full"
                 style={{ height: `${(data.jobView / 150) * 100}%` }}
@@ -51,6 +54,7 @@ export function JobStatistics() {
             <span className="text-light text-xs mt-2">{data.day}</span>
           </div>
         ))}
+        <JobMetrics />
       </div>
 
       <div className="flex gap-6 text-sm">
