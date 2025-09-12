@@ -148,7 +148,7 @@ model Talent {
   gender             Gender?
   profileImageUrl    String?
   backgroundImageUrl String?
-  rating             Float?
+  rating             Float?                @default(0.0)
   address            String?
   yearsExperience    Int?
   resumeUrl          String?

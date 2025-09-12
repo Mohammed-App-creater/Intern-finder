@@ -174,6 +174,53 @@ const options: swaggerJSDoc.Options = {
             limit: { type: "integer" },
           },
         },
+        CreateInterviewRequest: {
+          type: "object",
+          properties: {
+            type: { type: "string", enum: ["PHONE", "WRITTEN", "SKILL", "FINAL", "ONSITE", "VIDEO"] },
+            startTime: { type: "string", format: "date-time" },
+            endTime: { type: "string", format: "date-time" },
+            timezone: { type: "string" },
+            locationType: { type: "string" },
+            locationDetails: { type: "string" },
+            interviewerTalentIds: { type: "array", items: { type: "string", format: "uuid" } },
+            notifyInterviewer: { type: "boolean" },
+            moveApplicationToStage: { type: "boolean" },
+          },
+          required: ["type", "startTime", "endTime", "timezone", "locationType", "locationDetails", "interviewerTalentIds"],
+        },
+        UpdateInterviewRequest: {
+          type: "object",
+          properties: {
+            type: { type: "string", enum: ["PHONE", "WRITTEN", "SKILL", "FINAL", "ONSITE", "VIDEO"] },
+            startTime: { type: "string", format: "date-time" },
+            endTime: { type: "string", format: "date-time" },
+            timezone: { type: "string" },
+            locationType: { type: "string" },
+            locationDetails: { type: "string" },
+            interviewerTalentIds: { type: "array", items: { type: "string", format: "uuid" } },
+            rescheduleReason: { type: "string" },
+          },
+        },
+        UpdateInterviewStatusRequest: {
+          type: "object",
+          properties: {
+            status: { type: "string", enum: ["SCHEDULED", "In_REVIEW", "COMPLETED", "CANCELLED"] },
+            actualStartTime: { type: "string", format: "date-time" },
+            actualEndTime: { type: "string", format: "date-time" },
+            notes: { type: "string" },
+          },
+          required: ["status"],
+        },
+        DeleteInterviewRequest: {
+          type: "object",
+          properties: { reason: { type: "string" }, notifyCandidate: { type: "boolean" } },
+        },
+        AddAssignmentsRequest: {
+          type: "object",
+          properties: { talentIds: { type: "array", items: { type: "string", format: "uuid" } } },
+          required: ["talentIds"],
+        },
         FileResponse: {
           type: "object",
           properties: {

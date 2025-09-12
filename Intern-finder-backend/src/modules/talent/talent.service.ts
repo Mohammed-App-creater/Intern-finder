@@ -32,82 +32,82 @@ export const registerStep1 = async (data: RegisterStep1DTO) => {
 };
 
 export const registerStep2 = async (talentId: string, data: RegisterStep2DTO) => {
-  // Update talent profile with step 2 data
-  const talent = await prisma.talent.update({
-    where: { id: talentId },
-    data: {
-      locations: data.location,
-      phoneNumber: data.phoneNumber,
-      fieldOfStudy: data.fieldOfStudy,
-      program: data.program,
-      workingEnvironment: data.workingEnvironment,
-      preferredRole: data.preferredRole,
-      linkedinUrl: data.linkedinUrl,
-      bio: data.bio,
-      profileImageUrl: data.profileImageUrl,
-      resumeUrl: data.resumeUrl,
-    },
-  });
+    // Update talent profile with step 2 data
+    const talent = await prisma.talent.update({
+        where: { id: talentId },
+        data: {
+            locations: data.location,
+            phoneNumber: data.phoneNumber,
+            fieldOfStudy: data.fieldOfStudy,
+            program: data.program,
+            workingEnvironment: data.workingEnvironment,
+            preferredRole: data.preferredRole,
+            linkedinUrl: data.linkedinUrl,
+            bio: data.bio,
+            profileImageUrl: data.profileImageUrl,
+            resumeUrl: data.resumeUrl,
+        },
+    });
 
-  // Check if talent is part of any company
-  const membership = await prisma.companyMember.findFirst({
-    where: { talentId: talent.id, active: true },
-  });
+    // Check if talent is part of any company
+    const membership = await prisma.companyMember.findFirst({
+        where: { talentId: talent.id, active: true },
+    });
 
-  const payload: JwtUserPayload = {
-    id: talent.id,
-    email: talent.email,
-    role: "TALENT",
-    username: talent.fullName,
-    talentId: talent.id,
-    companyId: membership?.companyId,
-    companyMember: !!membership,
-  };
+    const payload: JwtUserPayload = {
+        id: talent.id,
+        email: talent.email,
+        role: "TALENT",
+        username: talent.fullName,
+        talentId: talent.id,
+        companyId: membership?.companyId,
+        companyMember: !!membership,
+    };
 
-  const token = generateToken(payload);
+    const token = generateToken(payload);
 
-  // strip sensitive data before returning
-  const { password: _password, ...safeTalent } = talent as any;
+    // strip sensitive data before returning
+    const { password: _password, ...safeTalent } = talent as any;
 
-  return { token, talent: safeTalent };
+    return { token, talent: safeTalent };
 };
 
 export const loginTalent = async (email: string, password: string) => {
-  // 1. Find the talent by email
-  const talent = await prisma.talent.findUnique({ where: { email } });
-  if (!talent) {
-    throw new Error("Invalid email or password");
-  }
+    // 1. Find the talent by email
+    const talent = await prisma.talent.findUnique({ where: { email } });
+    if (!talent) {
+        throw new Error("Invalid email or password");
+    }
 
-  // 2. Verify password
-  const isValid = await verifyPassword(password, talent.password);
-  if (!isValid) {
-    throw new Error("Invalid email or password");
-  }
+    // 2. Verify password
+    const isValid = await verifyPassword(password, talent.password);
+    if (!isValid) {
+        throw new Error("Invalid email or password");
+    }
 
-  // 3. Check if talent is part of a company
-  const membership = await prisma.companyMember.findFirst({
-    where: { talentId: talent.id, active: true },
-  });
+    // 3. Check if talent is part of a company
+    const membership = await prisma.companyMember.findFirst({
+        where: { talentId: talent.id, active: true },
+    });
 
-  // 4. Build JWT payload
-  const payload: JwtUserPayload = {
-    id: talent.id,
-    email: talent.email,
-    role: "TALENT",
-    username: talent.fullName,
-    talentId: talent.id,
-    companyId: membership?.companyId,
-    companyMember: !!membership,
-  };
+    // 4. Build JWT payload
+    const payload: JwtUserPayload = {
+        id: talent.id,
+        email: talent.email,
+        role: "TALENT",
+        username: talent.fullName,
+        talentId: talent.id,
+        companyId: membership?.companyId,
+        companyMember: !!membership,
+    };
 
-  // 5. Generate JWT
-  const token = generateToken(payload);
+    // 5. Generate JWT
+    const token = generateToken(payload);
 
-  // 6. Strip sensitive info before returning
-  const { password: _password, ...safe } = talent as any;
+    // 6. Strip sensitive info before returning
+    const { password: _password, ...safe } = talent as any;
 
-  return { token, user: safe };
+    return { token, user: safe };
 };
 
 
