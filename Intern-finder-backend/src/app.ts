@@ -12,6 +12,7 @@ import storageRoutes from "./modules/storage/storage.routes";
 import feedbackRoutes from "./modules/feedback/feedback.routes";
 import analyticsRoutes from "./modules/analytics/analytics.routes";
 import interviewRoutes from "./modules/interviews/interview.routes";
+import companyMemberRoutes from "./modules/members/companyMember.routes";
 import applicationsRoutes from "./modules/applications/applications.routes";
 import notificationRoutes from "./modules/notification/notification.routes";
 import jobApplicationRoutes from "./modules/jobApplication/jobAppliccation.routes";
@@ -42,6 +43,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/applications", applicationsRoutes);
 app.use("/api/", interviewRoutes);
+app.use("/api/", companyMemberRoutes);
 app.use("/api/", feedbackRoutes);
 app.use("/api/", notesRoutes);
 
