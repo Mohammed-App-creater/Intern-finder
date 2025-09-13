@@ -280,13 +280,13 @@ export function MessagingInterface() {
           {/* Messages Area */}
           <div className="flex-1 p-4 space-y-4 overflow-y-scroll">
             <div className="flex items-center justify-center">
-              <div className="flex flex-col items-center gap-3 bg-secondary/30 rounded-full px-4 py-2">
+              <div className="flex flex-col items-center gap-3 rounded-full px-4 py-2">
                 <Avatar className="w-20 h-20">
                   <AvatarImage
                     src={selectedContact.avatar || "/placeholder.svg"}
                     alt={selectedContact.name}
                   />
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                  <AvatarFallback className="bg-primary text-primary text-xs">
                     {selectedContact.name
                       .split(" ")
                       .map((n) => n[0])

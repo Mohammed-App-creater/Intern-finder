@@ -83,7 +83,7 @@ export default function UserProfileDropdown() {
           height={250}
         />
         <div className="hidden sm:block text-left">
-          <p className="text-dark font-medium text-sm dark:text-white">
+          <p className="text-dark font-medium text-sm">
             John Doe
           </p>
           <p className="text-light text-xs dark:text-gray-400">

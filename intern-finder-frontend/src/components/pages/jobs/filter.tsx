@@ -122,10 +122,10 @@ export default function Filter() {
       <div className="mb-6">
         <h3 className="text-dark font-medium mb-3">Search by Job Title</h3>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4 bg-text-white" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
           <Input
             placeholder="Job title or company"
-            className="pl-10 bg-text-white"
+            className="pl-10 bg-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

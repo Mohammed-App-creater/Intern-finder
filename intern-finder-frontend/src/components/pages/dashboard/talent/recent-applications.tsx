@@ -53,7 +53,7 @@ export function RecentApplications() {
           {applications.map((app) => (
             <div
               key={app.id}
-              className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+              className="flex items-center justify-between p-4 border rounded-lg"
             >
               <div className="flex items-center gap-4">
                 <Avatar className="w-12 h-12 rounded-sm">

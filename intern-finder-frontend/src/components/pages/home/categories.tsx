@@ -75,7 +75,7 @@ export default function Categories() {
             return (
               <Card
                 key={index}
-                className="bg-text-white hover:shadow-lg transition-shadow duration-200 cursor-pointer border-0 shadow-sm"
+                className="bg-white hover:shadow-lg transition-shadow duration-200 cursor-pointer border-0 shadow-sm"
               >
                 <CardContent className="p-8 text-center">
                   <div className="mb-6">

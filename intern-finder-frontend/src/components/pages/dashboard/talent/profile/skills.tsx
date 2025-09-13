@@ -29,7 +29,7 @@ export default function Skills() {
           {skills.map((skill, index) => (
             <span
               key={index}
-              className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-secondary text-primary border border-green-200"
+              className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-secondary text-primary border"
             >
               {skill}
             </span>

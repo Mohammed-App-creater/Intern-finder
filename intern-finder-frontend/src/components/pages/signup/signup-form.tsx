@@ -115,18 +115,22 @@ export function SignUpForm() {
           </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Full name */}
+            {/* Full name / Company Name */}
             <div>
               <Label
                 htmlFor="fullName"
                 className="text-sm font-medium text-dark"
               >
-                Full name
+                {userType === "company" ? "Company Name" : "Full name"}
               </Label>
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Ada Tiger"
+                placeholder={
+                  userType === "company"
+                    ? "GoldenAge Technology PLC"
+                    : "Ada Tiger"
+                }
                 value={formData.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                 className="mt-1"
@@ -249,6 +253,13 @@ export function SignUpForm() {
               className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
             >
               Sign Up
+            </Button>
+            <Button
+              type="submit"
+              className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
+            >
+              <Image src={"https://cdn-icons-png.flaticon.com/128/281/281764.png"} alt={"Google Icon"} width={20} height={20}/>
+              <div>Continue with Google</div>
             </Button>
 
             {/* Login link */}

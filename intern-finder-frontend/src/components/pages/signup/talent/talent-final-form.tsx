@@ -70,7 +70,7 @@ export default function TalentFinalForm({
           {/* Logo */}
           <div
             onClick={() => router.push("/")}
-            className="flex items-center gap-2 mb-8"
+            className="flex items-center gap-2 mb-8 cursor-pointer"
           >
             <Image
               src={Logo}

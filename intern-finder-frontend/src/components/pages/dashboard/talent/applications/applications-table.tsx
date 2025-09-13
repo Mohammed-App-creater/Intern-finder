@@ -50,8 +50,8 @@ const applications = [
 
 export function ApplicationsTable() {
   return (
-    <div className="border-1 border-gray-200 rounded-lg shadow-sm p-5">
-      <div className="p-6 border-b border-gray-200">
+    <div className="border-1 rounded-lg shadow-sm p-5">
+      <div className="p-6 border-b">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium text-dark">
             Applications History
@@ -75,7 +75,7 @@ export function ApplicationsTable() {
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-light uppercase tracking-wider">
                 #
@@ -95,9 +95,9 @@ export function ApplicationsTable() {
               <th className="px-6 py-3 text-left text-xs font-medium text-light uppercase tracking-wider"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y">
             {applications.map((application) => (
-              <tr key={application.id} className="hover:bg-gray-50">
+              <tr key={application.id} className="hover:bg-secondary border-none">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-light">
                   {application.id}
                 </td>
