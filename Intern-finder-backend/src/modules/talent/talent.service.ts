@@ -5,6 +5,7 @@ import { generateToken } from "../../utils/jwt";
 import { normalizeToISODateString } from "../../utils/date";
 import { JwtUserPayload } from "@/types/User";
 
+
 export const registerStep1 = async (data: RegisterStep1DTO) => {
     // Check if email already exists
     const existingTalent = await prisma.talent.findUnique({

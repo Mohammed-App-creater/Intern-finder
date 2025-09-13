@@ -2,17 +2,19 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { setupSwagger } from "./config/swagger";
+import jobRoutes from "./modules/job/job.routes";
+import authRoutes from "./modules/auth/auth.route";
 import errorHandler from './middlewares/errorHandler';
-import storageRoutes from "./modules/storage/storage.routes";
+import notesRoutes from "./modules/notes/notes.routes";
 import talentRoutes from "./modules/talent/talent.routes";
 import companyRoutes from "./modules/company/company.routes";
-import jobRoutes from "./modules/job/job.routes";
-import analyticsRoutes from "./modules/analytics/analytics.routes";
-import jobApplicationRoutes from "./modules/jobApplication/jobAppliccation.routes";
-import notificationRoutes from "./modules/notification/notification.routes";
-import authRoutes from "./modules/auth/auth.route";
-import applicationsRoutes from "./modules/applications/applications.routes";
+import storageRoutes from "./modules/storage/storage.routes";
 import feedbackRoutes from "./modules/feedback/feedback.routes";
+import analyticsRoutes from "./modules/analytics/analytics.routes";
+import interviewRoutes from "./modules/interviews/interview.routes";
+import applicationsRoutes from "./modules/applications/applications.routes";
+import notificationRoutes from "./modules/notification/notification.routes";
+import jobApplicationRoutes from "./modules/jobApplication/jobAppliccation.routes";
 
 
 
@@ -39,7 +41,9 @@ app.use("/api/job-application", jobApplicationRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/applications", applicationsRoutes);
+app.use("/api/", interviewRoutes);
 app.use("/api/", feedbackRoutes);
+app.use("/api/", notesRoutes);
 
 // Health check endpoint
 app.get("/health", (req: Request, res: Response) => {

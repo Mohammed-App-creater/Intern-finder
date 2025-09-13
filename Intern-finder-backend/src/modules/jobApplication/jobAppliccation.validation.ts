@@ -13,7 +13,7 @@ export const applicationIdParamSchema = z.object({
 });
 
 export const listApplicationsQuerySchema = z.object({
-  jobId: z.string().uuid().optional(),
+  jobId: z.uuid().optional(),
   stage: z.string().optional(), 
   q: z.string().optional(), 
   page: z.coerce.number().int().positive().optional().default(1),

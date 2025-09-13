@@ -8,6 +8,7 @@ export const validate =
                 if (source === "file") {
                     schema.parse(req.file);
                 } else {
+                    console.log("Validating", source, req[source]);
                     schema.parse(req[source]);
                 }
                 next();
