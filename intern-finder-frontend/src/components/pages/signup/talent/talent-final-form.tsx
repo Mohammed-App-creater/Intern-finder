@@ -11,10 +11,13 @@ import Logo from "@/components/icons/logo.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+import { useUploadResume } from "@/hooks/useFileUpload";
+
 interface FormData {
-  linkedin: string;
+  linkedinUrl: string;
   website: string;
   bio: string;
+  resumeUrl?: string;
 }
 
 interface TalentFinalFormProps {
@@ -27,11 +30,13 @@ export default function TalentFinalForm({
   initialData,
 }: TalentFinalFormProps) {
   const [formData, setFormData] = useState<FormData>({
-    linkedin: "",
+    linkedinUrl: "",
     website: "",
     bio: "",
     ...initialData,
   });
+
+  const { mutate: uploadResume } = useUploadResume();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -44,7 +49,17 @@ export default function TalentFinalForm({
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      console.log("File uploaded:", file.name);
+      uploadResume(file, {
+        onSuccess: (data) => {
+          setFormData((prev) => ({
+            ...prev,
+            resumeUrl: data.url,
+          }));
+        },
+        onError: (error) => {
+          console.error("Upload failed:", error);
+        },
+      });
     }
   };
 
@@ -107,9 +122,9 @@ export default function TalentFinalForm({
                       id="linkedin"
                       type="url"
                       placeholder="www.linkedin.com/..."
-                      value={formData.linkedin}
+                      value={formData.linkedinUrl}
                       onChange={(e) =>
-                        handleInputChange("linkedin", e.target.value)
+                        handleInputChange("linkedinUrl", e.target.value)
                       }
                       className="w-full"
                     />

@@ -8,6 +8,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { NotificationPopup } from "../layout/notification-popup";
 import { MessagesPopup } from "../layout/messages-popup";
 import { ThemeToggle } from "../layout/theme-toggle";
+import { useAuthStore } from "@/store/auth";
 
 export default function Navbar() {
   const isActive = (path: string) => {
@@ -21,6 +22,7 @@ export default function Navbar() {
 
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuthStore();
 
   const handleSignupClick = () => {
     router.push("/signup");
@@ -48,14 +50,16 @@ export default function Navbar() {
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="client/dashboard"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
-              "/dashboard"
-            )}`}
-          >
-            Dashboard
-          </Link>
+          {user && (
+            <Link
+              href={user?.role === "COMPANY" ? "/client/dashboard" : "talent/dashboard"}
+              className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+                "/dashboard"
+              )}`}
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             href="/"
             className={`hover:text-[var(--text-white)] transition-colors ${isActive("/")}`}
@@ -87,7 +91,16 @@ export default function Navbar() {
             Contact Us
           </Link>
         </nav>
+        
+        {user && (
+          <div className="flex items-center gap-8">
+            <NotificationPopup />
+            <MessagesPopup />
+            <ThemeToggle />
+          </div>
+        )}
 
+        {!user && (
         <div className="flex items-center gap-4">
           <Link
             href={"/login"}
@@ -102,11 +115,7 @@ export default function Navbar() {
             Register
           </Button>
         </div>
-        <div className="flex items-center gap-8">
-          <NotificationPopup />
-          <MessagesPopup />
-          <ThemeToggle />
-        </div>
+        )}
       </div>
     </header>
   );

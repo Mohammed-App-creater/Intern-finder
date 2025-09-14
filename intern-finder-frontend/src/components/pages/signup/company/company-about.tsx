@@ -19,10 +19,10 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 interface FormData {
-  companyDescription: string;
+  description: string;
   teamSize: string;
   socialMediaLink: string;
-  linkedIn: string;
+  linkedinUrl: string;
 }
 
 interface ContactInfoFormProps {
@@ -35,10 +35,10 @@ export default function ContactInfoForm({
   initialData,
 }: ContactInfoFormProps) {
   const [formData, setFormData] = useState<FormData>({
-    companyDescription: "",
+    description: "",
     teamSize: "",
     socialMediaLink: "",
-    linkedIn: "",
+    linkedinUrl: "",
     ...initialData,
   });
 
@@ -101,9 +101,9 @@ export default function ContactInfoForm({
                   <Textarea
                     id="bio"
                     placeholder="Tell us about your company..."
-                    value={formData.companyDescription}
+                    value={formData.description}
                     onChange={(e) =>
-                      handleInputChange("companyDescription", e.target.value)
+                      handleInputChange("description", e.target.value)
                     }
                     className="w-full min-h-24"
                   />
@@ -171,9 +171,9 @@ export default function ContactInfoForm({
                     id="linkedIn"
                     type="link"
                     placeholder="www.linkedin.com/in/company"
-                    value={formData.linkedIn}
+                    value={formData.linkedinUrl}
                     onChange={(e) =>
-                      handleInputChange("linkedIn", e.target.value)
+                      handleInputChange("linkedinUrl", e.target.value)
                     }
                     className="w-full"
                   />

@@ -11,10 +11,10 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 interface FormData {
-  fullName: string;
-  jobTitle: string;
-  emailAddress: string;
-  phoneNumber: string;
+  contactName: string;
+  contactJobTitle: string;
+  contactEmail: string;
+  contactPhone: string;
 }
 
 interface ContactInfoFormProps {
@@ -27,10 +27,10 @@ export default function ContactInfoForm({
   initialData,
 }: ContactInfoFormProps) {
   const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    jobTitle: "",
-    emailAddress: "",
-    phoneNumber: "",
+    contactName: "",
+    contactJobTitle: "",
+    contactEmail: "",
+    contactPhone: "",
     ...initialData,
   });
 
@@ -94,9 +94,9 @@ export default function ContactInfoForm({
                     id="fullName"
                     type="text"
                     placeholder="John Smith"
-                    value={formData.fullName}
+                    value={formData.contactName}
                     onChange={(e) =>
-                      handleInputChange("fullName", e.target.value)
+                      handleInputChange("contactName", e.target.value)
                     }
                     className="w-full"
                   />
@@ -114,9 +114,9 @@ export default function ContactInfoForm({
                     id="jobTitle"
                     type="text"
                     placeholder="Project Manager"
-                    value={formData.jobTitle}
+                    value={formData.contactJobTitle}
                     onChange={(e) =>
-                      handleInputChange("jobTitle", e.target.value)
+                      handleInputChange("contactJobTitle", e.target.value)
                     }
                     className="w-full"
                   />
@@ -134,9 +134,9 @@ export default function ContactInfoForm({
                     id="emailAddress"
                     type="email"
                     placeholder="johnsmith@gmail.com"
-                    value={formData.emailAddress}
+                    value={formData.contactEmail}
                     onChange={(e) =>
-                      handleInputChange("emailAddress", e.target.value)
+                      handleInputChange("contactEmail", e.target.value)
                     }
                     className="w-full"
                   />
@@ -154,9 +154,9 @@ export default function ContactInfoForm({
                     id="phoneNumber"
                     type="tel"
                     placeholder="+1 234 567 8900"
-                    value={formData.phoneNumber}
+                    value={formData.contactPhone}
                     onChange={(e) =>
-                      handleInputChange("phoneNumber", e.target.value)
+                      handleInputChange("contactPhone", e.target.value)
                     }
                     className="w-full"
                   />

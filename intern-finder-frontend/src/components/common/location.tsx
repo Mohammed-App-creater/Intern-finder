@@ -19,9 +19,10 @@ import {
 interface LocationInputProps {
   formData: { location: string };
   handleInputChange: (field: string, value: string) => void;
+  field: string;
 }
 
-export function LocationInput({ formData, handleInputChange }: LocationInputProps) {
+export function LocationInput({ formData, handleInputChange, field }: LocationInputProps) {
   const [cities, setCities] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,7 +64,7 @@ export function LocationInput({ formData, handleInputChange }: LocationInputProp
   };
 
   const handleSelectCity = (city: string) => {
-    handleInputChange("location", city);
+    handleInputChange(field, city);
     setSearchQuery(""); 
     setCities([]); 
   };

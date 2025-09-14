@@ -5,27 +5,38 @@ import CompanyLocationForm from "@/components/pages/signup/company/company-locat
 import ContactInfoForm from "@/components/pages/signup/company/contact-info";
 import CompanyAboutForm from "@/components/pages/signup/company/company-about";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCompanyRegisterStep2 } from "@/hooks/useAuth";
+import { CompanyRegisterStep2Dto } from "@/types/auth";
+import { useAuthStore, tempoAuthstore } from "@/store/auth";
+import { setCookie } from "cookies-next";
 
 // Main component that controls the form steps
 export default function CompanySignup() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     organization: "",
-    industry: "",
+    industries: [""],
     fieldOfStudy: "",
-    website: "",
-    location: "",
-    fullName: "",
-    jobTitle: "",
-    emailAddress: "",
-    phoneNumber: "",
+    websiteUrl: "",
+    headQuarter: "",
+    contactName: "",
+    contactJobTitle: "",
+    contactEmail: "",
+    contactPhone: "",
     companyDescription: "",
+    techStack: [""],
     teamSize: "",
     socialMediaLink: "",
-    linkedIn: "",
+    linkedinUrl: "",
     workType: "",
     otherLocation: "",
   });
+
+  const { mutate: registerCompanyStep2 } = useCompanyRegisterStep2();
+  const tempo = tempoAuthstore.getState();
+  const user = useAuthStore();
+  const router = useRouter();
 
   const handleFormSubmit = (data: object) => {
     setFormData({ ...formData, ...data });
@@ -35,9 +46,18 @@ export default function CompanySignup() {
   };
 
   const handleFinalSubmit = (finalData: object) => {
-    const completeData = { ...formData, ...finalData };
+    const completeData = { ...formData, ...finalData, companyId: tempo.id || "" };
+    registerCompanyStep2((completeData as unknown) as CompanyRegisterStep2Dto, {
+      onSuccess: (response) => {
+        user.setAuth(response.token, response.company);
+        setCookie("token", response.token);
+        router.push("/client/dashboard");
+      },
+      onError: (error) => {
+        console.error("Registration error:", error);
+      },
+    });
     console.log("Complete form data:", completeData);
-    alert("Form submitted successfully! Check console for data.");
   };
 
   const steps = [
