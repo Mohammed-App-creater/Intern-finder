@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { decodeToken } from '@/utils/jwt'
+import { decodeToken } from '../utils/jwt'
 
 export interface AuthRequest extends Request {
-  user?: { id: string }; // decoded token payload
+  user?: { id: string, role: "TALENT" | "COMPANY" | "ADMIN", email: string }; // decoded token payload
 }
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -17,7 +17,7 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   try {
     const decoded = decodeToken(token);
     if (decoded && typeof decoded === 'object' && 'id' in decoded && typeof (decoded as any).id === 'string') {
-      req.user = { id: (decoded as any).id }; // attach user info to request
+      req.user = decoded; // attach user info to request
       next();
     } else {
       return res.status(401).json({ message: "Unauthorized: Invalid token payload" });
