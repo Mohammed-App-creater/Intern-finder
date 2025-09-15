@@ -5,10 +5,10 @@ const chartData = [
   { day: "Mon", jobView: 80, jobApplied: 60 },
   { day: "Tue", jobView: 45, jobApplied: 35 },
   { day: "Wed", jobView: 90, jobApplied: 70 },
-  { day: "Thu", jobView: 120, jobApplied: 40 },
-  { day: "Fri", jobView: 150, jobApplied: 25 },
-  { day: "Sat", jobView: 100, jobApplied: 80 },
-  { day: "Sun", jobView: 110, jobApplied: 90 },
+  { day: "Thu", jobView: 60, jobApplied: 40 },
+  { day: "Fri", jobView: 70, jobApplied: 25 },
+  { day: "Sat", jobView: 30, jobApplied: 150 },
+  { day: "Sun", jobView: 50, jobApplied: 50 },
 ];
 
 export function JobStatistics() {
