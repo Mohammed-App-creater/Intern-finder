@@ -8,7 +8,6 @@ import {
     getUpcomingInterviews,
     getRecentApplicationsHistory,
     getTalentDashboardStats,
-    getTalentByToken
 } from "./talent.service";
 import { Request, Response } from "express";
 

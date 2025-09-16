@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTalentDashboardTotalJobsApplied,  getTalentDashboardJobStatus, getTalentDashboardRecentApplications, getTalentDashboardStatus, getTalentDashboardUpcomingInterviews } from "@/services/talent.service";
+import { getTalentDashboardTotalJobsApplied, getTalentDashboardTotalInterviews,  getTalentDashboardJobStatus, getTalentDashboardRecentApplications, getTalentDashboardUpcomingInterviews } from "@/services/talent.service";
 
 export const useTalentDashboardTotalJobsApplied = (talentId: string) => {
   return useQuery({
@@ -8,10 +8,17 @@ export const useTalentDashboardTotalJobsApplied = (talentId: string) => {
   });
 };
 
+export const useTalentDashboardTotalInterviews = (talentId: string) => {
+  return useQuery({
+    queryKey: ["talent", "Dashboard", "TotalInterviews", talentId],
+    queryFn: () => getTalentDashboardTotalInterviews(talentId),
+  });
+};
+
 export const useTalentDashboardStatus = (talentId: string) => {
   return useQuery({
     queryKey: ["talent", "Dashboard", "Status", talentId],
-    queryFn: () => getTalentDashboardStatus(talentId),
+    queryFn: () => getTalentDashboardJobStatus(talentId),
   });
 };
 
