@@ -94,11 +94,11 @@ export function JobUpdates() {
                   variant="outline"
                   className={`text-xs py-1 px-2 ${
                     tag === "Marketing"
-                      ? "text-purple-600 border-purple-600"
+                      ? "text-purple-500 border-purple-500"
                       : tag === "Design"
-                      ? "text-yellow-600 border-yellow-600"
+                      ? "text-yellow-500 border-yellow-500"
                       : tag === "Business"
-                      ? "text-green-600 border-green-600"
+                      ? "text-green-500 border-green-500"
                       : ""
                   }`}
                 >
