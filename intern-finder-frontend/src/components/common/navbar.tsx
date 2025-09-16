@@ -9,6 +9,8 @@ import { NotificationPopup } from "../layout/notification-popup";
 import { MessagesPopup } from "../layout/messages-popup";
 import { ThemeToggle } from "../layout/theme-toggle";
 import { useAuthStore } from "@/store/auth";
+import CompaniesLogo from "../layout/companies-logo";
+import { Plus } from "lucide-react";
 
 export default function Navbar() {
   const isActive = (path: string) => {
@@ -28,33 +30,43 @@ export default function Navbar() {
     router.push("/signup");
   };
 
-
   return (
     <header className="flex items-center">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <div
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <Image
-            src={Logo}
-            alt="Company Logo"
-            width={30}
-            height={30}
-            priority
-          />
-          <span className="text-xl font-bold bg-gradient-to-r from-[#fff] to-[#cccccc] bg-clip-text text-transparent">
-            Intern Finder
-          </span>
+        <div className="flex gap-15">
+          {/* Logo */}
+          <div
+            onClick={() => router.push("/")}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Image
+              src={Logo}
+              alt="Company Logo"
+              width={30}
+              height={30}
+              priority
+            />
+            <span className="text-xl font-bold bg-gradient-to-r from-[#fff] to-[#cccccc] bg-clip-text text-transparent">
+              Intern Finder
+            </span>
+          </div>
+
+          {/* Company Logo */}
+          {user?.role == "COMPANY" && <CompaniesLogo />}
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
           {user && (
             <Link
-              href={user?.role === "COMPANY" ? "/client/dashboard" : "talent/dashboard"}
+              href={
+                user?.role === "COMPANY"
+                  ? "/client/dashboard"
+                  : "/talent/dashboard"
+              }
               className={`hover:text-[var(--text-white)] transition-colors ${isActive(
-                "/dashboard"
+                user?.role === "COMPANY"
+                  ? "/client/dashboard"
+                  : "/talent/dashboard"
               )}`}
             >
               Dashboard
@@ -62,7 +74,9 @@ export default function Navbar() {
           )}
           <Link
             href="/"
-            className={`hover:text-[var(--text-white)] transition-colors ${isActive("/")}`}
+            className={`hover:text-[var(--text-white)] transition-colors ${isActive(
+              "/"
+            )}`}
           >
             Home
           </Link>
@@ -91,30 +105,36 @@ export default function Navbar() {
             Contact Us
           </Link>
         </nav>
-        
+
         {user && (
           <div className="flex items-center gap-8">
             <NotificationPopup />
             <MessagesPopup />
             <ThemeToggle />
+            {user?.role == "COMPANY" && (
+              <Button className="flex gap-2 text-white rounded-sm">
+                <Plus />
+                Post a Job
+              </Button>
+            )}
           </div>
         )}
 
         {!user && (
-        <div className="flex items-center gap-4">
-          <Link
-            href={"/login"}
-            className="text-[var(--text-light)] hover:text-[var(--text-white)] cursor-pointer"
-          >
-            Login
-          </Link>
-          <Button
-            onClick={handleSignupClick}
-            className="bg-primary hover:bg-teal-600 text-white cursor-pointer"
-          >
-            Register
-          </Button>
-        </div>
+          <div className="flex items-center gap-4">
+            <Link
+              href={"/login"}
+              className="text-[var(--text-light)] hover:text-[var(--text-white)] cursor-pointer"
+            >
+              Login
+            </Link>
+            <Button
+              onClick={handleSignupClick}
+              className="bg-primary hover:bg-teal-600 text-white cursor-pointer"
+            >
+              Register
+            </Button>
+          </div>
         )}
       </div>
     </header>
