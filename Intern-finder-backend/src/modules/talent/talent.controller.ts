@@ -228,22 +228,6 @@ export const getTalentByIdHandler = async (req: Request, res: Response) => {
     }
 };
 
-export const getTalentByTokenHandler = async (req: Request, res: Response) => {
-    try {
-        if (!req.user?.id) {
-            throw new Error("Unauthorized");
-        }
-        const talentId = req.user?.id
-        const talent = await getTalentByToken(talentId);
-        res.status(200).json({ success: true, data: talent, error: null });
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(404).json({ success: false, data: null, error: error.message });
-        } else {
-            res.status(404).json({ success: false, data: null, error: String(error) });
-        }
-    }
-};
 
 export const updateTalentHandler = async (req: Request, res: Response) => {
     try {
@@ -258,7 +242,7 @@ export const updateTalentHandler = async (req: Request, res: Response) => {
             res.status(400).json({ success: false, data: null, error: String(error) });
         }
     }
-};
+}
 
 export const updateBasicInfoHandler = async (req: Request, res: Response) => {
     try {

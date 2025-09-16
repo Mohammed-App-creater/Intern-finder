@@ -39,6 +39,8 @@ export default function UserProfileDropdown() {
   const logout = useLogout();
   const router = useRouter();
 
+  if (!user) return <div>Loading...</div>;
+
   const handleLogout = () => {
     logout();
     setIsOpen(false);
@@ -50,20 +52,22 @@ export default function UserProfileDropdown() {
   };
 
   if (!mounted) {
-    console.log(user);
     return (
       <div className="p-6">
         <div className="flex items-center gap-2">
           <Image
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            src={ (user?.role == "TALENT"? user.profileImageUrl : user?.logoUrl) || "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"}
+            src={
+              (user?.role == "TALENT" ? user.profileImageUrl : user?.logoUrl) ||
+              "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
+            }
             alt={"Profile Picture"}
             width={250}
             height={250}
           />
           <div>
-            <p className="text-dark font-medium text-sm">John Doe</p>
-            <p className="text-light text-xs">Software Engineer</p>
+            <p className="text-dark font-medium text-sm">{user?.role === "TALENT" ? user?.fullName : user?.companyName}</p>
+            <p className="text-light text-xs">{user?.role === "TALENT" ? user?.fieldOfStudy : user?.industries}</p>
           </div>
         </div>
       </div>
@@ -81,6 +85,7 @@ export default function UserProfileDropdown() {
         <Image
           className="w-10 h-10 rounded-full flex items-center justify-center"
           src={
+            (user?.role == "TALENT" ? user.profileImageUrl : user?.logoUrl) ||
             "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
           }
           alt={"Profile Picture"}
@@ -88,9 +93,7 @@ export default function UserProfileDropdown() {
           height={250}
         />
         <div className="hidden sm:block text-left">
-          <p className="text-dark font-medium text-sm">
-            John Doe
-          </p>
+          <p className="text-dark font-medium text-sm">John Doe</p>
           <p className="text-light text-xs dark:text-gray-400">
             Software Engineer
           </p>

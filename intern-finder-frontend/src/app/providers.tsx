@@ -13,19 +13,27 @@ export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
   }, []);
-  useHydrateAuth();
+
   return (
     <QueryClientProvider client={queryClient}>
-      {mounted ? (
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          {children}
-        </ThemeProvider>
-      ) : (
-        children
-      )}
-      {process.env.NODE_ENV === "development" && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
+      {/* ✅ Hydrate after QueryClient is available */}
+      <HydrateAuthWrapper>
+        {mounted ? (
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            {children}
+          </ThemeProvider>
+        ) : (
+          children
+        )}
+        {process.env.NODE_ENV === "development" && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
+      </HydrateAuthWrapper>
     </QueryClientProvider>
   );
+}
+
+function HydrateAuthWrapper({ children }: { children: ReactNode }) {
+  useHydrateAuth();
+  return <>{children}</>;
 }

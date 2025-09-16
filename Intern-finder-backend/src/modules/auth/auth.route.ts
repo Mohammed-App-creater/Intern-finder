@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { validate } from "../../middlewares/validate";
 import { LoginSchema } from "./auth.company.validation";
-import { github, githubCallbackController, google, googleCallbackController, loginController } from "./auth.controller";
+import { github, githubCallbackController, google, googleCallbackController, loginController, getMe } from "./auth.controller";
+import { authenticate } from "@/middlewares/auth.middleware";
 
 
 
@@ -43,7 +44,6 @@ const router = Router();
 router.post("/login", validate(LoginSchema), loginController);
 
 
-
 // Redirect to provider
 router.get("/google", google);
 
@@ -53,6 +53,8 @@ router.get("/github", github);
 router.get("/google/callback", googleCallbackController);
 
 router.get("/github/callback", githubCallbackController);
+
+router.get("/me", authenticate, getMe);
 
 
 export default router;

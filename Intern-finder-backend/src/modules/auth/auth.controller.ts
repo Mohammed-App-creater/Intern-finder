@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Request, Response, NextFunction } from "express";
 import { errorResponse, successResponse } from "../../utils/response";
-import { githubClient, googleClient, handleOAuthLogin, login, } from "./auth.service";
+import { getUser, githubClient, googleClient, handleOAuthLogin, login, } from "./auth.service";
 import ENV from "../../config/env"
 
 
@@ -19,6 +19,16 @@ export const loginController = async (req: Request, res: Response, next: NextFun
         } else {
             next(error);
         }
+    }
+}
+
+export const getMe = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id, role } = req.user!;
+        const user = await getUser(id, role);
+        res.status(200).json(successResponse(user, "User fetched successfully"));
+    } catch (error){
+        next(error);
     }
 }
 

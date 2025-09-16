@@ -69,6 +69,16 @@ export const login = async (email: string, password: string) => {
   return { token, user: safe, role };
 };
 
+export const getUser = async (id: string, role: string) => {
+  let user = null
+  if (role === "TALENT") {
+    user = await prisma.talent.findUnique({ where: { id }, omit: { password: true } });
+  } else {
+    user = await prisma.company.findUnique({ where: { id }, omit: { password: true } })
+  }
+  return {...user, role: role};
+};
+
 
 // Google OAuth client
 export const googleClient = new AuthorizationCode({

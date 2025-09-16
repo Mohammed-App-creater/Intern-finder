@@ -1,16 +1,10 @@
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import r2 from "../../config/r2";
 import env from "../../config/env";
-import { getSignedUrl as awsGetSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const BUCKET = env.R2_BUCKET;
-
-
-
-
-
-
-
+const ACCOUNT_ID = env.CLOUDFLARE_ACCOUNT_ID;
+const PUBLIC_URL = env.PUBLIC_URL;
 
 export const uploadFile = async (key: string, fileBuffer: Buffer, contentType: string) => {
   const command = new PutObjectCommand({
@@ -19,10 +13,8 @@ export const uploadFile = async (key: string, fileBuffer: Buffer, contentType: s
     Body: fileBuffer,
     ContentType: contentType,
   });
-
   await r2.send(command);
-  const url = await getSignedUrl(key, 3600);
-  return url;
+  return `${PUBLIC_URL}/${key}`;
 };
 
 export const profilePicture = async (key: string, fileBuffer: Buffer, contentType: string) => {
@@ -32,19 +24,6 @@ export const profilePicture = async (key: string, fileBuffer: Buffer, contentTyp
     Body: fileBuffer,
     ContentType: contentType,
   });
-
   await r2.send(command);
-  const url = await getSignedUrl(key, 3600);
-  return url;
-};
-
-export const getSignedUrl = async (key: string, expiresIn = 3600) => {
-  const command = new GetObjectCommand({
-    Bucket: BUCKET,
-    Key: key,
-  });
-
-  const url = await awsGetSignedUrl(r2, command, { expiresIn });
-
-  return url;
+  return `${PUBLIC_URL}/${key}`;
 };

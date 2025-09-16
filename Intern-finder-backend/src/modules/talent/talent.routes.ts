@@ -8,6 +8,7 @@ import { authenticate } from "@/middlewares/auth.middleware";
 
 const router = Router();
 
+
 /**
  * @openapi
  * /api/talent/register/step1:
@@ -238,6 +239,8 @@ router.post("/login", validate(TalentLoginSchema, "body"), talentController.logi
  */
 router.get("/:talentId", validate(TalentIdSchema, "params"), talentController.getTalentByIdHandler);
 router.put("/:talentId", validate(TalentIdSchema, "params"), validate(UpdateTalentSchema, "body"), talentController.updateTalentHandler);
+
+router.use(authenticate)
 
 /**
  * @openapi
@@ -685,6 +688,5 @@ router.get("/:talentId/dashboard/recent-applications", validate(TalentIdSchema, 
  */
 router.get("/:talentId/dashboard/stats", validate(TalentIdSchema, "params"), talentController.getTalentDashboardStatsHandler);
 
-router.get("/me", authenticate, talentController.getTalentByTokenHandler);
 
 export default router;

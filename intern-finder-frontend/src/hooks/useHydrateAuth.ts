@@ -1,15 +1,19 @@
-"use client"
+"use client";
 import { getCookie } from "cookies-next";
 import { useAuthStore } from "@/store/auth";
+import { useMe } from "@/hooks/useUsers";
 import { useEffect } from "react";
 
 export function useHydrateAuth() {
-  const setAuth = useAuthStore((s) => s.setAuth);
+  const { setAuth } = useAuthStore();
+  const token = getCookie("token") as string | undefined;
 
+  // Fetch the user if we have a token
+  const { data: user } = useMe();
+  console.log("Hydrating auth", { token, user }); 
   useEffect(() => {
-    const token = getCookie("token") as string | undefined;
     if (token) {
-      setAuth(token, null);
+      setAuth(token, user ?? null);
     }
-  }, [setAuth]);
+  }, [token, user, setAuth]);
 }
