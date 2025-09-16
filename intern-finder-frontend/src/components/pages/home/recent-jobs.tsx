@@ -59,7 +59,7 @@ export default function RecentJobs() {
   //   }
   // ];
 
-  const { data, isLoading, isError } = useJobListings();
+  const { data, isLoading, isError } = useJobListings({datePosted: "today"});
 
   if (isLoading) {
     return <div>Loading...</div>;

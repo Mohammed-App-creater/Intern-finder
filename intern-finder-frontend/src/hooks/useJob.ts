@@ -9,3 +9,10 @@ export const useJobListings = (filters: JobFilters) => {
     queryFn: () => getJobListings(filters),
   });
 };
+
+export const useRelatedJobs = () => {
+  return useQuery({
+    queryKey: ["job", "related"],
+    queryFn: () => getJobListings({}), // Adjust parameters as needed
+  });
+}

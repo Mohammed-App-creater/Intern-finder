@@ -3,14 +3,30 @@ export interface TalentTotalJobsApplied {
     totalJobsApplied: number;
 }
 export interface TalentTotalInterView {
-    totalJobsApplied: number;
+    interviewedCount: number;
 }
 
 export interface TalentStates {
     jobStatusCounts: {
-            interviewed: number;
-            rejected: number;
-            pending: number;
-            accepted: number;
-        };
+        interviewed: number;
+        rejected: number;
+        pending: number;
+        accepted: number;
+    };
+}
+
+export interface TalentRecentApplications {
+    recentApplications: [
+        {
+            id: string,
+            jobTitle: string,
+            companyName: string,
+            companyLogo: string,
+            location: string,
+            environmentType: string,
+            salaryType: string,
+            status: "accepted" | "offered" | "pending" | "rejected" | "shortlisted" | "interview",
+            appliedAt: string
+        }
+    ]
 }

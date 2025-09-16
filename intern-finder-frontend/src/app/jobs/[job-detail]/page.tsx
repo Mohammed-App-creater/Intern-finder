@@ -17,53 +17,18 @@ import {
   Wallet,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRelatedJobs } from "@/hooks/useJob";
 
 export default function JobDetail() {
-  const jobData = [
-    {
-      timeAgo: "10 min ago",
-      title: "Forward Security Director",
-      company: "Reach, Schrage and Schmitt Co",
-      logo: "/images/Logo_1.png",
-      industry: "Hotels & Tourism",
-      employmentType: "Full time",
-      salary: "$40000-$45000",
-      location: "New York, USA",
-    },
-  ];
+  const { data, isLoading, isError } = useRelatedJobs();
 
-  const RelatedJobs = [
-    {
-      timeAgo: "3 hours ago",
-      title: "UX/UI Designer",
-      company: "Creative Design Studio",
-      logo: "/images/Logo_5.png",
-      industry: "Design",
-      employmentType: "Contract",
-      salary: "$50000-$65000",
-      location: "Los Angeles, USA",
-    },
-    {
-      timeAgo: "25 min ago",
-      title: "Senior Frontend Developer",
-      company: "Tech Innovations Inc",
-      logo: "/images/Logo_2.png",
-      industry: "Software Development",
-      employmentType: "Full time",
-      salary: "$75000-$90000",
-      location: "San Francisco, USA",
-    },
-    {
-      timeAgo: "1 hour ago",
-      title: "Marketing Manager",
-      company: "Global Marketing Solutions",
-      logo: "/images/Logo_3.png",
-      industry: "Marketing & Advertising",
-      employmentType: "Full time",
-      salary: "$60000-$70000",
-      location: "Chicago, USA",
-    },
-  ];
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
+  }
 
   return (
     <section>
@@ -77,7 +42,7 @@ export default function JobDetail() {
       <section className="container mx-auto">
         {/* Job Listings */}
         <div className="space-y-4 mb-10">
-          {jobData.map((job, index) => (
+          {data?.map((job, index) => (
             <JobCard key={index} job={job} />
           ))}
         </div>
@@ -165,7 +130,7 @@ export default function JobDetail() {
             </p>
             {/* Related Job Cards */}
             <div className="space-y-4 mb-30">
-              {RelatedJobs.map((job, index) => (
+              {data?.map((job, index) => (
                 <RelatedJobCard key={index} job={job} />
               ))}
             </div>

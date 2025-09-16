@@ -10,6 +10,7 @@ export function JobStatusChart() {
   const { user } = useAuthStore();
   const talentId = user?.id || "";
   const { data, isLoading, isError } = useTalentDashboardJobStatus(talentId);
+  console.log(data);
 
   if (isLoading){
     return <div>Loading..</div>
@@ -17,6 +18,8 @@ export function JobStatusChart() {
   if (isError){
     return <div>Error...</div>
   }
+  const interviewed = data?.jobStatusCounts?.interviewed ?? 50;
+  const rejected = data?.jobStatusCounts?.rejected ?? 50;
   return (
     <Card>
       <CardHeader>
@@ -26,19 +29,19 @@ export function JobStatusChart() {
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="flex items-center gap-10">
-          <CircularProgress percentage={60} size={150} />
+          <CircularProgress percentage={interviewed} size={150} />
           <div className="flex flex-col gap-5 p-5">
             <div className="flex items-center gap-5">
               <div className="w-5 h-5 bg-primary rounded-sm"></div>
               <div className="flex flex-col gap-1">
-                <span className="text-2xl font-bold text-dark">{data?.jobStatusCounts?.rejected}%</span>
+                <span className="text-2xl font-bold text-dark">{interviewed}%</span>
                 <span className="text-xl text-light">Unsuitable</span>
               </div>
             </div>
             <div className="flex items-center gap-5">
               <div className="w-5 h-5 bg-gray-300 rounded-sm"></div>
               <div className="flex flex-col gap-1">
-                <span className="text-2xl font-bold text-dark">{data?.jobStatusCounts?.interviewed}%</span>
+                <span className="text-2xl font-bold text-dark">{rejected}%</span>
                 <span className="text-xl text-light">Interviewed</span>
               </div>
             </div>
