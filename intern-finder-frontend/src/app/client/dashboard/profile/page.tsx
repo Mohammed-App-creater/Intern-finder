@@ -7,13 +7,19 @@ import { TechStack } from "@/components/pages/dashboard/client/CompanyProfile/te
 
 export default function CompanyProfilePage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen px-2">
       <CompanyHeader />
-      <CompanyProfile />
-      <TechStack />
-      <ContactSection />
-      <OfficeLocations />
-      <Gallery />
+      <div className="flex gap-3">
+        <div className="max-w-5xl">
+          <CompanyProfile />
+          <ContactSection />
+          <Gallery />
+        </div>
+        <div>
+          <TechStack />
+          <OfficeLocations />
+        </div>
+      </div>
     </div>
   );
 }

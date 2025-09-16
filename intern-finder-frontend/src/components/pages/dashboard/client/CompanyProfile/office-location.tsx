@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ArrowRight, Edit, Plus } from "lucide-react";
 
 export function OfficeLocations() {
   const locations = [
@@ -10,17 +11,17 @@ export function OfficeLocations() {
   ];
 
   return (
-    <div className="bg-white p-6 border-t border-gray-200">
+    <div className="p-6">
       <div>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-dark">Office Locations</h2>
           <div className="flex gap-2">
-            <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200">
-              <span className="text-primary">+</span>
-            </button>
-            <button className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200">
-              <span className="text-primary">✏️</span>
-            </button>
+            <Button variant="ghost" size="icon" className="border h-8 w-8">
+              <Plus className="h-4 w-4 text-primary" />
+            </Button>
+            <Button variant="ghost" size="icon" className="border h-8 w-8">
+              <Edit className="h-4 w-4 text-primary" />
+            </Button>
           </div>
         </div>
 
@@ -28,7 +29,7 @@ export function OfficeLocations() {
           {locations.map((location, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+              className="flex items-center gap-3 p-3 rounded-lg transition-colors"
             >
               <span className="text-2xl">{location.flag}</span>
               <span className="text-dark font-medium">{location.country}</span>
@@ -41,11 +42,9 @@ export function OfficeLocations() {
           ))}
         </div>
 
-        <Button
-          variant="outline"
-          className="text-primary border-primary hover:bg-primary hover:text-white bg-transparent"
-        >
-          View countries →
+        <Button variant="none" className="flex gap-2 text-primary font-bold">
+          View countries
+          <ArrowRight />
         </Button>
       </div>
     </div>
