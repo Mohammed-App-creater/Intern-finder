@@ -16,15 +16,15 @@ export function JobCard({
   tags,
 }: JobCardProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+    <div className="bg-white border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer">
+      <div className="flex items-start gap-5">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
           <Image
             src={logo || "/placeholder.svg"}
             alt={`${company} logo`}
             width={32}
             height={32}
-            className="w-8 h-8"
+            className="w-12 h-12"
           />
         </div>
         <div className="flex-1">
@@ -38,10 +38,10 @@ export function JobCard({
                 key={index}
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                   tag === "Full-Time"
-                    ? "bg-secondary text-primary"
+                    ? "border border-primary text-primary"
                     : tag === "Marketing"
-                    ? "bg-orange-100 text-orange-600 border border-orange-200"
-                    : "bg-blue-100 text-blue-600 border border-blue-200"
+                    ? "text-orange-500 border border-orange-500"
+                    : "text-purple-500 border border-purple-500"
                 }`}
               >
                 {tag}

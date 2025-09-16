@@ -6,31 +6,31 @@ const jobs = [
     title: "Social Media Assistant",
     company: "Nomad",
     location: "Paris, France",
-    logo: "/green-hexagonal-logo-icon.jpg",
+    logo: "https://cdn-icons-png.flaticon.com/128/5968/5968835.png",
     tags: ["Full-Time", "Marketing", "Design"],
   },
   {
     title: "Brand Designer",
     company: "Dropbox",
     location: "San Fransisco, USA",
-    logo: "/blue-dropbox-logo-icon.jpg",
+    logo: "https://cdn-icons-png.flaticon.com/128/174/174845.png",
     tags: ["Full-Time", "Marketing", "Design"],
   },
   {
     title: "Interactive Developer",
     company: "Terraform",
     location: "Hamburg, Germany",
-    logo: "/cyan-terraform-logo-icon.jpg",
+    logo: "https://cdn-icons-png.flaticon.com/128/5968/5968374.png",
     tags: ["Full-Time", "Marketing", "Design"],
   },
 ];
 
 export function OpenPositionsSection() {
   return (
-    <section>
+    <section className="flex flex-col gap-3 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-dark text-2xl font-bold">Open Positions</h2>
-        <div className="flex items-center gap-2 text-primary hover:text-primary/80 cursor-pointer">
+        <h2 className="text-xl font-semibold text-dark">Open Positions</h2>
+        <div className="flex items-center gap-2 text-primary cursor-pointer">
           <span className="font-medium">Show all jobs</span>
           <ArrowRight className="w-4 h-4" />
         </div>

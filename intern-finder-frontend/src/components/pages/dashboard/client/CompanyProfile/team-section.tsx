@@ -26,7 +26,7 @@ export function TeamSection() {
   return (
     <section className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-dark text-2xl font-bold">Team</h2>
+        <h2 className="text-xl font-semibold text-dark">Team</h2>
         <div className="flex gap-2">
           <Button variant="ghost" size="icon" className="border h-8 w-8">
             <Plus className="h-4 w-4 text-primary" />
