@@ -4,6 +4,7 @@ import { ContactSection } from "@/components/pages/dashboard/client/CompanyProfi
 import { Gallery } from "@/components/pages/dashboard/client/CompanyProfile/gallery";
 import { OfficeLocations } from "@/components/pages/dashboard/client/CompanyProfile/office-location";
 import { TechStack } from "@/components/pages/dashboard/client/CompanyProfile/tech-stack";
+import { TeamSection } from "@/components/pages/dashboard/client/CompanyProfile/team-section";
 
 export default function CompanyProfilePage() {
   return (
@@ -14,6 +15,7 @@ export default function CompanyProfilePage() {
           <CompanyProfile />
           <ContactSection />
           <Gallery />
+          <TeamSection />
         </div>
         <div>
           <TechStack />
