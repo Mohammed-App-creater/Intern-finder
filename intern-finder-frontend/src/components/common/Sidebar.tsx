@@ -8,6 +8,7 @@ import {
   User,
   Settings,
   HelpCircle,
+  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -60,6 +61,13 @@ export function Sidebar({ className }: SidebarProps) {
       href: "",
       active: isActive("", true),
       isDashboard: true,
+    },
+    {
+      icon: Building2,
+      label: "Company Profile",
+      href: "/profile",
+      active: isActive("/profile"),
+      isDashboard: false,
     },
     {
       icon: MessageSquare,
