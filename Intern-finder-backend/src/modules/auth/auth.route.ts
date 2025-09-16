@@ -2,7 +2,7 @@ import { Router } from "express";
 import { validate } from "../../middlewares/validate";
 import { LoginSchema } from "./auth.company.validation";
 import { github, githubCallbackController, google, googleCallbackController, loginController, getMe } from "./auth.controller";
-import { authenticate } from "@/middlewares/auth.middleware";
+import { authenticate } from "../../middlewares/auth.middleware";
 
 
 

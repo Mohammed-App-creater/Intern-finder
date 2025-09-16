@@ -4,7 +4,7 @@ import { RegisterStep1Schema, RegisterStep2Schema, TalentIdSchema, DashboardLimi
 import * as talentController from "./talent.controller";
 import { TalentLoginSchema } from "./talent.validation";
 import { UpdateBasicInfoSchema, UpdateEmailSchema, ChangePasswordSchema, UpdateNotificationSettingsSchema } from "./talent.validation";
-import { authenticate } from "@/middlewares/auth.middleware";
+import { authenticate } from "../../middlewares/auth.middleware";
 
 const router = Router();
 
