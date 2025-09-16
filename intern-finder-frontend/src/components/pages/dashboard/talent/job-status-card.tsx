@@ -10,7 +10,6 @@ export function JobStatusChart() {
   const { user } = useAuthStore();
   const talentId = user?.id || "";
   const { data, isLoading, isError } = useTalentDashboardJobStatus(talentId);
-  console.log(data);
 
   if (isLoading){
     return <div>Loading..</div>

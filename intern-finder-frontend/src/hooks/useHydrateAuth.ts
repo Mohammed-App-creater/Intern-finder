@@ -10,7 +10,6 @@ export function useHydrateAuth() {
 
   // Fetch the user if we have a token
   const { data: user } = useMe();
-  console.log("Hydrating auth", { token, user }); 
   useEffect(() => {
     if (token) {
       setAuth(token, user ?? null);
