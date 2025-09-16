@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -26,6 +27,7 @@ interface TalentFormProps {
 }
 
 export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     phoneNumber: "",
     institution: "",
@@ -55,6 +57,7 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
   const handleProfilePictureUpload = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setIsLoading(true);
     const file = event.target.files?.[0];
     if (file) {
       uploadProfilePicture(file, {
@@ -62,15 +65,17 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
           setProfileImage(data.url);
 
           // keep in localStorage for reloads
-          localStorage.setItem("profileImage", data.url);
+          localStorage.setItem("profileImageUrl", data.url);
 
           // inject into formData
           setFormData((prev) => ({
             ...prev,
-            profileImage: data.url,
+            profileImageUrl: data.url,
           }));
+          setIsLoading(false);
         },
         onError: (error) => {
+          setIsLoading(false);
           console.error("Upload failed:", error);
         },
       });
@@ -333,9 +338,13 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer"
+              disabled={isLoading} // ✅ disable while loading
+              className={`w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer flex items-center justify-center gap-2 ${
+                isLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Continue
+              {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
+              { isLoading ? "Uploading..." : "Continue"}
             </Button>
           </form>
         </div>

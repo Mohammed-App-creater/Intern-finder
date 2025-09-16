@@ -1,3 +1,4 @@
+"use client"
 import Adobe from "@/components/icons/adobe_logo_white.png";
 import Asana from "@/components/icons/asana_logo_white.png";
 import { Button } from "@/components/ui/button";
@@ -16,8 +17,10 @@ import {
 import { Search, Briefcase, Users, Building2 } from "lucide-react";
 import Spotify from "@/components/icons/spotify_icon_white.png";
 import Slack from "@/components/icons/slack_logo_white.png";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function HeroSection() {
+  const { data: analyticsData } = useAnalytics();
   return (
     <>
       <div className="relative overflow-hidden">
@@ -94,7 +97,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-white">
-                    25,850
+                    {analyticsData?.jobCount || 0}
                   </div>
                   <div className="font-light text-white">
                     Jobs
@@ -108,7 +111,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-white">
-                    10,250
+                    {analyticsData?.talentCount || 0}
                   </div>
                   <div className="font-light text-white pl-1">
                     Candidates
@@ -122,7 +125,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-white">
-                    18,400
+                    {analyticsData?.companyCount || 0}
                   </div>
                   <div className="font-light text-white pl-1">
                     Companies

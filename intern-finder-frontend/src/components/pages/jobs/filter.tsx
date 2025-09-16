@@ -8,9 +8,11 @@ import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { LocationInput } from "@/components/common/location";
+import { useJobFilterStore } from "@/store/useJobFilterStore";
+import { normalizeFilters } from "@/lib/utils";
 
 export default function Filter() {
-  const [salaryRange, setSalaryRange] = useState([0, 60000]);
+  const [salaryRange, setSalaryRange] = useState<[number, number]>([0, 60000]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({ location: "" });
@@ -99,9 +101,10 @@ export default function Filter() {
     );
   };
 
+  const setFilters = useJobFilterStore((s) => s.setFilters);
+
   const handleApplyFilters = () => {
-    // Here you would typically make an API call with all the filter parameters
-    const filters = {
+    const rawFilters = {
       searchQuery,
       location: formData.location,
       categories: selectedCategories,
@@ -111,9 +114,9 @@ export default function Filter() {
       salaryRange,
       tags: selectedTags,
     };
-
-    console.log("Applied filters:", filters);
-    // You would replace the console.log with your actual API call
+    
+    const normalized = normalizeFilters(rawFilters);
+    setFilters(normalized); // ✅ push to zustand
   };
 
   return (
@@ -138,6 +141,7 @@ export default function Filter() {
         <LocationInput
           formData={formData}
           handleInputChange={handleInputChange}
+          field="job Location"
         />
       </div>
 
@@ -246,7 +250,7 @@ export default function Filter() {
         <div className="px-2">
           <Slider
             value={salaryRange}
-            onValueChange={setSalaryRange}
+            onValueChange={(v) => setSalaryRange([v[0], v[1]])}
             max={60000}
             step={1000}
             className="mb-4"
@@ -289,3 +293,4 @@ export default function Filter() {
     </div>
   );
 }
+

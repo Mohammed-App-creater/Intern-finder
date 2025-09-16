@@ -22,14 +22,11 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const clearAuth = useAuthStore((s) => {
-    return () => {
-      s.clearAuth();
-      deleteCookie("token");
-    };
-  });
+  const clearAuth = useAuthStore((s) => s.clearAuth); 
+
   return () => {
     clearAuth();
+    deleteCookie("token");
     queryClient.clear();
   };
 };

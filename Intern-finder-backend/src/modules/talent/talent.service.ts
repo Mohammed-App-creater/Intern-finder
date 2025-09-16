@@ -112,6 +112,7 @@ export const loginTalent = async (email: string, password: string) => {
 };
 
 
+
 // Dashboard functions
 export const getTotalJobsApplied = async (talentId: string) => {
     const totalJobs = await prisma.jobApplication.count({
@@ -300,6 +301,49 @@ export const getTalentById = async (talentId: string) => {
 
     return talent;
 };
+
+export const getTalentByToken = async (talentId: string) => {
+    const talent = await prisma.talent.findUnique({
+        where: { id: talentId },
+        select: {
+            id: true,
+            fullName: true,
+            email: true,
+            phoneNumber: true,
+            languages: true,
+            linkedinUrl: true,
+            personalWebsite: true,
+            instagramUrl: true,
+            locations: true,
+            fieldOfStudy: true,
+            program: true,
+            workingEnvironment: true,
+            bio: true,
+            preferredRole: true,
+            aboutMe: true,
+            experiences: true,
+            education: true,
+            skills: true,
+            gender: true,
+            profileImageUrl: true,
+            rating: true,
+            address: true,
+            yearsExperience: true,
+            resumeUrl: true,
+            availableForWork: true,
+            settings: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+
+    if (!talent) {
+        throw new Error("Talent not found");
+    }
+
+    return talent;
+};
+
 
 export const updateTalent = async (talentId: string, data: any) => {
     const updated = await prisma.talent.update({

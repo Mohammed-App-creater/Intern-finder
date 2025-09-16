@@ -10,6 +10,7 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import { useUploadResume } from "@/hooks/useFileUpload";
 
@@ -29,6 +30,7 @@ export default function TalentFinalForm({
   onSubmit,
   initialData,
 }: TalentFinalFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     linkedinUrl: "",
     website: "",
@@ -49,14 +51,17 @@ export default function TalentFinalForm({
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setIsLoading(true);
       uploadResume(file, {
         onSuccess: (data) => {
           setFormData((prev) => ({
             ...prev,
             resumeUrl: data.url,
           }));
+          setIsLoading(false);
         },
         onError: (error) => {
+          setIsLoading(false);
           console.error("Upload failed:", error);
         },
       });
@@ -204,11 +209,15 @@ export default function TalentFinalForm({
 
               {/* Submit Button */}
               <Button
-                type="submit"
-                className="w-full bg-primary hover:bg-teal-700 text-white py-3 rounded-lg font-medium mt-8 cursor-pointer"
-              >
-                Done!
-              </Button>
+              type="submit"
+              disabled={isLoading} // ✅ disable while loading
+              className={`w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer flex items-center justify-center gap-2 ${
+                isLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
+              { isLoading ? "Uploading..." : "Done!"}
+            </Button>
             </form>
           </div>
         </motion.div>
