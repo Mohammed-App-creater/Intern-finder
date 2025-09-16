@@ -1,53 +1,48 @@
 import { Button } from "@/components/ui/button";
-import {
-  Globe,
-  Settings,
-  Calendar,
-  Users,
-  MapPin,
-  Building,
-} from "lucide-react";
+import Image from "next/image";
+import { Eye, Settings, Calendar, Users, MapPin, Building, Edit } from "lucide-react";
 
 export function CompanyHeader() {
   return (
-    <div className="flex gap-3 border-b p-6">
-      <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-        <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
-          <div className="w-6 h-6 bg-primary rounded-sm"></div>
-        </div>
+    <div className="flex gap-6 border-b p-6">
+      <div className="relative flex items-center h-30 w-30 pt-5">
+        <Image
+          src={"https://cdn-icons-png.flaticon.com/128/5968/5968835.png"}
+          alt="Company Logo"
+          width={500}
+          height={500}
+          className="pl-4"
+        />
+        <Button variant="ghost" size="icon" className="absolute -top-2 border h-7 w-7 p-2">
+          <Edit className="h-2 w-2 text-primary" />
+        </Button>
       </div>
       <div>
         {/* Header with logo and buttons */}
-        <div className="flex items-center gap-6 mb-6">
+        <div className="flex items-center justify-between gap-6 mb-6">
           <div className="flex items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-dark">Slack</h1>
+              <h1 className="text-2xl font-bold text-dark">Nomad</h1>
               <p className="text-light text-sm">https://nomad.com</p>
             </div>
           </div>
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="text-primary border-primary hover:bg-primary hover:text-white bg-transparent"
-            >
-              <Globe className="w-4 h-4 mr-2" />
+          <div className="flex gap-5">
+            <Button variant="none" className="text-primary border-primary">
+              <Eye className="w-4 h-4 mr-1" />
               Public View
             </Button>
-            <Button
-              variant="outline"
-              className="text-primary border-primary hover:bg-primary hover:text-white bg-transparent"
-            >
-              <Settings className="w-4 h-4 mr-2" />
+            <Button variant="none" className="text-primary border-primary">
+              <Settings className="w-4 h-4 mr-1" />
               Profile Settings
             </Button>
           </div>
         </div>
 
         {/* Company stats */}
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-5 gap-8">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-light" />
+            <div className="w-10 h-10 rounded-full flex items-center justify-center border p-2">
+              <Calendar className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="text-light text-sm">Founded</p>
@@ -55,8 +50,8 @@ export function CompanyHeader() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center">
-              <Users className="w-5 h-5 text-light" />
+            <div className="w-10 h-10 rounded-full flex items-center justify-center border p-2">
+              <Users className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="text-light text-sm">Employees</p>
@@ -64,8 +59,8 @@ export function CompanyHeader() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-light" />
+            <div className="w-10 h-10 rounded-full flex items-center justify-center border p-2">
+              <MapPin className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="text-light text-sm">Location</p>
@@ -73,8 +68,8 @@ export function CompanyHeader() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center">
-              <Building className="w-5 h-5 text-light" />
+            <div className="w-10 h-10 rounded-full flex items-center justify-center border p-2">
+              <Building className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="text-light text-sm">Industry</p>
