@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "@/components/common/providers";
+import Providers from "./providers";
+
 
 export const metadata: Metadata = {
   title: "Intern Finder",
@@ -13,6 +14,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

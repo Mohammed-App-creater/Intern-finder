@@ -3,11 +3,20 @@
 import { useState } from "react";
 import TalentForm from "@/components/pages/signup/talent/talent-form";
 import TalentFinalForm from "@/components/pages/signup/talent/talent-final-form";
+import { useTalentRegisterStep2 } from "@/hooks/useAuth";
+import { tempoAuthstore, useAuthStore } from "@/store/auth";
+import { TalentRegisterStep2Dto } from "@/types/auth";
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 
 export default function Talent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
+  const router = useRouter();
 
+  const { mutate: registerTalent } = useTalentRegisterStep2();
+  const tempo = tempoAuthstore.getState();
+  const user = useAuthStore();
   const handleFormSubmit = (data: object) => {
     setFormData({ ...formData, ...data });
     setCurrentStep(2);
@@ -15,9 +24,23 @@ export default function Talent() {
 
   const handleFinalSubmit = (finalData: object) => {
     // Combine all form data and submit
-    const completeData = { ...formData, ...finalData };
-    console.log("Complete form data:", completeData);
-    // Here you would typically send the data to your backend
+    const completeData = {
+      ...formData,
+      ...finalData,
+      location: "address",
+      talentId: tempo.id || "",
+
+    };
+    registerTalent(completeData as TalentRegisterStep2Dto, {
+      onSuccess: (response) => {
+        user.setAuth(response.token, response.talent);
+        setCookie("token", response.token);
+        router.push("/talent/dashboard");
+      },
+      onError: (error) => {
+        console.error("Registration error:", error);
+      },
+    });
   };
 
   return (

@@ -1,9 +1,11 @@
+"use client";
 import Footer from "@/components/common/footer";
 import JobCard from "@/components/common/job-card";
 import Navbar from "@/components/common/navbar";
 import CompanyCards from "@/components/pages/jobs/company-card";
 import Filter from "@/components/pages/jobs/filter";
 import { Button } from "@/components/ui/button";
+import { useJobListings } from "@/hooks/useJob";
 import {
   Select,
   SelectContent,
@@ -11,90 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useJobFilterStore } from "@/store/useJobFilterStore";
 
 export default function Jobs() {
-  const jobsData = [
-    {
-      timeAgo: "10 min ago",
-      title: "Forward Security Director",
-      company: "Reach, Schrage and Schmitt Co",
-      logo: "/images/Logo_1.png",
-      industry: "Hotels & Tourism",
-      employmentType: "Full time",
-      salary: "$40000-$45000",
-      location: "New York, USA",
-    },
-    {
-      timeAgo: "25 min ago",
-      title: "Senior Frontend Developer",
-      company: "Tech Innovations Inc",
-      logo: "/images/Logo_2.png",
-      industry: "Software Development",
-      employmentType: "Full time",
-      salary: "$75000-$90000",
-      location: "San Francisco, USA",
-    },
-    {
-      timeAgo: "1 hour ago",
-      title: "Marketing Manager",
-      company: "Global Marketing Solutions",
-      logo: "/images/Logo_3.png",
-      industry: "Marketing & Advertising",
-      employmentType: "Full time",
-      salary: "$60000-$70000",
-      location: "Chicago, USA",
-    },
-    {
-      timeAgo: "2 hours ago",
-      title: "Data Analyst",
-      company: "Data Insights Ltd",
-      logo: "/images/Logo_4.png",
-      industry: "Data Science",
-      employmentType: "Part time",
-      salary: "$45000-$55000",
-      location: "Austin, USA",
-    },
-    {
-      timeAgo: "3 hours ago",
-      title: "UX/UI Designer",
-      company: "Creative Design Studio",
-      logo: "/images/Logo_5.png",
-      industry: "Design",
-      employmentType: "Contract",
-      salary: "$50000-$65000",
-      location: "Los Angeles, USA",
-    },
-    {
-      timeAgo: "10 min ago",
-      title: "Forward Security Director",
-      company: "Reach, Schrage and Schmitt Co",
-      logo: "/images/Logo_1.png",
-      industry: "Hotels & Tourism",
-      employmentType: "Full time",
-      salary: "$40000-$45000",
-      location: "New York, USA",
-    },
-    {
-      timeAgo: "25 min ago",
-      title: "Senior Frontend Developer",
-      company: "Tech Innovations Inc",
-      logo: "/images/Logo_2.png",
-      industry: "Software Development",
-      employmentType: "Full time",
-      salary: "$75000-$90000",
-      location: "San Francisco, USA",
-    },
-    {
-      timeAgo: "1 hour ago",
-      title: "Marketing Manager",
-      company: "Global Marketing Solutions",
-      logo: "/images/Logo_3.png",
-      industry: "Marketing & Advertising",
-      employmentType: "Full time",
-      salary: "$60000-$70000",
-      location: "Chicago, USA",
-    },
-  ];
+  const filters = useJobFilterStore((s) => s.filters);
+  const { data: jobs, isLoading, isError } = useJobListings(filters);
+
+
+  if (isError) {
+    return <div>Error loading jobs.</div>;
+  }
 
   return (
     <section>
@@ -125,11 +53,17 @@ export default function Jobs() {
           </div>
 
           {/* Job Listings */}
-          <div className="space-y-4">
-            {jobsData.map((job, index) => (
-              <JobCard key={index} job={job} />
-            ))}
-          </div>
+          { jobs && jobs.length === 0 && <div>No jobs found.</div> }
+          {
+            (jobs && jobs.length > 0) ?
+            (<div className="space-y-4">
+              {jobs?.map((job, index) => (
+                <JobCard key={index} job={job} />
+              ))}
+            </div>) : isLoading ? (
+              <div>Loading...</div>
+            ) : (<div>No jobs found.</div>)
+          }
           {/* pagination */}
           <section className="flex justify-end my-10">
             <div className="flex md:gap-145 sm:gap-45">

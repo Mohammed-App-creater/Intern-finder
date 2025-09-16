@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown, LogOut, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
+import { useLogout } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/auth";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function UserProfileDropdown() {
@@ -32,26 +35,28 @@ export default function UserProfileDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
-    setIsOpen(false);
-  };
+  const user = useAuthStore((s) => s.user);
+  const logout = useLogout();
+  const router = useRouter();
 
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+    router.push("/");
+  };
   const toggleDarkMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
     setIsOpen(false);
   };
 
   if (!mounted) {
+    console.log(user);
     return (
       <div className="p-6">
         <div className="flex items-center gap-2">
           <Image
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            src={
-              "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
-            }
+            src={ (user?.role == "TALENT"? user.profileImageUrl : user?.logoUrl) || "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"}
             alt={"Profile Picture"}
             width={250}
             height={250}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -18,22 +19,27 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+import { useUploadProfilePicture } from "@/hooks/useFileUpload";
+
 interface TalentFormProps {
   onSubmit: (data: object) => void;
   initialData?: object;
 }
 
 export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     phoneNumber: "",
     institution: "",
     fieldOfStudy: "",
     program: "",
-    workType: "",
-    preferredRoles: "",
+    workingEnvironment: "",
+    preferredRole: "",
     location: "",
     ...initialData,
   });
+
+  const { mutate: uploadProfilePicture } = useUploadProfilePicture();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
@@ -46,6 +52,34 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleProfilePictureUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsLoading(true);
+    const file = event.target.files?.[0];
+    if (file) {
+      uploadProfilePicture(file, {
+        onSuccess: (data) => {
+          setProfileImage(data.url);
+
+          // keep in localStorage for reloads
+          localStorage.setItem("profileImageUrl", data.url);
+
+          // inject into formData
+          setFormData((prev) => ({
+            ...prev,
+            profileImageUrl: data.url,
+          }));
+          setIsLoading(false);
+        },
+        onError: (error) => {
+          setIsLoading(false);
+          console.error("Upload failed:", error);
+        },
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -127,15 +161,12 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                 accept="image/*"
                 className="hidden"
                 onChange={(e) => {
+                  handleProfilePictureUpload(e);
                   const file = e.target.files?.[0];
                   if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                      localStorage.setItem(
-                        "profileImage",
-                        reader.result as string
-                      );
-                      window.location.reload();
+                    reader.onload = () => {
+                      setProfileImage(reader.result as string);
                     };
                     reader.readAsDataURL(file);
                   }
@@ -253,9 +284,9 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                 Work Type
               </Label>
               <Select
-                value={formData.workType}
+                value={formData.workingEnvironment}
                 onValueChange={(value: string) =>
-                  handleInputChange("workType", value)
+                  handleInputChange("workingEnvironment", value)
                 }
               >
                 <SelectTrigger className="w-full">
@@ -281,9 +312,9 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
                 id="preferredRoles"
                 type="text"
                 placeholder="Software Development"
-                value={formData.preferredRoles}
+                value={formData.preferredRole}
                 onChange={(e) =>
-                  handleInputChange("preferredRoles", e.target.value)
+                  handleInputChange("preferredRole", e.target.value)
                 }
                 className="w-full"
               />
@@ -300,15 +331,20 @@ export default function TalentForm({ onSubmit, initialData }: TalentFormProps) {
               <LocationInput
                 formData={formData}
                 handleInputChange={handleInputChange}
+                field="location"
               />
             </div>
 
             {/* Continue Button */}
             <Button
               type="submit"
-              className="w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer"
+              disabled={isLoading} // ✅ disable while loading
+              className={`w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer flex items-center justify-center gap-2 ${
+                isLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Continue
+              {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
+              { isLoading ? "Uploading..." : "Continue"}
             </Button>
           </form>
         </div>

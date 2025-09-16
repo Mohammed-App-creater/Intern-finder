@@ -9,11 +9,9 @@ export const RegisterStep1Schema = z.object({
 export const RegisterStep2Schema = z.object({
     phone: z.string().refine((val) => !val || /^\+?[1-9]\d{1,14}$/.test(val), {
         message: "Invalid phone number",
-    }),
+    }).optional(),
     linkedinUrl: z.string().min(3, "LinkedIn URL is required"),
-    instagram: z.string().min(3, "Instagram handle is required"),
     websiteUrl: z.url(),
-    employeeCount: z.string(),
     headQuarter: z.string().min(1, "Headquarter is required"),
     branches: z.array(z.string()).optional(),
     industries: z.array(z.string()).min(1, "At least one industry is required"),

@@ -7,6 +7,7 @@ export const RegisterStep1Schema = z.object({
 });
 
 export const RegisterStep2Schema = z.object({
+    profileImageUrl: z.url("Invalid URL").optional(),
     location: z.string().min(2, "Location is required"),
     phoneNumber: z.string().min(9, "Phone number is required"),
     institution: z.string().min(3, "Institution is required"),

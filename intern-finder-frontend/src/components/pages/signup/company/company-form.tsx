@@ -10,20 +10,29 @@ import CompanyIcon from "@/components/icons/Company.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-
+import { useUploadProfilePicture } from "@/hooks/useFileUpload";
 interface CompanyFormProps {
   onSubmit: (data: object) => void;
-  initialData?: object;
+  initialData?: Partial<CompanyFormData>;
+}
+
+interface CompanyFormData {
+  organization: string;
+  industries: string[];
+  websiteUrl: string;
+  location: string;
+  logoUrl?: string;
+  [key: string]: string | string[] | undefined;
 }
 
 export default function CompanyForm({
   onSubmit,
   initialData,
 }: CompanyFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CompanyFormData>({
     organization: "",
-    industry: "",
-    website: "",
+    industries: [""],
+    websiteUrl: "",
     location: "",
     ...initialData,
   });
@@ -31,6 +40,7 @@ export default function CompanyForm({
   const router = useRouter();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const { mutate: uploadProfilePicture } = useUploadProfilePicture();
 
   useEffect(() => {
     const stored = localStorage.getItem("profileImage");
@@ -38,7 +48,38 @@ export default function CompanyForm({
   }, []);
 
   const handleInputChange = (field: string, value: string) => {
+    if(field === "industries") {
+      const industriesArray = value.split(',').map(ind => ind.trim());
+      setFormData((prev) => ({ ...prev, [field]: industriesArray }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleProfilePictureUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      uploadProfilePicture(file, {
+        onSuccess: (data) => {
+          setProfileImage(data.url);
+          handleInputChange("logoUrl", data.url);
+          console.log("Uploaded image URL:", data.url);
+          // keep in localStorage for reloads
+          localStorage.setItem("profileImage", data.url);
+
+          // inject into formData
+          setFormData((prev) => ({
+            ...prev,
+            logoUrl: data.url,
+          }));
+        },
+        onError: (error) => {
+          console.error("Upload failed:", error);
+        },
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -126,15 +167,12 @@ export default function CompanyForm({
                 accept="image/*"
                 className="hidden"
                 onChange={(e) => {
+                   handleProfilePictureUpload(e);
                   const file = e.target.files?.[0];
                   if (file) {
                     const reader = new FileReader();
-                    reader.onloadend = () => {
-                      localStorage.setItem(
-                        "profileImage",
-                        reader.result as string
-                      );
-                      window.location.reload();
+                    reader.onload = () => {
+                      setProfileImage(reader.result as string);
                     };
                     reader.readAsDataURL(file);
                   }
@@ -188,8 +226,8 @@ export default function CompanyForm({
                 id="industry"
                 type="text"
                 placeholder="Technology"
-                value={formData.industry}
-                onChange={(e) => handleInputChange("industry", e.target.value)}
+                value={formData.industries}
+                onChange={(e) => handleInputChange("industries", e.target.value)}
                 className="w-full"
               />
             </div>
@@ -206,8 +244,8 @@ export default function CompanyForm({
                 id="website"
                 type="text"
                 placeholder="www.example.com"
-                value={formData.website}
-                onChange={(e) => handleInputChange("website", e.target.value)}
+                value={formData.websiteUrl}
+                onChange={(e) => handleInputChange("websiteUrl", e.target.value)}
                 className="w-full"
               />
             </div>

@@ -10,6 +10,10 @@ import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+// Login form component
+import { useLogin } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/auth";
+
 export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -18,15 +22,22 @@ export default function LoginForm() {
     password: "",
   });
 
+  const loginMutation = useLogin();
+  const { user } = useAuthStore();
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt with:", formData);
-    router.push("/dashboard");
+    loginMutation.mutate(formData, {
+      onSuccess: () => {
+        console.log(user);
+        if (user?.role === "COMPANY") router.push("/client/dashboard");
+        if (user?.role === "TALENT") router.push("/talent/dashboard");
+      },
+    });
   };
 
   return (

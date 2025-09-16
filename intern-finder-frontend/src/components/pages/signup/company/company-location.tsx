@@ -26,7 +26,7 @@ export default function CompanyLocationForm({
   initialData,
 }: CompanyLocationFormProps) {
   const [formData, setFormData] = useState({
-    location: "",
+    headQuarter: "",
     otherLocation: "",
     workType: "",
     ...initialData,
@@ -103,8 +103,9 @@ export default function CompanyLocationForm({
                 Headquarters Location
               </Label>
               <LocationInput
-                formData={{ location: formData.location }}
+                formData={{ location: formData.headQuarter }}
                 handleInputChange={handleInputChange}
+                field="headQuarter"
               />
             </div>
 
@@ -119,6 +120,7 @@ export default function CompanyLocationForm({
               <LocationInput
                 formData={{ location: formData.otherLocation }}
                 handleInputChange={handleInputChange}
+                field="otherLocation"
               />
             </div>
 

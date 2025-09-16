@@ -10,6 +10,13 @@ import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+import {
+  useTalentRegisterStep1,
+  useCompanyRegisterStep1,
+} from "@/hooks/useAuth";
+import { tempoAuthstore } from "@/store/auth";
+import { tempoAuthState } from "@/types/auth"
+
 export function SignUpForm() {
   const router = useRouter();
   const [userType, setUserType] = useState<"talent" | "company">("talent");
@@ -21,6 +28,10 @@ export function SignUpForm() {
     password: "",
     confirmPassword: "",
   });
+
+  const authStore = tempoAuthstore();
+  const talentRegisterStep1 = useTalentRegisterStep1();
+  const companyRegisterStep1 = useCompanyRegisterStep1();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -44,9 +55,35 @@ export function SignUpForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (userType === "talent") {
-      router.push("/signup/talent");
+      talentRegisterStep1.mutate(
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: "talent",
+        },
+        {
+          onSuccess: (data: tempoAuthState) => {
+            authStore.setAuth(  data.id, data.email, data.fullName, "talent");
+            router.push("/signup/talent");
+          },
+        }
+      );
     } else {
-      router.push("/signup/company");
+      companyRegisterStep1.mutate(
+        {
+          companyName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: "company",
+        },
+        {
+          onSuccess: (data) => {
+            authStore.setAuth(data.id, data.fullName, data.email, "company");
+            router.push("/signup/company");
+          },
+        }
+      );
     }
   };
 
@@ -258,7 +295,12 @@ export function SignUpForm() {
               type="submit"
               className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
             >
-              <Image src={"https://cdn-icons-png.flaticon.com/128/281/281764.png"} alt={"Google Icon"} width={20} height={20}/>
+              <Image
+                src={"https://cdn-icons-png.flaticon.com/128/281/281764.png"}
+                alt={"Google Icon"}
+                width={20}
+                height={20}
+              />
               <div>Continue with Google</div>
             </Button>
 

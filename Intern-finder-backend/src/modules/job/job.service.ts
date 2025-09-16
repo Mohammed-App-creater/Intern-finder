@@ -41,7 +41,7 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
     }
 
     if (filters.minExperienceYears !== undefined) {
-      where.minExperienceYears = { lte: filters.minExperienceYears };
+      where.minExperienceYears = { lte: Number(filters.minExperienceYears) };
     }
 
     if (filters.datePosted) {
@@ -63,14 +63,14 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
     if (filters.salaryMin !== undefined) {
       salaryConditions.push({
         minSalary: {
-          gte: filters.salaryMin, // still string in DB
+          gte: Number(filters.salaryMin), // still string in DB
         },
       });
     }
     if (filters.salaryMax !== undefined) {
       salaryConditions.push({
         maxSalary: {
-          lte: filters.salaryMax,
+          lte: Number(filters.salaryMax),
         },
       });
     }
@@ -99,6 +99,7 @@ export const getAllJobs = async (filters: JobFilters = {}) => {
           select: {
             id: true,
             companyName: true,
+            logoUrl: true,
           },
         },
       },

@@ -114,6 +114,8 @@ export function Sidebar({ className }: SidebarProps) {
     },
   ];
 
+  
+
   return (
     <div
       className={cn(
