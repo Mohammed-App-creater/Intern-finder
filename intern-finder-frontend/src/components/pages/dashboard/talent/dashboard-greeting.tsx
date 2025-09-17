@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
+import { formatRange } from "@/lib/utils"
 
 export function DashboardGreeting() {
   const user = useAuthStore().user;
@@ -14,13 +15,12 @@ export function DashboardGreeting() {
           variant="outline"
           className="flex items-center gap-5 text-sm text-light"
         >
-          <span></span>
+          <span>{formatRange(new Date(), "week")}</span>
           <Calendar className="w-4 h-4 text-primary" />
         </Button>
       </div>
       <p className="text-light text-sm">
-        Here is what&apos;s happening with your job search applications from
-        July 19 - July 25.
+        Here is what&apos;s happening with your job search applications from {formatRange(new Date(), "week")}.
       </p>
     </div>
   );

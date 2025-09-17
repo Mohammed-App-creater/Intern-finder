@@ -1,8 +1,13 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
 
 export function AboutMe() {
+  const user = useAuthStore().user;
+  const { bio } = user?.role == "TALENT" ? user : {};
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -16,14 +21,7 @@ export function AboutMe() {
       <CardContent>
         <div className="space-y-4 text-sm text-light leading-relaxed">
           <p>
-            I&apos;m a product designer + filmmaker currently working remotely
-            at Twitter from beautiful Manchester, United Kingdom. I love
-            designing digital products that have a positive impact on the world.
-          </p>
-          <p>
-            For 10 years, I&apos;ve specialised in interface, experience &
-            interaction design as well as working in user research and product
-            strategy for product agencies, big tech companies & start-ups.
+            {bio}
           </p>
         </div>
       </CardContent>
