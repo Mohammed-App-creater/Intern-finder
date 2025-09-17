@@ -1,8 +1,13 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Mail, Phone, Languages } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
 
 export function AdditionalDetails() {
+  const user = useAuthStore().user;
+  const { email, phoneNumber, languages } = user?.role == "TALENT" ? user : {};
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -18,7 +23,7 @@ export function AdditionalDetails() {
           <Mail className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">Email</span>
-            <span className="text-sm text-dark">jakegyll@email.com</span>
+            <span className="text-sm text-dark">{email}</span>
           </div>
         </div>
 
@@ -26,7 +31,7 @@ export function AdditionalDetails() {
           <Phone className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">Phone</span>
-            <span className="text-sm text-dark">+17 48 29 6728</span>
+            <span className="text-sm text-dark">{phoneNumber}</span>
           </div>
         </div>
 
@@ -34,7 +39,7 @@ export function AdditionalDetails() {
           <Languages className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">Language</span>
-            <span className="text-sm text-dark">English, Manderin</span>
+            <span className="text-sm text-dark">{languages?.join(", ")}</span>
           </div>
         </div>
       </CardContent>

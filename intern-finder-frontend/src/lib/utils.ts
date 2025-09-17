@@ -58,3 +58,36 @@ export const changeDateToTimeAgo = (dateString: string) => {
     const diffInDays = Math.floor(diffInHours / 24);
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   }
+
+export const formatRange = (date: Date, type: "week" | "month" | "year"): string => {
+  const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
+
+  if (type === "week") {
+    // Get start (Sunday) and end (Saturday) of the week
+    const day = date.getDay();
+    const diffToStart = date.getDate() - day;
+    const diffToEnd = diffToStart + 6;
+
+    const start = new Date(date);
+    start.setDate(diffToStart);
+
+    const end = new Date(date);
+    end.setDate(diffToEnd);
+
+    return `${start.toLocaleDateString("en-US", options)} - ${end.toLocaleDateString("en-US", options)}`;
+  }
+
+  if (type === "month") {
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return `${start.toLocaleDateString("en-US", options)} - ${end.toLocaleDateString("en-US", options)}`;
+  }
+
+  if (type === "year") {
+    const start = new Date(date.getFullYear(), 0, 1);
+    const end = new Date(date.getFullYear(), 11, 31);
+    return `${start.toLocaleDateString("en-US", options)} - ${end.toLocaleDateString("en-US", options)}`;
+  }
+
+  throw new Error("Invalid type");
+}

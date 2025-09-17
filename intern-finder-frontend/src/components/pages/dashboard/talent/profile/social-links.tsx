@@ -1,9 +1,14 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Instagram, Globe, Linkedin } from "lucide-react";
 import Link from "next/link";
+import { useAuthStore } from "@/store/auth"
 
 export function SocialLinks() {
+  const user = useAuthStore().user;
+  const { instagramUrl, linkedinUrl, personalWebsite, fullName } = user?.role == "TALENT" ? user : {};
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -19,8 +24,8 @@ export function SocialLinks() {
           <Instagram className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">Instagram</span>
-            <Link href="#" className="text-sm text-primary">
-              instagram.com/jakegyll
+            <Link href={instagramUrl ?? ""} className="text-sm text-primary">
+              instagram.com/{fullName?.toLowerCase().replace(" ", "")}
             </Link>
           </div>
         </div>
@@ -29,8 +34,8 @@ export function SocialLinks() {
           <Linkedin className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">LinkedIn</span>
-            <Link href="#" className="text-sm text-primary">
-              linkedin.com/in/jakegyll
+            <Link href={linkedinUrl ?? ""} className="text-sm text-primary">
+              linkedin.com/in/{fullName?.toLowerCase().replace(" ", "")}
             </Link>
           </div>
         </div>
@@ -39,8 +44,8 @@ export function SocialLinks() {
           <Globe className="h-4 w-4 text-light" />
           <div className="flex flex-col gap-1">
             <span className="text-sm text-light">Website</span>
-            <Link href="#" className="text-sm text-primary">
-              www.jakegyll.com
+            <Link href={personalWebsite ?? ""} className="text-sm text-primary">
+              {personalWebsite ?? ""}
             </Link>
           </div>
         </div>

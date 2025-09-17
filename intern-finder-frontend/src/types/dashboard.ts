@@ -30,3 +30,19 @@ export interface TalentRecentApplications {
         }
     ]
 }
+
+export interface TalentUpcomingInterview {
+    upcomingInterviews: [
+        {
+            id: string,
+            jobTitle: string,
+            companyName: string,
+            companyLogo: string,
+            contactName: string,
+            contactJobTitle: string,
+            appliedAt: Date,
+            jobLocation: string,
+            jobEnvironment: string
+        }
+    ]
+}

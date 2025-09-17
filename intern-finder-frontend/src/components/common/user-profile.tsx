@@ -35,7 +35,7 @@ export default function UserProfileDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const user = useAuthStore((s) => s.user);
+  const user = useAuthStore().user;
   const logout = useLogout();
   const router = useRouter();
 
@@ -93,9 +93,9 @@ export default function UserProfileDropdown() {
           height={250}
         />
         <div className="hidden sm:block text-left">
-          <p className="text-dark font-medium text-sm">John Doe</p>
+          <p className="text-dark font-medium text-sm">{user?.role == "TALENT" ? user?.fullName : user?.companyName}</p>
           <p className="text-light text-xs dark:text-gray-400">
-            Software Engineer
+            {user?.role == "TALENT" ? user?.fieldOfStudy : user?.industries}
           </p>
         </div>
         <ChevronDown

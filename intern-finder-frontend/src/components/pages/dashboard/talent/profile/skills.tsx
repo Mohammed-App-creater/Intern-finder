@@ -1,16 +1,14 @@
+"use client";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
 
-const skills = [
-  "Communication",
-  "Analytics",
-  "Facebook Ads",
-  "Content Planning",
-  "Community Manager",
-];
 
 export default function Skills() {
+  const user =  useAuthStore().user;
+  const { skills } = user?.role == "TALENT" ? user : {};
+
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -26,7 +24,7 @@ export default function Skills() {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
-          {skills.map((skill, index) => (
+          {skills?.map((skill, index) => (
             <span
               key={index}
               className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-secondary text-primary border"
