@@ -9,6 +9,7 @@ import {
   Settings,
   HelpCircle,
   Building2,
+  UsersRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -74,6 +75,13 @@ export function Sidebar({ className }: SidebarProps) {
       label: "Messages",
       href: "/messages",
       active: isActive("/messages"),
+      isDashboard: false,
+    },
+    {
+      icon: UsersRound,
+      label: "All Applicants",
+      href: "/applicants",
+      active: isActive("/applicants"),
       isDashboard: false,
     },
     {

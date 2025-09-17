@@ -9,7 +9,7 @@ import { OpenPositionsSection } from "@/components/pages/dashboard/client/Compan
 
 export default function CompanyProfilePage() {
   return (
-    <div className="min-h-screen px-2">
+    <div className="min-h-screen px-2 mt-5">
       <CompanyHeader />
       <div className="flex gap-3">
         <div className="max-w-5xl">
