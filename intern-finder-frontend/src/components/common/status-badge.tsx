@@ -1,13 +1,14 @@
 import { cn } from "@/lib/utils";
 
 interface StatusBadgeProps {
-  
-  
-  
-  
-
-
-  status: "accepted" | "offered" | "pending" | "rejected" | "shortlisted" | "interview" ;
+  status:
+    | "In Review"
+    | "Interviewing"
+    | "Interviewed"
+    | "Declined"
+    | "Shortlisted"
+    | "Unsuitable"
+    | "Offered";
   className?: string;
 }
 
