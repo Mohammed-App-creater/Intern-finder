@@ -79,7 +79,7 @@ export default function UserProfileDropdown() {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute left-0 top-full mt-2 w-48 rounded-md border bg-white shadow-lg z-50">
-          <div className="flex justify-center p-2 space-y-1">No Other Company</div>
+          <div className="flex justify-center p-2 space-y-1">No other companies</div>
         </div>
       )}
     </div>
