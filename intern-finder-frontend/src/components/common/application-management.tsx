@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // Added import
 import {
   Search,
   Filter,
@@ -32,7 +33,7 @@ const applicants = [
   {
     id: 1,
     name: "Jake Gyll",
-    avatar: "/professional-male-headshot.png",
+    avatar: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg",
     score: 0.0,
     stage: "Interview" as const,
     appliedDate: "13 July, 2021",
@@ -41,7 +42,8 @@ const applicants = [
   {
     id: 2,
     name: "Guy Hawkins",
-    avatar: "/professional-headshot-male-casual.jpg",
+    avatar:
+      "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg",
     score: 0.0,
     stage: "Interview" as const,
     appliedDate: "13 July, 2021",
@@ -50,7 +52,7 @@ const applicants = [
   {
     id: 3,
     name: "Cyndy Lillibridge",
-    avatar: "/professional-headshot-female.png",
+    avatar: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
     score: 4.5,
     stage: "Shortlisted" as const,
     appliedDate: "12 July, 2021",
@@ -59,7 +61,8 @@ const applicants = [
   {
     id: 4,
     name: "Rodolfo Goode",
-    avatar: "/professional-headshot-male-beard.jpg",
+    avatar:
+      "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg",
     score: 3.75,
     stage: "Declined" as const,
     appliedDate: "11 July, 2021",
@@ -68,7 +71,8 @@ const applicants = [
   {
     id: 5,
     name: "Leif Floyd",
-    avatar: "/professional-headshot-male-glasses.png",
+    avatar:
+      "https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg",
     score: 4.8,
     stage: "Hired" as const,
     appliedDate: "11 July, 2021",
@@ -77,7 +81,7 @@ const applicants = [
   {
     id: 6,
     name: "Jenny Wilson",
-    avatar: "/professional-headshot-female-blonde.jpg",
+    avatar: "https://images.pexels.com/photos/943084/pexels-photo-943084.jpeg",
     score: 4.6,
     stage: "Hired" as const,
     appliedDate: "9 July, 2021",
@@ -86,7 +90,8 @@ const applicants = [
   {
     id: 7,
     name: "Jerome Bell",
-    avatar: "/professional-headshot-male-african-american.jpg",
+    avatar:
+      "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg",
     score: 4.0,
     stage: "Interviewed" as const,
     appliedDate: "5 July, 2021",
@@ -95,7 +100,8 @@ const applicants = [
   {
     id: 8,
     name: "Eleanor Pena",
-    avatar: "/professional-headshot-female-brunette.jpg",
+    avatar:
+      "https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg",
     score: 3.9,
     stage: "Declined" as const,
     appliedDate: "5 July, 2021",
@@ -104,7 +110,8 @@ const applicants = [
   {
     id: 9,
     name: "Darrell Steward",
-    avatar: "/professional-headshot-young-male.png",
+    avatar:
+      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg",
     score: 4.2,
     stage: "Shortlisted" as const,
     appliedDate: "3 July, 2021",
@@ -113,7 +120,8 @@ const applicants = [
   {
     id: 10,
     name: "Floyd Miles",
-    avatar: "/professional-headshot-male-senior.jpg",
+    avatar:
+      "https://images.pexels.com/photos/1080213/pexels-photo-1080213.jpeg",
     score: 4.1,
     stage: "Interviewed" as const,
     appliedDate: "1 July, 2021",
@@ -122,6 +130,7 @@ const applicants = [
 ];
 
 export function ApplicantManagement() {
+  const router = useRouter(); // Initialize router
   const [selectedApplicants, setSelectedApplicants] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<"pipeline" | "table">("table");
   const [searchQuery, setSearchQuery] = useState("");
@@ -431,6 +440,7 @@ export function ApplicantManagement() {
                               variant="none"
                               size="sm"
                               className="text-primary border-primary bg-secondary rounded-sm p-5"
+                              onClick={() => router.push(`/client/dashboard/applicants/${applicant.id}`)}
                             >
                               See Application
                             </Button>

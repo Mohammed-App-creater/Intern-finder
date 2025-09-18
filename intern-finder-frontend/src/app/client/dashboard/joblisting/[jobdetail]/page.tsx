@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ApplicantManagement } from "@/components/common/application-mamgement";
+import { ApplicantManagement } from "@/components/common/application-management";
 import ApplicationTableHeader from "@/components/common/application-table-header";
 
 export default function JobDetailPage() {
