@@ -42,6 +42,7 @@ export interface TalentDto {
   password: string;
   role: "TALENT";
   phoneNumber?: string;
+  birthday? : Date;
   languages?: string[];
   linkedinUrl?: string;
   personalWebsite?: string;

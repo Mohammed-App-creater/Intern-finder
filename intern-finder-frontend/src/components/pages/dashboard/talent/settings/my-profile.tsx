@@ -17,20 +17,42 @@ import { useUpdateBasicInfo } from "@/hooks/useTalentSettings";
 import { useAuthStore } from "@/store/auth";
 
 export default function MyProfileTab() {
+  const user = useAuthStore().user;
   const [formData, setFormData] = useState({
-    fullName: "Jake Gyll",
-    phone: "+44 1245 572 135",
-    email: "jakegyll@gmail.com",
-    dateOfBirth: "09/08/1997",
-    gender: "Male",
+    talentId: user?.role === "TALENT" ? user.id ?? "" : "",
+    fullName: user?.role === "TALENT" ? user.fullName ?? "" : "",
+    phone: user?.role === "TALENT" ? user.phoneNumber ?? "" : "",
+    email: user?.role === "TALENT" ? user.email ?? "" : "",
+    dateOfBirth: user?.role === "TALENT" ? user.birthday ?? "" : "",
+    gender: user?.role === "TALENT" ? user.gender ?? "" : "",
   });
+  const updateBasicInfo = useUpdateBasicInfo();
+ 
+  const handleUpdate = () => {
+    updateBasicInfo.mutate(
+      {
+        talentId: formData.talentId,
+        basicInfo: {
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          dateOfBirth: formData.dateOfBirth,
+          gender: formData.gender,
+        },
+      },
+      {
+        onSuccess: () => {
+          console.log("Updated successfully ✅");
+        },
+        onError: (err) => {
+          console.error("Failed to update ❌", err);
+        },
+      }
+    );
+  };
 
-  const user = useAuthStore().user
-  const handlUpdate = () => {
-    return;
-  }
-
-  const { fullName, profileImageUrl, email, phoneNumber, gender,   } = user?.role == "TALENT" ? user : {};
+  const { fullName, profileImageUrl, email, phoneNumber, gender } =
+    user?.role == "TALENT" ? user : {};
 
   return (
     <div className="flex flex-col gap-2 space-y-8">
@@ -56,11 +78,10 @@ export default function MyProfileTab() {
           </div>
 
           <Avatar className="w-35 h-35">
-            <AvatarImage
-              src={profileImageUrl ?? ""}
-              alt="Profile Picture"
-            />
-            <AvatarFallback className="text-lg">{fullName?.charAt(0)}</AvatarFallback>
+            <AvatarImage src={profileImageUrl ?? ""} alt="Profile Picture" />
+            <AvatarFallback className="text-lg">
+              {fullName?.charAt(0)}
+            </AvatarFallback>
           </Avatar>
 
           <div className="border-2 border-dashed border-primary rounded-lg p-8 flex-1 max-w-md">
