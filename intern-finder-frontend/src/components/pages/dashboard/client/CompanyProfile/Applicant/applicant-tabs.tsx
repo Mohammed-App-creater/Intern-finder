@@ -20,7 +20,7 @@ export function ApplicantTabs({ activeTab, onTabChange }: ApplicantTabsProps) {
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`py-4 text-sm font-medium border-b-2 transition-colors ${
+            className={`py-4 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === tab.id
                 ? "border-primary text-primary"
                 : "border-transparent text-light hover:text-dark"
