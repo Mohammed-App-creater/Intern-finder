@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -87,7 +88,6 @@ export default function MyProfileTab() {
 
   const handleUpdate = () => {
     setIsLoading(true);
-    console.log("The form data: ",formData, new Date(formData.dateOfBirth))
     updateBasicInfo.mutate(
       {
         talentId: formData.talentId,
@@ -130,7 +130,6 @@ export default function MyProfileTab() {
   if (isLoading || !user) {
     <div>Loading...</div>;
   }
- console.log(user)
   return (
     <div className="flex flex-col gap-2 space-y-8">
       <div className="border-b mb-10 pb-10">
@@ -260,9 +259,9 @@ export default function MyProfileTab() {
                   id="dateOfBirth"
                   value={
                     typeof formData.dateOfBirth === "string"
-                      ? formData.dateOfBirth
+                      ? formData.dateOfBirth.split("T")[0]
                       : formData.dateOfBirth instanceof Date
-                      ? formData.dateOfBirth.toISOString().slice(0, 10)
+                      ? formData.dateOfBirth.toISOString().slice(0, 10).split("T")[0]
                       : ""
                   }
                   onChange={(e) =>
@@ -303,7 +302,14 @@ export default function MyProfileTab() {
           disabled={isLoading}
           className="bg-primary hover:bg-primary/90 text-white px-8"
         >
-          {isLoading ? "Updating.." : "Save Profile"}
+          {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Save Updates...
+              </>
+            ) : (
+              "Save Profile"
+            )}
         </Button>
       </div>
     </div>

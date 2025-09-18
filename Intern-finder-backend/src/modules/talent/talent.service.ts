@@ -341,7 +341,7 @@ export const updateTalent = async (talentId: string, data: any) => {
     return updated;
 };
 
-export const updateBasicInfo = async (talentId: string, data: { fullName?: string; profileImageUrl?: string; gender?: string; dateOfBirth?: string; }) => {
+export const updateBasicInfo = async (talentId: string, data: { fullName?: string; phoneNumber?: string; profileImageUrl?: string; gender?: string; dateOfBirth?: string; }) => {
     // Store dateOfBirth under settings to avoid schema migration
     const current = await prisma.talent.findUnique({ where: { id: talentId }, select: { settings: true } });
     const baseSettings = (current?.settings && typeof current.settings === 'object') ? current.settings as Record<string, any> : {} as Record<string, any>;
@@ -351,6 +351,7 @@ export const updateBasicInfo = async (talentId: string, data: { fullName?: strin
         data: {
             fullName: data.fullName,
             profileImageUrl: data.profileImageUrl,
+            phoneNumber: data.phoneNumber,
             gender: data.gender as any,
             settings: mergedSettings as any,
             birthday: data.dateOfBirth

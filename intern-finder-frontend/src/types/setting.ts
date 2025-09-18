@@ -7,3 +7,8 @@ export interface BasicInfo {
   gender: "male" | "female",
   dateOfBirth: Date
 }
+
+export interface Password {
+  oldPassword: string,
+  newPassword: string
+}

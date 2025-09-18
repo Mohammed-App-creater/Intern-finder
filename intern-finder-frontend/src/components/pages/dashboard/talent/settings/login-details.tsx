@@ -5,10 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CheckCircle, Info } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
+import { useUpdateEmail, useUpdatePassword } from "@/hooks/useTalentSettings";
 
 export default function LoginDetailsTab() {
+  const user = useAuthStore().user;
+  const [isEmailLoading, setEmailIsLoading] = useState(false);
+  const [isPasswordLoading, setPasswordIsLoading] = useState(false);
   const [emailData, setEmailData] = useState({
-    currentEmail: "jakegyll@gmail.com",
+    currentEmail: user?.email,
     newEmail: "",
   });
 
@@ -16,6 +22,50 @@ export default function LoginDetailsTab() {
     oldPassword: "",
     newPassword: "",
   });
+
+  const talentId = user?.id || "";
+  const updateEmail = useUpdateEmail();
+  const updatePassword = useUpdatePassword();
+
+  const handleUpdateEmail = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setEmailIsLoading(true);
+    updateEmail.mutate(
+      { talentId, email: emailData.newEmail },
+      {
+        onSuccess: () => {
+          setEmailIsLoading(false);
+          console.log("email Update successfully ✅");
+        },
+        onError: () => {
+          setEmailIsLoading(false);
+          console.log("email Update filed");
+        },
+      }
+    );
+  };
+
+  const handleUpdatePassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setPasswordIsLoading(true);
+    updatePassword.mutate(
+      { talentId, passwords: passwordData },
+      {
+        onSuccess: () => {
+          setPasswordIsLoading(false);
+          console.log("Password Update successfully ✅");
+        },
+        onError: () => {
+          setPasswordIsLoading(false);
+          console.log("Password Update filed");
+        },
+      }
+    );
+  };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-8">
@@ -69,8 +119,19 @@ export default function LoginDetailsTab() {
                 />
               </div>
 
-              <Button className="bg-primary hover:bg-primary/90 text-white">
-                Update Email
+              <Button
+                onClick={handleUpdateEmail}
+                disabled={isEmailLoading}
+                className="bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2"
+              >
+                {isEmailLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  "Update Email"
+                )}
               </Button>
             </div>
           </div>
@@ -132,16 +193,25 @@ export default function LoginDetailsTab() {
             <p className="text-light text-xs mt-1">Minimum 8 characters</p>
           </div>
 
-          <Button className="bg-primary hover:bg-primary/90 text-white w-fit">
-            Change Password
+          <Button
+            onClick={handleUpdatePassword}
+            disabled={isPasswordLoading}
+            className="bg-primary hover:bg-primary/90 text-white flex items-center justify-center gap-2"
+          >
+            {isPasswordLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              "Update Password"
+            )}
           </Button>
         </div>
       </div>
       <div className="pt-5 border-t">
         <div className="max-w-6xl flex justify-end items-center gap-3">
-          <Button
-            variant="none"
-          >
+          <Button variant="none">
             <h4 className="text-red-500 font-medium">Close Account</h4>
             <Info className="w-5 h-5 text-red-500" />
           </Button>
