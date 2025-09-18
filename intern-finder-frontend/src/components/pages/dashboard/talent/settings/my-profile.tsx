@@ -95,7 +95,7 @@ export default function MyProfileTab() {
           fullName: formData.fullName,
           phoneNumber: formData.phone,
           email: formData.email,
-          birthday: new Date(formData.dateOfBirth),
+          dateOfBirth: new Date(formData.dateOfBirth),
           gender: formData.gender as "male" | "female",
           profileImageUrl: formData.profileImageUrl,
         },

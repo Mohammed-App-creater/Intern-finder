@@ -5,5 +5,5 @@ export interface BasicInfo {
   profileImageUrl: string,
   phoneNumber: string,
   gender: "male" | "female",
-  birthday: Date
+  dateOfBirth: Date
 }

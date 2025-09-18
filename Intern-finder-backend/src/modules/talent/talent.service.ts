@@ -346,7 +346,6 @@ export const updateBasicInfo = async (talentId: string, data: { fullName?: strin
     const current = await prisma.talent.findUnique({ where: { id: talentId }, select: { settings: true } });
     const baseSettings = (current?.settings && typeof current.settings === 'object') ? current.settings as Record<string, any> : {} as Record<string, any>;
     const mergedSettings = data.dateOfBirth ? { ...baseSettings, dateOfBirth: normalizeToISODateString(data.dateOfBirth) } : undefined;
-
     const talent = await prisma.talent.update({
         where: { id: talentId },
         data: {
