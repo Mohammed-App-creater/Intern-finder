@@ -98,12 +98,11 @@ model Company {
   team             Json? // [{profilePic, name, position, socialLinks}]
   jobs             Job[] // relation: one company -> many jobs
   dashboard        CompanyDashboardStats?
-
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  Notification  Notification[]
-  CompanyMember CompanyMember[]
-  Interview     Interview[]
+  updatedAt        DateTime               @updatedAt
+  createdAt        DateTime               @default(now())
+  Notification     Notification[]
+  CompanyMember    CompanyMember[]
+  Interview        Interview[]
 }
 
 /// new: company team members (company can add talents as team members)
@@ -148,6 +147,7 @@ model Talent {
   gender             Gender?
   profileImageUrl    String?
   backgroundImageUrl String?
+  birthday           DateTime?
   rating             Float?                @default(0.0)
   address            String?
   yearsExperience    Int?

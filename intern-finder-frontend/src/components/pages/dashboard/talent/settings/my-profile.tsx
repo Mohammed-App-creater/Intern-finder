@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload, Calendar } from "lucide-react";
+import { useUpdateBasicInfo } from "@/hooks/useTalentSettings";
+import { useAuthStore } from "@/store/auth";
 
 export default function MyProfileTab() {
   const [formData, setFormData] = useState({
@@ -22,6 +24,13 @@ export default function MyProfileTab() {
     dateOfBirth: "09/08/1997",
     gender: "Male",
   });
+
+  const user = useAuthStore().user
+  const handlUpdate = () => {
+    return;
+  }
+
+  const { fullName, profileImageUrl, email, phoneNumber, gender,   } = user?.role == "TALENT" ? user : {};
 
   return (
     <div className="flex flex-col gap-2 space-y-8">
@@ -48,10 +57,10 @@ export default function MyProfileTab() {
 
           <Avatar className="w-35 h-35">
             <AvatarImage
-              src="https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
+              src={profileImageUrl ?? ""}
               alt="Profile Picture"
             />
-            <AvatarFallback className="text-lg">JG</AvatarFallback>
+            <AvatarFallback className="text-lg">{fullName?.charAt(0)}</AvatarFallback>
           </Avatar>
 
           <div className="border-2 border-dashed border-primary rounded-lg p-8 flex-1 max-w-md">

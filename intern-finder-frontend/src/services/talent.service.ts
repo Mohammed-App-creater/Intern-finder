@@ -1,5 +1,7 @@
 import api  from '@/lib/axios';
 import { TalentTotalInterView, TalentStates, TalentTotalJobsApplied, TalentRecentApplications, TalentUpcomingInterview } from "@/types/dashboard";
+import { BasicInfo } from '@/types/setting';
+import { TalentDto } from '@/types/user';
 
 export const getTalentDashboardTotalJobsApplied = async (talentId: string): Promise<TalentTotalJobsApplied> => {
     const { data } = await api.get(`talent/${talentId}/dashboard/total-jobs-applied`);
@@ -25,3 +27,10 @@ export const getTalentDashboardRecentApplications = async (talentId: string): Pr
     const { data } = await api.get(`talent/${talentId}/dashboard/recent-applications`);
     return data.data;
 }
+
+// Update
+
+export const UpdateBasicInfoTalent =  async (talentId: string, BasicInfo: BasicInfo): Promise<TalentDto>  => {
+    const { data } = await api.put(`talentId/${talentId}/settings/basic-info`, BasicInfo)
+    return data.data;
+} 
