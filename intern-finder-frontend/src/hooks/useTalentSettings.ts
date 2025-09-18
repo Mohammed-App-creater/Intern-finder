@@ -1,6 +1,6 @@
-import { UpdateBasicInfoTalent, UpdateEmail, UpdatePassword } from "@/services/talent.service"
+import { UpdateBasicInfoTalent, UpdateEmail, UpdateNotification, UpdatePassword } from "@/services/talent.service"
 import { useMutation } from "@tanstack/react-query";
-import { BasicInfo, Password } from "@/types/setting";
+import { BasicInfo, Password , Notification} from "@/types/setting";
 
 export const useUpdateBasicInfo = () => {
     return useMutation({
@@ -18,11 +18,20 @@ export const useUpdateEmail = () => {
       });
 
     }
+    
 export const useUpdatePassword = () => {
     return useMutation({
         mutationKey: ["talent", "setting", "password"],
         mutationFn: ({ talentId, passwords }: { talentId: string; passwords: Password }) =>
             UpdatePassword(talentId, passwords),
+      });
+}
+
+export const useUpdateNotification = () => {
+    return useMutation({
+        mutationKey: ["talent", "setting", "notification"],
+        mutationFn: ({ talentId, notification }: { talentId: string; notification: Notification }) =>
+            UpdateNotification(talentId, notification),
       });
 }
 

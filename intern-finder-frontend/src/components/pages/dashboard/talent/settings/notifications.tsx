@@ -5,13 +5,39 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useUpdateNotification } from "@/hooks/useTalentSettings";
+import { useAuthStore } from "@/store/auth";
+import { Loader2 } from "lucide-react";
 
 export default function NotificationsTab() {
+  const user = useAuthStore().user;
+  const talentId = user?.role === "TALENT" ? user.id : "";
+  const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState({
-    applications: true,
-    jobs: false,
-    recommendations: false,
+    application: user?.role === "TALENT" ? false : true,
+    job: false,
+    recommendation: false,
+    alert: false,
   });
+
+  const update = useUpdateNotification();
+
+  const handleUpdate = () => {
+    setIsLoading(true);
+    update.mutate(
+      { talentId: talentId ?? "", notification: notifications },
+      {
+        onSuccess: () => {
+          setIsLoading(false);
+          console.log("Update Successful");
+        },
+        onError: () => {
+          setIsLoading(false);
+          console.log("Update failed");
+        },
+      }
+    );
+  };
 
   return (
     <div className="space-y-8">
@@ -38,11 +64,11 @@ export default function NotificationsTab() {
           <div className="flex items-start gap-3">
             <Checkbox
               id="applications"
-              checked={notifications.applications}
+              checked={notifications.application}
               onCheckedChange={(checked) =>
                 setNotifications({
                   ...notifications,
-                  applications: checked as boolean,
+                  application: checked as boolean,
                 })
               }
               className="mt-1 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
@@ -63,9 +89,9 @@ export default function NotificationsTab() {
           <div className="flex items-start gap-3">
             <Checkbox
               id="jobs"
-              checked={notifications.jobs}
+              checked={notifications.job}
               onCheckedChange={(checked) =>
-                setNotifications({ ...notifications, jobs: checked as boolean })
+                setNotifications({ ...notifications, job: checked as boolean })
               }
               className="mt-1 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
@@ -85,11 +111,11 @@ export default function NotificationsTab() {
           <div className="flex items-start gap-3">
             <Checkbox
               id="recommendations"
-              checked={notifications.recommendations}
+              checked={notifications.recommendation}
               onCheckedChange={(checked) =>
                 setNotifications({
                   ...notifications,
-                  recommendations: checked as boolean,
+                  recommendation: checked as boolean,
                 })
               }
               className="mt-1 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
@@ -107,9 +133,46 @@ export default function NotificationsTab() {
               </p>
             </div>
           </div>
+
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="recommendations"
+              checked={notifications.alert}
+              onCheckedChange={(checked) =>
+                setNotifications({
+                  ...notifications,
+                  alert: checked as boolean,
+                })
+              }
+              className="mt-1 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+            />
+            <div className="flex-1">
+              <Label
+                htmlFor="recommendations"
+                className="text-dark font-medium cursor-pointer"
+              >
+                Alert
+              </Label>
+              <p className="text-light text-sm mt-1">
+                These are notifications for the system  
+                alerting you about important updates
+              </p>
+            </div>
+          </div>
           <div className="flex justify-start">
-            <Button className="bg-primary hover:bg-primary/90 text-white px-8">
-              Update Notification
+            <Button
+              onClick={handleUpdate}
+              disabled={isLoading}
+              className="bg-primary hover:bg-primary/90 text-white px-8"
+            >
+              {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Update Notification...
+              </>
+            ) : (
+              "Save Profile"
+            )}
             </Button>
           </div>
         </div>

@@ -12,3 +12,10 @@ export interface Password {
   oldPassword: string,
   newPassword: string
 }
+
+export interface Notification {
+  application : boolean,
+  job: boolean,
+  recommendation: boolean,
+  alert: boolean
+}
