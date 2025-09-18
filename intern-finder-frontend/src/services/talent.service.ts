@@ -31,6 +31,6 @@ export const getTalentDashboardRecentApplications = async (talentId: string): Pr
 // Update
 
 export const UpdateBasicInfoTalent =  async (talentId: string, BasicInfo: BasicInfo): Promise<TalentDto>  => {
-    const { data } = await api.put(`talentId/${talentId}/settings/basic-info`, BasicInfo)
+    const { data } = await api.put(`/talent/${talentId}/settings/basic-info`, BasicInfo)
     return data.data;
 } 

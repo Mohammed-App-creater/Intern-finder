@@ -353,7 +353,8 @@ export const updateBasicInfo = async (talentId: string, data: { fullName?: strin
             fullName: data.fullName,
             profileImageUrl: data.profileImageUrl,
             gender: data.gender as any,
-            settings: mergedSettings as any
+            settings: mergedSettings as any,
+            birthday: data.dateOfBirth
         },
         select: {
             id: true,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,45 +15,122 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload, Calendar } from "lucide-react";
 import { useUpdateBasicInfo } from "@/hooks/useTalentSettings";
 import { useAuthStore } from "@/store/auth";
+import { useUploadProfilePicture } from "@/hooks/useFileUpload";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function MyProfileTab() {
   const user = useAuthStore().user;
-  const [formData, setFormData] = useState({
-    talentId: user?.role === "TALENT" ? user.id ?? "" : "",
-    fullName: user?.role === "TALENT" ? user.fullName ?? "" : "",
-    phone: user?.role === "TALENT" ? user.phoneNumber ?? "" : "",
-    email: user?.role === "TALENT" ? user.email ?? "" : "",
-    dateOfBirth: user?.role === "TALENT" ? user.birthday ?? "" : "",
-    gender: user?.role === "TALENT" ? user.gender ?? "" : "",
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+  type FormDataType = {
+    talentId: string;
+    fullName: string;
+    phone: string;
+    email: string;
+    dateOfBirth: string | Date;
+    gender: string;
+    profileImageUrl: string;
+  };
+
+  const [formData, setFormData] = useState<FormDataType>({
+    talentId: "",
+    fullName: "",
+    phone: "",
+    email: "",
+    dateOfBirth: "",
+    gender: "",
+    profileImageUrl: "",
   });
+
+  useEffect(() => {
+    if (user?.role === "TALENT") {
+      setFormData({
+        talentId: user.id ?? "",
+        fullName: user.fullName ?? "",
+        phone: user.phoneNumber ?? "",
+        email: user.email ?? "",
+        dateOfBirth:
+          user.birthday instanceof Date
+            ? user.birthday.toISOString().slice(0, 10)
+            : user.birthday ?? "",
+        gender: user.gender ?? "",
+        profileImageUrl: user.profileImageUrl ?? "",
+      });
+    }
+  }, [user]);
+
+  const { mutate: uploadProfilePicture } = useUploadProfilePicture();
+
+  const handleProfilePictureUpload = (file: File) => {
+    setIsLoading(true);
+    if (file) {
+      uploadProfilePicture(file, {
+        onSuccess: (data) => {
+          localStorage.setItem("profileImageUrl", data.url);
+          setFormData((prev) => ({
+            ...prev,
+            profileImageUrl: data.url,
+          }));
+          setIsLoading(false);
+        },
+        onError: (error) => {
+          setIsLoading(false);
+          console.error("Upload failed:", error);
+        },
+      });
+    }
+  };
+
   const updateBasicInfo = useUpdateBasicInfo();
- 
+
   const handleUpdate = () => {
+    setIsLoading(true);
+    console.log("The form data: ",formData, new Date(formData.dateOfBirth))
     updateBasicInfo.mutate(
       {
         talentId: formData.talentId,
         basicInfo: {
           fullName: formData.fullName,
-          phone: formData.phone,
+          phoneNumber: formData.phone,
           email: formData.email,
-          dateOfBirth: formData.dateOfBirth,
-          gender: formData.gender,
+          birthday: new Date(formData.dateOfBirth),
+          gender: formData.gender as "male" | "female",
+          profileImageUrl: formData.profileImageUrl,
         },
       },
       {
         onSuccess: () => {
+          setIsLoading(false);
           console.log("Updated successfully ✅");
+          queryClient.invalidateQueries({ queryKey: ["me"] });
         },
         onError: (err) => {
+          setIsLoading(false);
           console.error("Failed to update ❌", err);
         },
       }
     );
   };
 
-  const { fullName, profileImageUrl, email, phoneNumber, gender } =
-    user?.role == "TALENT" ? user : {};
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0];
+    handleProfilePictureUpload(file!);
+  };
 
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    handleProfilePictureUpload(file!);
+  };
+
+  if (isLoading || !user) {
+    <div>Loading...</div>;
+  }
+ console.log(user)
   return (
     <div className="flex flex-col gap-2 space-y-8">
       <div className="border-b mb-10 pb-10">
@@ -78,13 +155,34 @@ export default function MyProfileTab() {
           </div>
 
           <Avatar className="w-35 h-35">
-            <AvatarImage src={profileImageUrl ?? ""} alt="Profile Picture" />
+            <AvatarImage
+              src={formData.profileImageUrl ?? ""}
+              alt="Profile Picture"
+            />
             <AvatarFallback className="text-lg">
-              {fullName?.charAt(0)}
+              {formData.fullName?.charAt(0)}
             </AvatarFallback>
           </Avatar>
 
-          <div className="border-2 border-dashed border-primary rounded-lg p-8 flex-1 max-w-md">
+          <div
+            className={`border-2 border-dashed rounded-lg p-8 flex-1 max-w-md cursor-pointer transition
+        ${dragOver ? "border-primary bg-[#021103]" : "border-primary"}`}
+            onClick={() => fileInputRef.current?.click()}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={handleDrop}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png, image/jpeg, image/gif, image/svg+xml"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+
             <div className="text-center">
               <Upload className="w-8 h-8 text-primary mx-auto mb-2" />
               <p className="text-primary text-sm font-medium mb-1">
@@ -160,7 +258,13 @@ export default function MyProfileTab() {
               <div className="relative mt-1">
                 <Input
                   id="dateOfBirth"
-                  value={formData.dateOfBirth}
+                  value={
+                    typeof formData.dateOfBirth === "string"
+                      ? formData.dateOfBirth
+                      : formData.dateOfBirth instanceof Date
+                      ? formData.dateOfBirth.toISOString().slice(0, 10)
+                      : ""
+                  }
                   onChange={(e) =>
                     setFormData({ ...formData, dateOfBirth: e.target.value })
                   }
@@ -184,12 +288,8 @@ export default function MyProfileTab() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
-                  <SelectItem value="Prefer not to say">
-                    Prefer not to say
-                  </SelectItem>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -198,8 +298,12 @@ export default function MyProfileTab() {
       </div>
 
       <div className="flex justify-end max-w-7xl">
-        <Button className="bg-primary hover:bg-primary/90 text-white px-8">
-          Save Profile
+        <Button
+          onClick={handleUpdate}
+          disabled={isLoading}
+          className="bg-primary hover:bg-primary/90 text-white px-8"
+        >
+          {isLoading ? "Updating.." : "Save Profile"}
         </Button>
       </div>
     </div>
