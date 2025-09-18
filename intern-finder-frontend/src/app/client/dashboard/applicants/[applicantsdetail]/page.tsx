@@ -7,7 +7,7 @@ export default function ApplicantDetailsPage() {
     <div className="min-h-screen p-6">
       <ApplicantHeader />
 
-      <div className="flex">
+      <div className="flex gap-6">
         <ApplicantSidebar />
         <ApplicantContent />
       </div>

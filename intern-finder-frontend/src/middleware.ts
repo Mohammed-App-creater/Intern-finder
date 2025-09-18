@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Define which routes need protection
-const protectedRoutes = ["/client", "/talent", "/dashboard", "/profile", "/settings"];
+const protectedRoutes = [
+  "/client",
+  "/talent",
+  "/dashboard",
+  "/profile",
+  "/settings",
+];
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value; // token saved in cookies
@@ -23,5 +29,11 @@ export function middleware(req: NextRequest) {
 
 // Apply middleware only to specific routes
 export const config = {
-  matcher: ["/client/:path*",  "/talent/:path*", "/dashboard/:path*", "/profile/:path*", "/settings/:path*"],
+  matcher: [
+    "/client/:path*",
+    "/talent/:path*",
+    "/dashboard/:path*",
+    "/profile/:path*",
+    "/settings/:path*",
+  ],
 };

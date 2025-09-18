@@ -1,17 +1,28 @@
-import { Star, Mail, Phone, Instagram, Twitter, Globe } from "lucide-react";
+import {
+  Star,
+  Mail,
+  Phone,
+  Instagram,
+  Twitter,
+  Globe,
+  MessageCircle,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function ApplicantSidebar() {
   return (
-    <div className="w-80 p-6 space-y-6">
+    <div className="w-80 space-y-6">
       {/* Profile Section */}
-      <Card>
-        <CardContent className="p-6">
+      <Card className="rounded-none">
+        <CardContent className="px-6 rounded-none">
           <div className="flex items-center gap-4 mb-4">
-            <Avatar className="h-16 w-16">
-              <AvatarImage src="/professional-headshot.png" alt="Jerome Bell" />
+            <Avatar className="h-20 w-20 border">
+              <AvatarImage
+                src="https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg"
+                alt="Jerome Bell"
+              />
               <AvatarFallback>JB</AvatarFallback>
             </Avatar>
             <div>
@@ -24,7 +35,7 @@ export function ApplicantSidebar() {
             </div>
           </div>
 
-          <div className="space-y-3 border-b py-3">
+          <div className="space-y-3 border-b pt-3 pb-5">
             <div className="bg-secondary p-2">
               <div className="flex justify-between border-b p-1">
                 <p className="text-sm font-medium text-dark">Applied Jobs</p>
@@ -40,21 +51,29 @@ export function ApplicantSidebar() {
             <div className="bg-secondary p-2 mt-5">
               <div className="flex justify-between">
                 <p className="text-sm font-medium text-dark mb-2">Stage</p>
-                <span className="text-xs text-light">Interview</span>
+                <div className="flex items-center gap-2">
+                  <div className="bg-primary h-2 w-2 rounded-full"></div>
+                  <span className="text-xs text-primary">Interview</span>
+                </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm"></div>
-                <div className="w-full h-2">
-                  <div
-                    className="bg-primary h-2 w-[75%]" 
-                  ></div>
+              <div className="space-y-2 pb-2">
+                <div className="w-full h-2 flex gap-1 py-2">
+                  <div className="bg-primary h-2 w-[25%]"></div>
+                  <div className="bg-primary h-2 w-[25%]"></div>
+                  <div className="bg-primary h-2 w-[25%]"></div>
+                  <div className="bg-gray-300 h-2 w-[25%]"></div>
                 </div>
               </div>
             </div>
-
-            <Button className="w-full bg-primary text-white hover:bg-primary/90">
-              Schedule Interview
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                variant="none"
+                className="text-primary border w-[80%] h-10 rounded-sm"
+              >
+                Schedule Interview
+              </Button>
+              <MessageCircle className="w-10 h-10 border p-2 text-primary rounded-sm" />
+            </div>
           </div>
 
           <h3 className="font-semibold text-dark mb-4 pt-5">Contact</h3>

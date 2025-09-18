@@ -9,7 +9,7 @@ import {
 
 export function ApplicantHeader() {
   return (
-    <div className="flex items-center justify-between p-3">
+    <div className="flex items-center justify-between py-3 mb-5">
       <div className="flex items-center gap-4 font-['Clash_Display']">
         <Button variant="ghost" size="icon" className="text-dark">
           <ArrowLeft className="h-5 w-5" />

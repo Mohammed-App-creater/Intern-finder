@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function ProfessionalInfo() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-5">
       <h3 className="text-lg font-semibold text-dark">Professional Info</h3>
 
       <div>
@@ -30,13 +30,13 @@ export function ProfessionalInfo() {
           <p className="text-sm text-light mb-1">Experience in Years</p>
           <p className="text-dark font-medium">4 Years</p>
         </div>
-
-        <div className="col-span-2">
+      </div>
+      <div className="grid grid-cols-2 gap-6">
+        <div>
           <p className="text-sm text-light mb-1">Highest Qualification Field</p>
           <p className="text-dark font-medium">Bachelors in Engineering</p>
         </div>
-
-        <div className="col-span-2">
+        <div>
           <p className="text-sm text-light mb-3">Skill set</p>
           <div className="flex gap-2 flex-wrap">
             <Badge variant="secondary" className="bg-secondary text-primary">

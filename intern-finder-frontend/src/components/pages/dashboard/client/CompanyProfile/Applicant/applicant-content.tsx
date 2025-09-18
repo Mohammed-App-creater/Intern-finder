@@ -15,7 +15,7 @@ export function ApplicantContent() {
     switch (activeTab) {
       case "profile":
         return (
-          <div className="space-y-8">
+          <div>
             <PersonalInfo />
             <ProfessionalInfo />
           </div>
@@ -37,7 +37,7 @@ export function ApplicantContent() {
   };
 
   return (
-    <div className="flex-1 p-3 border">
+    <div className="flex-1 p-3 border shadow-sm">
       <ApplicantTabs activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="p-6">{renderTabContent()}</div>
     </div>

@@ -1,6 +1,6 @@
 export function PersonalInfo() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6  border-b pb-5">
       <h3 className="text-lg font-semibold text-dark">Personal Info</h3>
 
       <div className="grid grid-cols-2 gap-6">
