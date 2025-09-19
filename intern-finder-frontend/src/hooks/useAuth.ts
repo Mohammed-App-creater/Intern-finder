@@ -2,7 +2,8 @@ import { useAuthStore } from "@/store/auth";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CompanyRegisterStep1Dto, CompanyRegisterStep2Dto, TalentRegisterStep1Dto, TalentRegisterStep2Dto } from "@/types/auth";
-import { login, getProfile, talentRegisterStep2, companyRegisterStep2, talentRegisterStep1, companyRegisterStep1 } from "@/services/auth";
+import { login, getProfile, talentRegisterStep2, companyRegisterStep2, talentRegisterStep1, companyRegisterStep1, googleLogin } from "@/services/auth";
+import { useCallback } from "react";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -18,6 +19,12 @@ export const useLogin = () => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
+};
+
+export const useGoogleLogin = () => {
+  return useCallback(() => {
+    googleLogin();
+  }, []);
 };
 
 export const useLogout = () => {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,11 +11,13 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 // Login form component
-import { useLogin } from "@/hooks/useAuth";
+import { useLogin, useGoogleLogin } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/auth";
+import { setCookie } from "cookies-next";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -23,7 +25,8 @@ export default function LoginForm() {
   });
 
   const loginMutation = useLogin();
-  const { user } = useAuthStore();
+  const GoogleLogin = useGoogleLogin();
+  const { user, setAuth } = useAuthStore();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -39,6 +42,22 @@ export default function LoginForm() {
       },
     });
   };
+
+  const handleGoogleLogin = () => {
+    GoogleLogin();
+  };
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+
+    if (token) {
+      // Save token to store + cookie
+      setCookie("token", token);
+      setAuth(token, null); // you might also fetch /me to get user profile
+      if (user?.role === "COMPANY") router.push("/client/dashboard");
+      if (user?.role === "TALENT") router.push("/talent/dashboard");
+    }
+  }, [searchParams, router, setAuth]);
 
   return (
     <div className="min-h-screen flex">
@@ -159,7 +178,8 @@ export default function LoginForm() {
               Login
             </Button>
             <Button
-              type="submit"
+              type="button"
+              onClick={handleGoogleLogin}
               className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
             >
               <Image
@@ -170,8 +190,6 @@ export default function LoginForm() {
               />
               <div>Continue with Google</div>
             </Button>
-
-            {/* Sign up link */}
             <p className="text-center text-sm text-light mt-4">
               Don&apos;t have an account?{" "}
               <a

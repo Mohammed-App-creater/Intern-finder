@@ -1,6 +1,17 @@
 import api from "@/lib/axios";
 import { TalentRegisterStep2Dto, CompanyRegisterStep2Dto, TalentRegisterStep1Dto, CompanyRegisterStep1Dto } from "@/types/auth";
 
+
+export const googleLogin = () => {
+  const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+  if (!base) {
+    console.error("NEXT_PUBLIC_API_URL is not defined");
+    return;
+  }
+  // navigate to backend which will redirect to Google
+  window.location.assign(`${base}/auth/google`);
+};
+
 export const login = async (email: string, password: string) => {
     const { data } = await api.post("/auth/login", { email, password });
     return data.data; // { token, user }
