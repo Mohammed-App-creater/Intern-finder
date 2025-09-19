@@ -77,7 +77,7 @@ export const googleCallbackController = async (req: Request, res: Response, next
         console.log("Google OAuth token:", profile);
         console.log("Redirecting to:", `${ENV.FRONTEND_URL}?token=${token}`);
         console.log("Redirecting to:", token);
-        res.redirect(`${ENV.FRONTEND_URL}?token=${token}`);
+        res.redirect(`${ENV.FRONTEND_URL}?token=${token.token}`);
 
     } catch (error) {
         next(error);
