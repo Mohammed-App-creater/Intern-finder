@@ -1,4 +1,4 @@
-import { ApplicantManagement } from "@/components/common/application-mamgement";
+import { ApplicantManagement } from "@/components/common/application-management";
 
 export default function AllApplicants() {
   return (

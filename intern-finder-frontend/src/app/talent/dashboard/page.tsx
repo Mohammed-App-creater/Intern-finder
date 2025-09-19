@@ -7,7 +7,7 @@ import { RecentApplications } from "@/components/pages/dashboard/talent/recent-a
 
 export default function Dashboard() {
   return (
-    <main className="flex-1 p-8 mb-5 mt-2">
+    <main className="min-h-screen flex-1 p-8 mb-5 mt-2">
       <div className="space-y-6">
         <DashboardHeader />
         <DashboardGreeting />
