@@ -6,7 +6,7 @@ import { JobUpdates } from "@/components/pages/dashboard/client/job-updates";
 
 export default function Dashboard() {
   return (
-    <main className="flex-1 p-8 mb-5 mt-2">
+    <main className="min-h-screen flex-1 p-8 mb-5 mt-2">
       <div className="space-y-6">
         <DashboardGreeting />
         {/* Main Grid */}

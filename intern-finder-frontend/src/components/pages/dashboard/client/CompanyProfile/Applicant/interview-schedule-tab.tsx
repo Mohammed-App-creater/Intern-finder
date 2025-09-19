@@ -23,7 +23,11 @@ export function InterviewScheduleTab() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src="https://images.pexels.com/photos/33919080/pexels-photo-33919080.jpeg" />
+                  <AvatarImage
+                    width={40}
+                    height={40}
+                    src="https://images.pexels.com/photos/33919080/pexels-photo-33919080.jpeg"
+                  />
                   <AvatarFallback>KM</AvatarFallback>
                 </Avatar>
                 <div>
@@ -58,7 +62,11 @@ export function InterviewScheduleTab() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src="https://images.pexels.com/photos/33527117/pexels-photo-33527117.jpeg" />
+                  <AvatarImage
+                    width={40}
+                    height={40}
+                    src="https://images.pexels.com/photos/33527117/pexels-photo-33527117.jpeg"
+                  />
                   <AvatarFallback>JW</AvatarFallback>
                 </Avatar>
                 <div>
@@ -93,7 +101,11 @@ export function InterviewScheduleTab() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg" />
+                  <AvatarImage
+                    width={40}
+                    height={40}
+                    src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"
+                  />
                   <AvatarFallback>TE</AvatarFallback>
                 </Avatar>
                 <div>
@@ -128,7 +140,11 @@ export function InterviewScheduleTab() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
-                  <AvatarImage src="https://images.pexels.com/photos/4946515/pexels-photo-4946515.jpeg" />
+                  <AvatarImage
+                    width={40}
+                    height={40}
+                    src="https://images.pexels.com/photos/4946515/pexels-photo-4946515.jpeg"
+                  />
                   <AvatarFallback>TE</AvatarFallback>
                 </Avatar>
                 <div>

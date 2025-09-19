@@ -51,23 +51,78 @@ export default function UserProfileDropdown() {
     setIsOpen(false);
   };
 
+  // Get first letters for fallback avatar
+  const getInitials = () => {
+    if (user?.role === "TALENT") {
+      return (
+        user?.fullName
+          ?.split(" ")
+          .slice(0, 2)
+          .map((word) => word.charAt(0).toUpperCase())
+          .join("") || ""
+      );
+    } else {
+      return (
+        user?.companyName
+          ?.split(" ")
+          .slice(0, 2)
+          .map((word) => word.charAt(0).toUpperCase())
+          .join("") || ""
+      );
+    }
+  };
+
+  // Get profile image URL based on role
+  const getProfileImageUrl = () => {
+    if (user?.role === "TALENT") {
+      return user?.profileImageUrl;
+    } else {
+      return user?.logoUrl;
+    }
+  };
+
+  // Get display name based on role
+  const getDisplayName = () => {
+    return user?.role === "TALENT" ? user?.fullName : user?.companyName;
+  };
+
+  // Get subtitle text based on role
+  const getSubtitle = () => {
+    if (user?.role === "TALENT") {
+      return user?.fieldOfStudy
+        ? user.fieldOfStudy.length > 20
+          ? user.fieldOfStudy.substring(0, 20) + "..."
+          : user.fieldOfStudy
+        : "";
+    } else {
+      return user?.industries || "";
+    }
+  };
+
   if (!mounted) {
     return (
       <div className="p-6">
         <div className="flex items-center gap-2">
-          <Image
-            className="w-10 h-10 rounded-full flex items-center justify-center"
-            src={
-              (user?.role == "TALENT" ? user.profileImageUrl : user?.logoUrl) ||
-              "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
-            }
-            alt={"Profile Picture"}
-            width={250}
-            height={250}
-          />
+          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
+            {getProfileImageUrl() ? (
+              <Image
+                className="w-10 h-10 rounded-full"
+                src={getProfileImageUrl() || "/placeholder-avatar.png"}
+                alt="Profile Picture"
+                width={40}
+                height={40}
+              />
+            ) : (
+              <span className="text-dark font-medium">
+                {getInitials() || "U"}
+              </span>
+            )}
+          </div>
           <div>
-            <p className="text-dark font-medium text-sm">{user?.role === "TALENT" ? user?.fullName : user?.companyName}</p>
-            <p className="text-light text-xs">{user?.role === "TALENT" ? user?.fieldOfStudy : user?.industries}</p>
+            <p className="text-dark font-medium text-sm">
+              {getDisplayName() || "User"}
+            </p>
+            <p className="text-light text-xs">{getSubtitle()}</p>
           </div>
         </div>
       </div>
@@ -82,20 +137,27 @@ export default function UserProfileDropdown() {
         className="flex items-center gap-2 p-2 hover:bg-accent w-full sm:w-auto"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <Image
-          className="w-10 h-10 rounded-full flex items-center justify-center"
-          src={
-            (user?.role == "TALENT" ? user.profileImageUrl : user?.logoUrl) ||
-            "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg"
-          }
-          alt={"Profile Picture"}
-          width={250}
-          height={250}
-        />
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
+          {getProfileImageUrl() ? (
+            <Image
+              className="w-10 h-10 rounded-full"
+              src={getProfileImageUrl() || "/placeholder-avatar.png"}
+              alt="Profile Picture"
+              width={40}
+              height={40}
+            />
+          ) : (
+            <span className="text-dark font-medium">
+              {getInitials() || "U"}
+            </span>
+          )}
+        </div>
         <div className="hidden sm:block text-left">
-          <p className="text-dark font-medium text-sm">{user?.role == "TALENT" ? user?.fullName : user?.companyName}</p>
+          <p className="text-dark font-medium text-sm">
+            {getDisplayName() || "User"}
+          </p>
           <p className="text-light text-xs dark:text-gray-400">
-            {user?.role == "TALENT" ? user?.fieldOfStudy : user?.industries}
+            {getSubtitle()}
           </p>
         </div>
         <ChevronDown

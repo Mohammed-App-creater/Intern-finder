@@ -2,14 +2,27 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, Plus } from "lucide-react";
+import ReviewPopup from "./review-popup";
+import { useState } from "react";
 
 export function HiringProgressTab() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-dark">Current Stage</h2>
-        <Button variant="none" className="text-primary border">
+        <ReviewPopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          userName="Jerome bell"
+          userImage="https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg"
+        />
+        <Button
+          variant="none"
+          className="text-primary border"
+          onClick={() => setIsPopupOpen(true)}
+        >
           Give Rating
           <ChevronDown className="h-4 w-4" />
         </Button>

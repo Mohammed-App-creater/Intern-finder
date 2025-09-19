@@ -238,6 +238,8 @@ export function ApplicantManagement() {
                         <AvatarImage
                           src={applicant.avatar || "/placeholder.svg"}
                           alt={applicant.name}
+                          width={40}
+                          height={40}
                         />
                         <AvatarFallback>
                           {applicant.name
