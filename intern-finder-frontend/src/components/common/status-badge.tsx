@@ -16,7 +16,11 @@ interface StatusBadgeProps {
     | "Unsuitable"
     | "Hired"
     | "Interview"
-    | "Offered";
+    | "Offered"
+    | "Fulltime"
+    | "Freelance"
+    | "Live"
+    | "Closed";
   className?: string;
 }
 
@@ -41,6 +45,14 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         return "text-primary border-primary";
       case "Interview":
         return "text-yellow-400 border-yellow-400";
+      case "Fulltime":
+        return "text-purple-400 border-purple-400";
+      case "Freelance":
+        return "text-yellow-400 border-yellow-400";
+      case "Live":
+        return "text-primary border-primary";
+      case "Closed":
+        return "text-red-400 border-red-400";
       default:
         return "bg-gray-100 text-gray-800 border-gray-200";
     }

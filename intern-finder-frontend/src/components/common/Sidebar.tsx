@@ -10,6 +10,7 @@ import {
   HelpCircle,
   Building2,
   UsersRound,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -105,6 +106,13 @@ export function Sidebar({ className }: SidebarProps) {
       active: isActive("/profile"),
       isDashboard: false,
     },
+    {
+      icon: ClipboardList,
+      label: "Job Listing",
+      href: "/joblisting",
+      active: isActive("/joblisting"),
+      isDashboard: false,
+    },
   ];
 
   const settingsItems = [
@@ -121,8 +129,6 @@ export function Sidebar({ className }: SidebarProps) {
       active: isActive("/support"),
     },
   ];
-
-  
 
   return (
     <div
