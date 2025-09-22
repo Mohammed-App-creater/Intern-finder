@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface ApplicationTableHeaderProps {
   activeTab: "applicants" | "job-details";
@@ -18,13 +19,21 @@ export default function ApplicationTableHeader({
   activeTab,
   setActiveTab,
 }: ApplicationTableHeaderProps) {
+  const router = useRouter();
+
   return (
     <>
       {/* Job Header */}
-      <div className="flex items-center justify-between p-6 border-b">
+      <div className="flex items-center justify-between py-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" className="text-light">
-            <ArrowLeft className="w-4 h-4" />
+          <Button
+            variant="none"
+            className="text-light"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <ArrowLeft className="w-6 h-6" />
           </Button>
           <div>
             <h1 className="text-dark text-xl font-semibold">
@@ -37,10 +46,7 @@ export default function ApplicationTableHeader({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="text-primary border-primary bg-transparent"
-            >
+            <Button variant="none" className="text-primary border">
               More Action
             </Button>
           </DropdownMenuTrigger>
@@ -57,7 +63,7 @@ export default function ApplicationTableHeader({
         <div className="flex">
           <button
             onClick={() => setActiveTab("applicants")}
-            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === "applicants"
                 ? "border-primary text-primary"
                 : "border-transparent text-light hover:text-dark"
@@ -67,7 +73,7 @@ export default function ApplicationTableHeader({
           </button>
           <button
             onClick={() => setActiveTab("job-details")}
-            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === "job-details"
                 ? "border-primary text-primary"
                 : "border-transparent text-light hover:text-dark"

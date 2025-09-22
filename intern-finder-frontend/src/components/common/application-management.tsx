@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Added import
+import { useRouter } from "next/navigation";
 import {
   Search,
   Filter,
@@ -129,14 +129,17 @@ const applicants = [
   },
 ];
 
-export function ApplicantManagement() {
-  const router = useRouter(); // Initialize router
+interface ApplicantManagementProps {
+  activeTab: "applicants" | "job-details";
+}
+
+export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
+  const router = useRouter();
   const [selectedApplicants, setSelectedApplicants] = useState<number[]>([]);
   const [currentView, setCurrentView] = useState<"pipeline" | "table">("table");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [activeTab] = useState<"applicants" | "job-details">("applicants");
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -175,10 +178,10 @@ export function ApplicantManagement() {
   };
 
   const stageColors = {
-    "In Review": "border-orange-200 bg-orange-50",
-    Interview: "border-blue-200 bg-blue-50",
-    Hired: "border-green-200 bg-green-50",
-    Declined: "border-red-200 bg-red-50",
+    "In Review": "border",
+    Interview: "border",
+    Hired: "border",
+    Declined: "border",
   };
 
   const stageHeaderColors = {
@@ -199,10 +202,20 @@ export function ApplicantManagement() {
               key={stage}
               className={`rounded-lg border-2 ${
                 stageColors[stage as keyof typeof stageColors]
-              } min-h-[600px]`}
+              } h-150 overflow-y-scroll`}
             >
               {/* Stage Header */}
-              <div className="flex items-center justify-between p-4 border-b">
+              <div
+                className={`flex items-center justify-between p-4 border-b rounded-md ${
+                  stage === "In Review"
+                    ? "border-t-5 border-t-orange-500"
+                    : stage === "Interview"
+                    ? "border-t-5 border-t-blue-500"
+                    : stage === "Hired"
+                    ? "border-t-5 border-t-green-500"
+                    : "border-t-5 border-t-red-500"
+                }`}
+              >
                 <div className="flex items-center gap-2">
                   <div
                     className={`w-3 h-3 rounded-full ${
@@ -210,11 +223,13 @@ export function ApplicantManagement() {
                     }`}
                   ></div>
                   <span className="text-dark font-medium">{stage}</span>
-                  <span className="text-light">{applicants.length}</span>
+                  <span className="bg-gray-200 text-dark px-1">
+                    {applicants.length}
+                  </span>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="none" size="sm">
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -225,7 +240,6 @@ export function ApplicantManagement() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-
               {/* Applicant Cards */}
               <div className="p-4 space-y-4">
                 {applicants.map((applicant) => (
@@ -252,7 +266,14 @@ export function ApplicantManagement() {
                         <h3 className="text-dark font-medium">
                           {applicant.name}
                         </h3>
-                        <button className="text-primary text-sm hover:underline">
+                        <button
+                          className="text-primary text-sm cursor-pointer"
+                          onClick={() =>
+                            router.push(
+                              `/client/dashboard/applicants/${applicant.id}`
+                            )
+                          }
+                        >
                           View Profile
                         </button>
                       </div>
@@ -379,7 +400,7 @@ export function ApplicantManagement() {
                       <th className="text-left p-4 text-light font-medium">
                         Job Role
                       </th>
-                      <th className="text-center p-4 text-light font-medium">
+                      <th className="text-left p-4 text-light font-medium">
                         Action
                       </th>
                     </tr>
@@ -441,8 +462,12 @@ export function ApplicantManagement() {
                             <Button
                               variant="none"
                               size="sm"
-                              className="text-primary border-primary bg-secondary rounded-sm p-5"
-                              onClick={() => router.push(`/client/dashboard/applicants/${applicant.id}`)}
+                              className="text-primary border border-primary bg-secondary rounded-sm p-5"
+                              onClick={() =>
+                                router.push(
+                                  `/client/dashboard/applicants/${applicant.id}`
+                                )
+                              }
                             >
                               See Application
                             </Button>
@@ -532,7 +557,7 @@ export function ApplicantManagement() {
         </>
       )}
 
-      {/* Placeholder for job details tab */}
+      {/* job details tab */}
       {activeTab === "job-details" && (
         <div className="p-6">
           <div className="text-center py-12">
