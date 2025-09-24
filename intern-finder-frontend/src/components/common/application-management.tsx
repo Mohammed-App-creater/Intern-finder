@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { StarRating } from "./star-rating";
 import { StatusBadge } from "./status-badge";
+import JobDetail from "@/components/pages/dashboard/client/joblisting/job-detail";
 
 const applicants = [
   {
@@ -558,14 +559,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
       )}
 
       {/* job details tab */}
-      {activeTab === "job-details" && (
-        <div className="p-6">
-          <div className="text-center py-12">
-            <h3 className="text-dark text-lg font-medium mb-2">Job Details</h3>
-            <p className="text-light">Job details content would go here.</p>
-          </div>
-        </div>
-      )}
+      {activeTab === "job-details" && <JobDetail applied={5} capacity={10} />}
     </div>
   );
 }
