@@ -103,6 +103,9 @@ model Company {
   Notification     Notification[]
   CompanyMember    CompanyMember[]
   Interview        Interview[]
+  messages      Message[]
+  convosAsC1    Conversation[] @relation("Company1Conversations")
+  convosAsC2    Conversation[] @relation("Company2Conversations")
 }
 
 /// new: company team members (company can add talents as team members)
@@ -165,6 +168,9 @@ model Talent {
   InterviewerAssignment InterviewerAssignment[]
   InterviewFeedback     InterviewFeedback[]
   InterviewNote         InterviewNote[]
+  messages      Message[]
+  convosAsT1    Conversation[] @relation("Talent1Conversations")
+  convosAsT2    Conversation[] @relation("Talent2Conversations")
 }
 
 model OAuthAccount {
@@ -377,4 +383,42 @@ model Settings {
   alert          Boolean @default(true)
   talentId       String  @unique
   talent         Talent  @relation(fields: [talentId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+
+  // Company participants
+  company1Id String?
+  company1   Company?   @relation("Company1Conversations", fields: [company1Id], references: [id])
+
+  company2Id String?
+  company2   Company?   @relation("Company2Conversations", fields: [company2Id], references: [id])
+
+  // Talent participants
+  talent1Id  String?
+  talent1    Talent?    @relation("Talent1Conversations", fields: [talent1Id], references: [id])
+
+  talent2Id  String?
+  talent2    Talent?    @relation("Talent2Conversations", fields: [talent2Id], references: [id])
+
+  messages   Message[]
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  content        String
+  createdAt      DateTime     @default(now())
+  isRead         Boolean      @default(false)
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+
+  // Sender can be either Talent or Company
+  companyId String?
+  company   Company?   @relation(fields: [companyId], references: [id])
+
+  talentId  String?
+  talent    Talent?    @relation(fields: [talentId], references: [id])
 }
