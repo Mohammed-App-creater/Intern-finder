@@ -48,7 +48,9 @@ export function Sidebar({ className }: SidebarProps) {
     if (isDashboard) {
       // For dashboard, check if we're exactly at /dashboard or /dashboard/ with nothing after
       return (
-        pathname === "/talent/dashboard" || pathname === "/client/dashboard"
+        pathname === "/talent/dashboard" ||
+        pathname === "/client/dashboard" ||
+        pathname === "/client/post"
       );
     }
 

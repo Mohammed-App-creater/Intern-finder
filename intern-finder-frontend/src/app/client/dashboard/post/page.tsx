@@ -56,7 +56,7 @@ export default function PostJobPage() {
         <button className="flex items-center space-x-2 text-dark hover:text-light transition-colors cursor-pointer">
           <ArrowLeft className="w-6 h-6" onClick={handleBack} />
         </button>
-        <span className="font-medium text-2xl">Post a Job</span>
+        <span className="font-medium text-2xl font-['Clash_Display']">Post a Job</span>
       </div>
 
       <div className="p-8">

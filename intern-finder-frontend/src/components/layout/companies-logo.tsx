@@ -43,7 +43,7 @@ export default function UserProfileDropdown() {
           />
           <div>
             <p className="text-light font-medium text-md">Company</p>
-            <p className="text-white text-lg">Nomad</p>
+            <p className="text-white text-lg">Bright Tech</p>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default function UserProfileDropdown() {
         />
         <div>
           <p className="text-light font-medium text-md">Company</p>
-          <p className="text-white text-lg">Nomad</p>
+          <p className="text-white text-lg">Bright Tech</p>
         </div>
         <ChevronDown
           className={`h-4 w-4 text-white transition-transform ${
