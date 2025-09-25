@@ -112,7 +112,7 @@ export default function Navbar() {
             <MessagesPopup />
             <ThemeToggle />
             {user?.role == "COMPANY" && (
-              <Button className="flex gap-2 text-white rounded-sm">
+              <Button className="flex gap-2 text-white rounded-sm" onClick={() => router.push("/client/post")}>
                 <Plus />
                 Post a Job
               </Button>
