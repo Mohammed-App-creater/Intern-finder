@@ -3,7 +3,7 @@ import { TalentRegisterStep2Dto, CompanyRegisterStep2Dto, TalentRegisterStep1Dto
 
 export const login = async (email: string, password: string) => {
     const { data } = await api.post("/auth/login", { email, password });
-    return data.data; // { token, user }
+    return data; // { token, user }
 };
 
 export const talentRegisterStep1 = async (registrationData: TalentRegisterStep1Dto) => {
@@ -35,32 +35,3 @@ export const getProfile = async () => {
     const { data } = await api.get("/auth/me");
     return data; // { id, email, role, ... }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

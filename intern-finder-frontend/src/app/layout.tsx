@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
-
+import { ToastProvider } from "@/contexts/toast-context";
 
 export const metadata: Metadata = {
   title: "Intern Finder",
@@ -14,14 +14,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ToastProvider>{children}</ToastProvider>
+        </Providers>
       </body>
     </html>
   );

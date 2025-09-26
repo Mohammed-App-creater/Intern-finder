@@ -9,20 +9,134 @@ import { Eye, EyeOff } from "lucide-react";
 import Logo from "@/components/icons/logo.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { create } from "zustand";
 
 import {
   useTalentRegisterStep1,
   useCompanyRegisterStep1,
 } from "@/hooks/useAuth";
 import { tempoAuthstore } from "@/store/auth";
-import { tempoAuthState } from "@/types/auth"
+import { tempoAuthState } from "@/types/auth";
+import { useToastMessages } from "@/hooks/useToastMessages";
+import { getErrorMessage, getValidationErrors } from "@/utils/error-handler";
+
+// Interface for form data
+interface FormData {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+// Type for form field names
+type FormField = keyof FormData;
+
+// Zustand store for form validation
+interface FormValidationState {
+  errors: Record<FormField, string>;
+  touched: Record<FormField, boolean>;
+  validateField: (name: FormField, value: string, formData: FormData) => string;
+  validateForm: (formData: FormData) => boolean;
+  setFieldTouched: (field: FormField) => void;
+  setFieldError: (field: FormField, error: string) => void;
+  clearErrors: () => void;
+}
+
+const useFormValidationStore = create<FormValidationState>((set, get) => ({
+  errors: {
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  },
+  touched: {
+    fullName: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  },
+
+  validateField: (name: FormField, value: string, formData: FormData) => {
+    switch (name) {
+      case "fullName":
+        if (!value) return "Name is required";
+        if (value.length < 3) return "Name must be at least 3 letters";
+        return "";
+
+      case "email":
+        if (!value) return "Email is required";
+        if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
+        return "";
+
+      case "password":
+        if (!value) return "Password is required";
+        if (value.length < 8) return "Password must be at least 8 characters";
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value))
+          return "Password must contain at least one symbol";
+        return "";
+
+      case "confirmPassword":
+        if (!value) return "Please confirm your password";
+        if (value !== formData.password) return "Passwords must match";
+        return "";
+
+      default:
+        return "";
+    }
+  },
+
+  validateForm: (formData: FormData) => {
+    const { validateField } = get();
+    const errors = {
+      fullName: validateField("fullName", formData.fullName, formData),
+      email: validateField("email", formData.email, formData),
+      password: validateField("password", formData.password, formData),
+      confirmPassword: validateField(
+        "confirmPassword",
+        formData.confirmPassword,
+        formData
+      ),
+    };
+
+    set({ errors });
+    return (
+      !errors.fullName &&
+      !errors.email &&
+      !errors.password &&
+      !errors.confirmPassword
+    );
+  },
+
+  setFieldTouched: (field: FormField) => {
+    set((state) => ({
+      touched: { ...state.touched, [field]: true },
+    }));
+  },
+
+  setFieldError: (field: FormField, error: string) => {
+    set((state) => ({
+      errors: { ...state.errors, [field]: error },
+    }));
+  },
+
+  clearErrors: () => {
+    set({
+      errors: {
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+    });
+  },
+}));
 
 export function SignUpForm() {
   const router = useRouter();
   const [userType, setUserType] = useState<"talent" | "company">("talent");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     password: "",
@@ -33,8 +147,46 @@ export function SignUpForm() {
   const talentRegisterStep1 = useTalentRegisterStep1();
   const companyRegisterStep1 = useCompanyRegisterStep1();
 
-  const handleInputChange = (field: string, value: string) => {
+  // Add toast hooks
+  const { showSuccess, showError, showWarning } = useToastMessages();
+
+  // Use the Zustand validation store
+  const {
+    errors,
+    touched,
+    validateField,
+    validateForm,
+    setFieldTouched,
+    setFieldError,
+    clearErrors,
+  } = useFormValidationStore();
+
+  const handleInputChange = (field: FormField, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setFieldError(field, "");
+    }
+
+    // Validate field on change if it's been touched
+    if (touched[field]) {
+      const error = validateField(field, value, {
+        ...formData,
+        [field]: value,
+      });
+      if (error) {
+        setFieldError(field, error);
+      }
+    }
+  };
+
+  const handleBlur = (field: FormField) => {
+    setFieldTouched(field);
+    const error = validateField(field, formData[field], formData);
+    if (error) {
+      setFieldError(field, error);
+    }
   };
 
   const passwordRequirements = [
@@ -48,12 +200,23 @@ export function SignUpForm() {
     },
   ];
 
-  const passwordsMatch =
-    formData.password === formData.confirmPassword &&
-    formData.confirmPassword !== "";
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Clear previous errors
+    clearErrors();
+
+    // Validate all fields before submission
+    const isValid = validateForm(formData);
+    if (!isValid) {
+      // Mark all fields as touched to show errors
+      (Object.keys(touched) as FormField[]).forEach((field) => {
+        setFieldTouched(field);
+      });
+      showWarning("Please fix the form errors before submitting");
+      return;
+    }
+
     if (userType === "talent") {
       talentRegisterStep1.mutate(
         {
@@ -64,8 +227,30 @@ export function SignUpForm() {
         },
         {
           onSuccess: (data: tempoAuthState) => {
-            authStore.setAuth(  data.id, data.email, data.fullName, "talent");
-            router.push("/signup/talent");
+            authStore.setAuth(data.id, data.email, data.fullName, "talent");
+            showSuccess("Account created successfully! Redirecting...");
+            setTimeout(() => {
+              router.push("/signup/talent");
+            }, 1500);
+          },
+          onError: (error: unknown) => {
+            console.error("Registration error:", error);
+
+            // Handle validation errors from API
+            const validationErrors = getValidationErrors(error);
+            if (Object.keys(validationErrors).length > 0) {
+              // Map API validation errors to form fields
+              Object.entries(validationErrors).forEach(([field, message]) => {
+                const formField = field as FormField;
+                if (formField in errors) {
+                  setFieldError(formField, message);
+                }
+              });
+              showWarning("Please fix the validation errors");
+            } else {
+              const errorMessage = getErrorMessage(error);
+              showError(errorMessage);
+            }
           },
         }
       );
@@ -78,14 +263,39 @@ export function SignUpForm() {
           role: "company",
         },
         {
-          onSuccess: (data) => {
+          onSuccess: (data: tempoAuthState) => {
             authStore.setAuth(data.id, data.fullName, data.email, "company");
-            router.push("/signup/company");
+            showSuccess("Company account created successfully! Redirecting...");
+            setTimeout(() => {
+              router.push("/signup/company");
+            }, 1500);
+          },
+          onError: (error: unknown) => {
+            console.error("Registration error:", error);
+
+            // Handle validation errors from API
+            const validationErrors = getValidationErrors(error);
+            if (Object.keys(validationErrors).length > 0) {
+              // Map API validation errors to form fields
+              Object.entries(validationErrors).forEach(([field, message]) => {
+                const formField = field as FormField;
+                if (formField in errors) {
+                  setFieldError(formField, message);
+                }
+              });
+              showWarning("Please fix the validation errors");
+            } else {
+              const errorMessage = getErrorMessage(error);
+              showError(errorMessage);
+            }
           },
         }
       );
     }
   };
+
+  // Check if form has any errors
+  const hasErrors = Object.values(errors).some((error) => error !== "");
 
   return (
     <div className="min-h-screen flex">
@@ -170,8 +380,13 @@ export function SignUpForm() {
                 }
                 value={formData.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
+                onBlur={() => handleBlur("fullName")}
                 className="mt-1"
+                aria-invalid={errors.fullName ? "true" : "false"}
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+              )}
             </div>
 
             {/* Email */}
@@ -185,8 +400,13 @@ export function SignUpForm() {
                 placeholder="yourname@email.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
+                onBlur={() => handleBlur("email")}
                 className="mt-1"
+                aria-invalid={errors.email ? "true" : "false"}
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -206,7 +426,9 @@ export function SignUpForm() {
                   onChange={(e) =>
                     handleInputChange("password", e.target.value)
                   }
+                  onBlur={() => handleBlur("password")}
                   className="pr-10"
+                  aria-invalid={errors.password ? "true" : "false"}
                 />
                 <Button
                   type="button"
@@ -222,6 +444,9 @@ export function SignUpForm() {
                   )}
                 </Button>
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
 
               {/* Password requirements */}
               <div className="mt-2 space-y-1">
@@ -255,7 +480,9 @@ export function SignUpForm() {
                   onChange={(e) =>
                     handleInputChange("confirmPassword", e.target.value)
                   }
+                  onBlur={() => handleBlur("confirmPassword")}
                   className="pr-10"
+                  aria-invalid={errors.confirmPassword ? "true" : "false"}
                 />
                 <Button
                   type="button"
@@ -271,28 +498,35 @@ export function SignUpForm() {
                   )}
                 </Button>
               </div>
-              {formData.confirmPassword && (
-                <p
-                  className={`text-xs mt-1 ${
-                    passwordsMatch ? "text-green-600" : "text-red-500"
-                  }`}
-                >
-                  {passwordsMatch
-                    ? "Passwords match"
-                    : "Passwords must match the created password"}
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.confirmPassword}
                 </p>
               )}
+              {formData.confirmPassword &&
+                formData.password === formData.confirmPassword &&
+                !errors.confirmPassword && (
+                  <p className="text-green-600 text-xs mt-1">Passwords match</p>
+                )}
             </div>
 
             {/* Sign up button */}
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
+              disabled={
+                talentRegisterStep1.isPending ||
+                companyRegisterStep1.isPending ||
+                hasErrors
+              }
             >
-              Sign Up
+              {talentRegisterStep1.isPending || companyRegisterStep1.isPending
+                ? "Creating Account..."
+                : "Sign Up"}
             </Button>
+
             <Button
-              type="submit"
+              type="button"
               className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
             >
               <Image
