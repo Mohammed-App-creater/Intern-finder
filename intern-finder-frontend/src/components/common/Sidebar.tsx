@@ -148,7 +148,7 @@ export function Sidebar({ className }: SidebarProps) {
     {
       icon: HelpCircle,
       label: "Support",
-      href: "/#",
+      href: "/contact",
       active: isActive("/support"),
     },
   ];
@@ -228,7 +228,13 @@ export function Sidebar({ className }: SidebarProps) {
                     />
                   </div>
                   <button
-                    onClick={() => handleNavigation(item.href)}
+                    onClick={() => {
+                      if (item.label === "Support") {
+                        router.push("/contact");
+                      } else {
+                        handleNavigation(item.href);
+                      }
+                    }}
                     className={cn(
                       "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
                       item.active
