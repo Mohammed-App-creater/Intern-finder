@@ -13,19 +13,19 @@ export default function SettingsPage() {
         <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger
             value="overview"
-            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary border-b"
           >
             Overview
           </TabsTrigger>
           <TabsTrigger
             value="social-links"
-            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary border-b"
           >
             Social Links
           </TabsTrigger>
           <TabsTrigger
             value="team"
-            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary"
+            className="text-light data-[state=active]:text-dark data-[state=active]:border-b-2 data-[state=active]:border-primary border-b"
           >
             Team
           </TabsTrigger>
