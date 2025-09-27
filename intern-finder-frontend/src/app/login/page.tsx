@@ -11,53 +11,169 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 // Login form component
-import { useLogin, useGoogleLogin } from "@/hooks/useAuth";
-import { useAuthStore } from "@/store/auth";
-import { setCookie } from "cookies-next";
+import { useLogin } from "@/hooks/useAuth";
+import { useToastMessages } from "@/hooks/useToastMessages";
+import { getErrorMessage, getValidationErrors } from "@/utils/error-handler";
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface FormErrors {
+  email: string;
+  password: string;
+}
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({
+    email: "",
+    password: "",
+  });
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+  });
 
   const loginMutation = useLogin();
-  const GoogleLogin = useGoogleLogin();
-  const { user, setAuth } = useAuthStore();
+  const { showSuccess, showError, showWarning } = useToastMessages();
 
-  const handleInputChange = (field: string, value: string) => {
+  // Email validation function
+  const validateEmail = (email: string): string => {
+    if (!email) return "Email is required";
+    if (!/\S+@\S+\.\S+/.test(email))
+      return "Please enter a valid email address";
+    return "";
+  };
+
+  // Password validation function
+  const validatePassword = (password: string): string => {
+    if (!password) return "Password is required";
+    return "";
+  };
+
+  // Validate individual field
+  const validateField = (name: keyof FormData, value: string): string => {
+    switch (name) {
+      case "email":
+        return validateEmail(value);
+      case "password":
+        return validatePassword(value);
+      default:
+        return "";
+    }
+  };
+
+  // Validate entire form
+  const validateForm = (): boolean => {
+    const newErrors = {
+      email: validateEmail(formData.email),
+      password: validatePassword(formData.password),
+    };
+
+    setErrors(newErrors);
+    return !newErrors.email && !newErrors.password;
+  };
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+
+    // Validate field in real-time if it's been touched
+    if (touched[field]) {
+      const error = validateField(field, value);
+      if (error) {
+        setErrors((prev) => ({ ...prev, [field]: error }));
+      }
+    }
+  };
+
+  const handleBlur = (field: keyof FormData) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const error = validateField(field, formData[field]);
+    if (error) {
+      setErrors((prev) => ({ ...prev, [field]: error }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Mark all fields as touched
+    setTouched({ email: true, password: true });
+
+    // Validate form
+    const isValid = validateForm();
+    if (!isValid) {
+      showWarning("Please fix the form errors before submitting");
+      return;
+    }
+
     loginMutation.mutate(formData, {
-      onSuccess: () => {
-        console.log(user);
-        if (user?.role === "COMPANY") router.push("/client/dashboard");
-        if (user?.role === "TALENT") router.push("/talent/dashboard");
+      onSuccess: (data) => {
+        showSuccess("Login successful! Redirecting...");
+        // Use the data returned from the mutation for redirect
+        setTimeout(() => {
+          if (data.data.role === "COMPANY") {
+            router.push("/client/dashboard");
+          } else if (data.data.role === "TALENT") {
+            router.push("/talent/dashboard");
+          } else {
+            // Default redirect if role is not specified
+            router.push("/");
+          }
+        }, 1500);
+      },
+      onError: (error: unknown) => {
+        console.error("Login error:", error);
+
+        // Handle validation errors from API
+        const validationErrors = getValidationErrors(error);
+        if (Object.keys(validationErrors).length > 0) {
+          // Map API validation errors to form fields
+          Object.entries(validationErrors).forEach(([field, message]) => {
+            if (field in errors) {
+              setErrors((prev) => ({
+                ...prev,
+                [field as keyof FormData]: message,
+              }));
+            }
+          });
+          showWarning("Please check your login credentials");
+        } else {
+          const errorMessage = getErrorMessage(error);
+
+          // Handle specific login errors
+          if (
+            errorMessage.includes("401") ||
+            errorMessage.includes("Invalid credentials")
+          ) {
+            showError("Invalid email or password. Please try again.");
+          } else if (errorMessage.includes("Network error")) {
+            showError("Network error: Please check your internet connection");
+          } else if (errorMessage.includes("User not found")) {
+            showError("No account found with this email address");
+          } else {
+            showError(errorMessage);
+          }
+        }
       },
     });
   };
 
-  const handleGoogleLogin = () => {
-    GoogleLogin();
-  };
-
-  useEffect(() => {
-    const token = searchParams.get("token");
-
-    if (token) {
-      // Save token to store + cookie
-      setCookie("token", token);
-      setAuth(token, null); // you might also fetch /me to get user profile
-      if (user?.role === "COMPANY") router.push("/client/dashboard");
-      if (user?.role === "TALENT") router.push("/talent/dashboard");
-    }
-  }, [searchParams, router, setAuth]);
+  // Check if form has any errors
+  const hasErrors = Object.values(errors).some((error) => error !== "");
 
   return (
     <div className="min-h-screen flex">
@@ -121,8 +237,13 @@ export default function LoginForm() {
                 placeholder="yourname@email.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
+                onBlur={() => handleBlur("email")}
                 className="mt-1"
+                aria-invalid={errors.email ? "true" : "false"}
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -142,7 +263,9 @@ export default function LoginForm() {
                   onChange={(e) =>
                     handleInputChange("password", e.target.value)
                   }
+                  onBlur={() => handleBlur("password")}
                   className="pr-10"
+                  aria-invalid={errors.password ? "true" : "false"}
                 />
                 <Button
                   type="button"
@@ -158,6 +281,9 @@ export default function LoginForm() {
                   )}
                 </Button>
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
 
               {/* Forgot password link */}
               <div className="mt-2 text-right">
@@ -174,12 +300,13 @@ export default function LoginForm() {
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-teal-700 text-white py-3 mt-6 cursor-pointer"
+              disabled={loginMutation.isPending || hasErrors}
             >
-              Login
+              {loginMutation.isPending ? "Logging in..." : "Login"}
             </Button>
+
             <Button
               type="button"
-              onClick={handleGoogleLogin}
               className="flex gap-3 w-full bg-white text-dark py-3 cursor-pointer border-2 hover:bg-secondary"
             >
               <Image

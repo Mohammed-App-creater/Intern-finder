@@ -10,12 +10,14 @@ import {
   HelpCircle,
   Building2,
   UsersRound,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import SidebarRectangle from "@/components/icons/sidebar_rectangle.png";
 import UserProfile from "@/components/common/user-profile";
 import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth";
 
 interface SidebarProps {
   className?: string;
@@ -24,6 +26,7 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuthStore();
 
   // Handle navigation with conditional path building
   const handleNavigation = (href: string) => {
@@ -55,7 +58,8 @@ export function Sidebar({ className }: SidebarProps) {
     return pathname.includes(href);
   };
 
-  const navigationItems = [
+  // Common navigation items for both roles
+  const commonItems = [
     {
       icon: LayoutDashboard,
       label: "Dashboard",
@@ -64,17 +68,21 @@ export function Sidebar({ className }: SidebarProps) {
       isDashboard: true,
     },
     {
-      icon: Building2,
-      label: "Company Profile",
-      href: "/profile",
-      active: isActive("/profile"),
-      isDashboard: false,
-    },
-    {
       icon: MessageSquare,
       label: "Messages",
       href: "/messages",
       active: isActive("/messages"),
+      isDashboard: false,
+    },
+  ];
+
+  // Company-specific navigation items
+  const companyItems = [
+    {
+      icon: Building2,
+      label: "Company Profile",
+      href: "/profile",
+      active: isActive("/profile"),
       isDashboard: false,
     },
     {
@@ -85,17 +93,28 @@ export function Sidebar({ className }: SidebarProps) {
       isDashboard: false,
     },
     {
-      icon: FileText,
-      label: "My Applications",
-      href: "/applications",
-      active: isActive("/applications"),
+      icon: ClipboardList,
+      label: "Job Listing",
+      href: "/joblisting",
+      active: isActive("/joblisting"),
       isDashboard: false,
     },
+  ];
+
+  // Talent-specific navigation items
+  const talentItems = [
     {
       icon: Search,
       label: "Company",
       href: "/company",
       active: isActive("/company"),
+      isDashboard: false,
+    },
+    {
+      icon: FileText,
+      label: "My Applications",
+      href: "/applications",
+      active: isActive("/applications"),
       isDashboard: false,
     },
     {
@@ -107,6 +126,18 @@ export function Sidebar({ className }: SidebarProps) {
     },
   ];
 
+  // Combine navigation items based on user role
+  const getNavigationItems = () => {
+    if (user?.role === "COMPANY") {
+      return [...commonItems, ...companyItems];
+    } else {
+      // Default to talent items if no role or role is talent
+      return [...commonItems, ...talentItems];
+    }
+  };
+
+  const navigationItems = getNavigationItems();
+
   const settingsItems = [
     {
       icon: Settings,
@@ -117,12 +148,10 @@ export function Sidebar({ className }: SidebarProps) {
     {
       icon: HelpCircle,
       label: "Support",
-      href: "/#",
+      href: "/contact",
       active: isActive("/support"),
     },
   ];
-
-  
 
   return (
     <div
@@ -199,7 +228,13 @@ export function Sidebar({ className }: SidebarProps) {
                     />
                   </div>
                   <button
-                    onClick={() => handleNavigation(item.href)}
+                    onClick={() => {
+                      if (item.label === "Support") {
+                        router.push("/contact");
+                      } else {
+                        handleNavigation(item.href);
+                      }
+                    }}
                     className={cn(
                       "flex items-center gap-4 px-3 py-2 text-md transition-colors w-full cursor-pointer",
                       item.active

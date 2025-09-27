@@ -119,7 +119,7 @@ export default function ReviewPopup({
           <Button
             variant="none"
             onClick={onClose}
-            className="flex-1 text-light border hover:bg-gray-50 bg-transparent"
+            className="flex-1 text-light border bg-transparent"
           >
             Cancel
           </Button>

@@ -14,8 +14,8 @@ export const useLogin = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       login(email, password),
     onSuccess: (data) => {
-      setAuth(data.token, { ...data.user, role: data.role });
-      setCookie("token", data.token);
+      setAuth(data.data.token, { ...data.data.user, role: data.data.role });
+      setCookie("token", data.data.token);
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });

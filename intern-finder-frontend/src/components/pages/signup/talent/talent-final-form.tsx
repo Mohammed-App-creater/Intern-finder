@@ -10,7 +10,8 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { create } from "zustand";
 
 import { useUploadResume } from "@/hooks/useFileUpload";
 
@@ -24,11 +25,85 @@ interface FormData {
 interface TalentFinalFormProps {
   onSubmit: (data: object) => void;
   initialData?: object;
+  onBack: () => void; // Add onBack prop
 }
+
+// Zustand store for form validation
+interface FormValidationState {
+  errors: {
+    linkedinUrl: string;
+    website: string;
+    bio: string;
+  };
+  touched: {
+    linkedinUrl: boolean;
+    website: boolean;
+    bio: boolean;
+  };
+  validateField: (name: string, value: string) => string;
+  validateForm: (formData: FormData) => boolean;
+  setFieldTouched: (field: string) => void;
+}
+
+const useFormValidationStore = create<FormValidationState>((set, get) => ({
+  errors: {
+    linkedinUrl: "",
+    website: "",
+    bio: "",
+  },
+  touched: {
+    linkedinUrl: false,
+    website: false,
+    bio: false,
+  },
+
+  validateField: (name: string, value: string) => {
+    switch (name) {
+      case "bio":
+        if (!value.trim()) return "Bio is required";
+        if (value.length < 10) return "Bio must be at least 10 characters";
+        return "";
+
+      case "linkedinUrl":
+        if (value && !/^https?:\/\/.+\..+/.test(value)) {
+          return "Please enter a valid URL starting with http:// or https://";
+        }
+        return "";
+
+      case "website":
+        if (value && !/^https?:\/\/.+\..+/.test(value)) {
+          return "Please enter a valid URL starting with http:// or https://";
+        }
+        return "";
+
+      default:
+        return "";
+    }
+  },
+
+  validateForm: (formData: FormData) => {
+    const { validateField } = get();
+    const errors = {
+      linkedinUrl: validateField("linkedinUrl", formData.linkedinUrl),
+      website: validateField("website", formData.website),
+      bio: validateField("bio", formData.bio),
+    };
+
+    set({ errors });
+    return Object.values(errors).every((error) => error === "");
+  },
+
+  setFieldTouched: (field: string) => {
+    set((state) => ({
+      touched: { ...state.touched, [field]: true },
+    }));
+  },
+}));
 
 export default function TalentFinalForm({
   onSubmit,
   initialData,
+  onBack,
 }: TalentFinalFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -38,6 +113,10 @@ export default function TalentFinalForm({
     ...initialData,
   });
 
+  // Use the Zustand validation store
+  const { errors, touched, validateField, validateForm, setFieldTouched } =
+    useFormValidationStore();
+
   const { mutate: uploadResume } = useUploadResume();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +125,22 @@ export default function TalentFinalForm({
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Validate field on change if it's been touched
+    if (touched[field as keyof typeof touched]) {
+      const error = validateField(field, value);
+      useFormValidationStore.setState((state) => ({
+        errors: { ...state.errors, [field]: error },
+      }));
+    }
+  };
+
+  const handleBlur = (field: keyof FormData) => {
+    setFieldTouched(field);
+    const error = validateField(field, formData[field] || "");
+    useFormValidationStore.setState((state) => ({
+      errors: { ...state.errors, [field]: error },
+    }));
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +169,22 @@ export default function TalentFinalForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const isValid = validateForm(formData);
+    if (!isValid) {
+      // Mark all fields as touched to show errors
+      Object.keys(touched).forEach((field) => {
+        setFieldTouched(field);
+      });
+      return;
+    }
+
     onSubmit(formData);
+  };
+
+  const handleBack = () => {
+    onBack();
   };
 
   return (
@@ -87,22 +197,34 @@ export default function TalentFinalForm({
           transition={{ duration: 1, ease: "easeOut" }}
           className="flex-1 flex flex-col p-8 gap-25"
         >
-          {/* Logo */}
-          <div
-            onClick={() => router.push("/")}
-            className="flex items-center gap-2 mb-8 cursor-pointer"
-          >
-            <Image
-              src={Logo}
-              alt="Company Logo"
-              width={30}
-              height={30}
-              priority
-            />
-            <div className="flex">
-              <span className="text-xl font-bold text-light">Intern Fin</span>
-              <span className="text-xl font-bold text-dark">der</span>
+          {/* Logo and Back Button */}
+          <div className="flex items-center justify-between mb-8">
+            <div
+              onClick={() => router.push("/")}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Image
+                src={Logo}
+                alt="Company Logo"
+                width={30}
+                height={30}
+                priority
+              />
+              <div className="flex">
+                <span className="text-xl font-bold text-light">Intern Fin</span>
+                <span className="text-xl font-bold text-dark">der</span>
+              </div>
             </div>
+
+            {/* Back Button */}
+            <button
+              type="button"
+              onClick={handleBack}
+              className="flex items-center gap-2 text-dark text-lg cursor-pointer"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back
+            </button>
           </div>
 
           {/* Form Content */}
@@ -126,13 +248,19 @@ export default function TalentFinalForm({
                     <Input
                       id="linkedin"
                       type="url"
-                      placeholder="www.linkedin.com/..."
+                      placeholder="https://www.linkedin.com/in/yourprofile"
                       value={formData.linkedinUrl}
                       onChange={(e) =>
                         handleInputChange("linkedinUrl", e.target.value)
                       }
+                      onBlur={() => handleBlur("linkedinUrl")}
                       className="w-full"
                     />
+                    {touched.linkedinUrl && errors.linkedinUrl && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.linkedinUrl}
+                      </p>
+                    )}
                   </div>
 
                   {/* Personal Website */}
@@ -146,13 +274,19 @@ export default function TalentFinalForm({
                     <Input
                       id="website"
                       type="url"
-                      placeholder="www.myportfolio.com"
+                      placeholder="https://www.myportfolio.com"
                       value={formData.website}
                       onChange={(e) =>
                         handleInputChange("website", e.target.value)
                       }
+                      onBlur={() => handleBlur("website")}
                       className="w-full"
                     />
+                    {touched.website && errors.website && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.website}
+                      </p>
+                    )}
                   </div>
 
                   {/* Bio */}
@@ -161,21 +295,25 @@ export default function TalentFinalForm({
                       htmlFor="bio"
                       className="text-sm font-medium text-dark"
                     >
-                      Bio
+                      Bio *
                     </Label>
                     <Textarea
                       id="bio"
-                      placeholder="Tell us about yourself..."
+                      placeholder="Tell us about yourself (minimum 10 characters)..."
                       value={formData.bio}
                       onChange={(e) => handleInputChange("bio", e.target.value)}
+                      onBlur={() => handleBlur("bio")}
                       className="w-full min-h-24"
                     />
+                    {touched.bio && errors.bio && (
+                      <p className="text-red-500 text-xs mt-1">{errors.bio}</p>
+                    )}
                   </div>
                 </div>
 
                 {/* CV Upload */}
                 <div className="flex items-center justify-center">
-                  <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-primary rounded-lg p-6 text-center bg-[var(--secondary w-full">
+                  <div className="flex flex-col items-center justify-center min-h-60 border-2 border-dashed border-primary rounded-lg p-6 text-center bg-[var(--secondary)] w-full">
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -209,15 +347,15 @@ export default function TalentFinalForm({
 
               {/* Submit Button */}
               <Button
-              type="submit"
-              disabled={isLoading} // ✅ disable while loading
-              className={`w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer flex items-center justify-center gap-2 ${
-                isLoading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
-            >
-              {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
-              { isLoading ? "Uploading..." : "Done!"}
-            </Button>
+                type="submit"
+                disabled={isLoading}
+                className={`w-full bg-primary text-white py-3 mt-2 font-medium cursor-pointer flex items-center justify-center gap-2 ${
+                  isLoading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+              >
+                {isLoading && <Loader2 className="h-5 w-5 animate-spin" />}
+                {isLoading ? "Uploading..." : "Done!"}
+              </Button>
             </form>
           </div>
         </motion.div>

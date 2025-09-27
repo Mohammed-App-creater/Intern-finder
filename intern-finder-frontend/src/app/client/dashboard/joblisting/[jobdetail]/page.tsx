@@ -8,13 +8,14 @@ export default function JobDetailPage() {
   const [activeTab, setActiveTab] = useState<"applicants" | "job-details">(
     "applicants"
   );
+
   return (
     <div className="p-6">
       <ApplicationTableHeader
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      <ApplicantManagement />
+      <ApplicantManagement activeTab={activeTab} />
     </div>
   );
 }
