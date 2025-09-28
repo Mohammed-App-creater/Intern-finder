@@ -17,25 +17,29 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { useFormValidation } from "@/app/signup/company/page";
 
-interface FormData {
-  description: string;
+interface AboutFormData {
+  companyDescription: string;
   teamSize: string;
   socialMediaLink: string;
   linkedinUrl: string;
 }
 
-interface ContactInfoFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+interface CompanyAboutFormProps {
+  onSubmit: (data: Partial<AboutFormData>) => void;
+  initialData?: Partial<AboutFormData>;
+  onBack?: () => void;
 }
 
-export default function ContactInfoForm({
+export default function CompanyAboutForm({
   onSubmit,
   initialData,
-}: ContactInfoFormProps) {
-  const [formData, setFormData] = useState<FormData>({
-    description: "",
+  onBack,
+}: CompanyAboutFormProps) {
+  const [formData, setFormData] = useState<AboutFormData>({
+    companyDescription: "",
     teamSize: "",
     socialMediaLink: "",
     linkedinUrl: "",
@@ -43,14 +47,30 @@ export default function ContactInfoForm({
   });
 
   const router = useRouter();
+  const { errors, clearError } = useFormValidation();
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof AboutFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Basic validation
+    let isValid = true;
+
+    if (!formData.companyDescription.trim()) {
+      isValid = false;
+    }
+
+    if (!formData.teamSize.trim()) {
+      isValid = false;
+    }
+
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -62,6 +82,18 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 flex flex-col p-8 gap-25"
       >
+        {/* Back Button */}
+        {onBack && (
+          <Button
+            variant="none"
+            onClick={onBack}
+            className="absolute top-4 left-4 z-50 flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        )}
+
         {/* Logo */}
         <div
           onClick={() => router.push("/")}
@@ -96,17 +128,22 @@ export default function ContactInfoForm({
                     htmlFor="bio"
                     className="text-sm font-medium text-dark"
                   >
-                    Company Description
+                    Company Description *
                   </Label>
                   <Textarea
                     id="bio"
                     placeholder="Tell us about your company..."
-                    value={formData.description}
+                    value={formData.companyDescription}
                     onChange={(e) =>
-                      handleInputChange("description", e.target.value)
+                      handleInputChange("companyDescription", e.target.value)
                     }
                     className="w-full min-h-24"
                   />
+                  {errors.companyDescription && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.companyDescription}
+                    </p>
+                  )}
                 </div>
 
                 {/* Team Size */}
@@ -115,7 +152,7 @@ export default function ContactInfoForm({
                     htmlFor="TeamSize"
                     className="text-sm font-medium text-dark mb-2 block"
                   >
-                    Team Size
+                    Team Size *
                   </Label>
                   <Select
                     value={formData.teamSize}
@@ -124,7 +161,7 @@ export default function ContactInfoForm({
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="1-10" />
+                      <SelectValue placeholder="Select team size" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1-10">1-10</SelectItem>
@@ -137,6 +174,11 @@ export default function ContactInfoForm({
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.teamSize && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.teamSize}
+                    </p>
+                  )}
                 </div>
 
                 {/* Social Media Link */}
@@ -145,11 +187,11 @@ export default function ContactInfoForm({
                     htmlFor="link"
                     className="text-sm font-medium text-dark"
                   >
-                    Social Media Link
+                    Social Media Link (Optional)
                   </Label>
                   <Input
                     id="socialMediaLink"
-                    type="link"
+                    type="url"
                     placeholder="www.facebook.com/company"
                     value={formData.socialMediaLink}
                     onChange={(e) =>
@@ -165,11 +207,11 @@ export default function ContactInfoForm({
                     htmlFor="link"
                     className="text-sm font-medium text-dark"
                   >
-                    LinkedIn
+                    LinkedIn (Optional)
                   </Label>
                   <Input
                     id="linkedIn"
-                    type="link"
+                    type="url"
                     placeholder="www.linkedin.com/in/company"
                     value={formData.linkedinUrl}
                     onChange={(e) =>

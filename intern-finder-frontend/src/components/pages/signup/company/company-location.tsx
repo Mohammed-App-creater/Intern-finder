@@ -15,17 +15,27 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { useFormValidation } from "@/app/signup/company/page";
+
+interface LocationFormData {
+  headQuarter: string;
+  otherLocation: string;
+  workType: string;
+}
 
 interface CompanyLocationFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+  onSubmit: (data: Partial<LocationFormData>) => void;
+  initialData?: Partial<LocationFormData>;
+  onBack?: () => void;
 }
 
 export default function CompanyLocationForm({
   onSubmit,
   initialData,
+  onBack,
 }: CompanyLocationFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LocationFormData>({
     headQuarter: "",
     otherLocation: "",
     workType: "",
@@ -33,14 +43,30 @@ export default function CompanyLocationForm({
   });
 
   const router = useRouter();
+  const { errors, clearError } = useFormValidation();
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: keyof LocationFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Basic validation
+    let isValid = true;
+
+    if (!formData.headQuarter.trim()) {
+      isValid = false;
+    }
+
+    if (!formData.workType.trim()) {
+      isValid = false;
+    }
+
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -52,6 +78,18 @@ export default function CompanyLocationForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
+        {/* Back Button */}
+        {onBack && (
+          <Button
+            variant="none"
+            onClick={onBack}
+            className="absolute top-4 left-4 z-50 flex items-center gap-2 text-white"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        )}
+
         {/* Logo */}
         <div
           onClick={() => router.push("/")}
@@ -100,13 +138,20 @@ export default function CompanyLocationForm({
                 htmlFor="location"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Headquarters Location
+                Headquarters Location *
               </Label>
               <LocationInput
                 formData={{ location: formData.headQuarter }}
-                handleInputChange={handleInputChange}
+                handleInputChange={(field: string, value: string) =>
+                  handleInputChange("headQuarter", value)
+                }
                 field="headQuarter"
               />
+              {errors.headQuarter && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.headQuarter}
+                </p>
+              )}
             </div>
 
             {/* Other Branch/ Office (optional) */}
@@ -115,11 +160,13 @@ export default function CompanyLocationForm({
                 htmlFor="location"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Other Branch/ Office (optional)
+                Other Branch/ Office (Optional)
               </Label>
               <LocationInput
                 formData={{ location: formData.otherLocation }}
-                handleInputChange={handleInputChange}
+                handleInputChange={(field: string, value: string) =>
+                  handleInputChange("otherLocation", value)
+                }
                 field="otherLocation"
               />
             </div>
@@ -130,7 +177,7 @@ export default function CompanyLocationForm({
                 htmlFor="workType"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Work Environment
+                Work Environment *
               </Label>
               <Select
                 value={formData.workType}
@@ -139,14 +186,17 @@ export default function CompanyLocationForm({
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Remote" />
+                  <SelectValue placeholder="Select work environment" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="fulltime">Remote</SelectItem>
-                  <SelectItem value="parttime">Hybrid</SelectItem>
-                  <SelectItem value="contract">On-site</SelectItem>
+                  <SelectItem value="remote">Remote</SelectItem>
+                  <SelectItem value="hybrid">Hybrid</SelectItem>
+                  <SelectItem value="on-site">On-site</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.workType && (
+                <p className="text-red-500 text-sm mt-1">{errors.workType}</p>
+              )}
             </div>
 
             {/* Continue Button */}

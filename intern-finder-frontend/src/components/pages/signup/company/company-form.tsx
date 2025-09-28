@@ -11,10 +11,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useUploadProfilePicture } from "@/hooks/useFileUpload";
-interface CompanyFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: Partial<CompanyFormData>;
-}
+import { useFormValidation } from "@/app/signup/company/page";
 
 interface CompanyFormData {
   organization: string;
@@ -22,7 +19,12 @@ interface CompanyFormData {
   websiteUrl: string;
   location: string;
   logoUrl?: string;
-  [key: string]: string | string[] | undefined;
+}
+
+interface CompanyFormProps {
+  onSubmit: (data: Partial<CompanyFormData>) => void;
+  initialData?: Partial<CompanyFormData>;
+  onBack?: () => void;
 }
 
 export default function CompanyForm({
@@ -38,22 +40,31 @@ export default function CompanyForm({
   });
 
   const router = useRouter();
+  const { errors, setError, clearError } = useFormValidation();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const { mutate: uploadProfilePicture } = useUploadProfilePicture();
 
   useEffect(() => {
     const stored = localStorage.getItem("profileImage");
-    if (stored) setProfileImage(stored);
+    if (stored) {
+      setProfileImage(stored);
+      setFormData((prev) => ({ ...prev, logoUrl: stored }));
+    }
   }, []);
 
-  const handleInputChange = (field: string, value: string) => {
-    if(field === "industries") {
-      const industriesArray = value.split(',').map(ind => ind.trim());
+  const handleInputChange = (field: keyof CompanyFormData, value: string) => {
+    if (field === "industries") {
+      const industriesArray = value
+        .split(",")
+        .map((ind) => ind.trim())
+        .filter((ind) => ind !== "");
       setFormData((prev) => ({ ...prev, [field]: industriesArray }));
+      clearError("industries");
       return;
     }
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field as string);
   };
 
   const handleProfilePictureUpload = (
@@ -61,22 +72,30 @@ export default function CompanyForm({
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        setError("logoUrl", "Please upload an image file");
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("logoUrl", "Image size should be less than 5MB");
+        return;
+      }
+
       uploadProfilePicture(file, {
         onSuccess: (data) => {
           setProfileImage(data.url);
-          handleInputChange("logoUrl", data.url);
-          console.log("Uploaded image URL:", data.url);
-          // keep in localStorage for reloads
-          localStorage.setItem("profileImage", data.url);
-
-          // inject into formData
           setFormData((prev) => ({
             ...prev,
             logoUrl: data.url,
           }));
+          clearError("logoUrl");
         },
         onError: (error) => {
           console.error("Upload failed:", error);
+          setError("logoUrl", "Failed to upload image. Please try again.");
         },
       });
     }
@@ -84,7 +103,32 @@ export default function CompanyForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Basic validation
+    let isValid = true;
+
+    if (!formData.organization.trim()) {
+      setError("organization", "Organization type is required");
+      isValid = false;
+    }
+
+    if (
+      !formData.industries ||
+      formData.industries.length === 0 ||
+      formData.industries[0]?.trim() === ""
+    ) {
+      setError("industries", "At least one industry is required");
+      isValid = false;
+    }
+
+    if (!formData.logoUrl) {
+      setError("logoUrl", "Company logo is required");
+      isValid = false;
+    }
+
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -167,7 +211,7 @@ export default function CompanyForm({
                 accept="image/*"
                 className="hidden"
                 onChange={(e) => {
-                   handleProfilePictureUpload(e);
+                  handleProfilePictureUpload(e);
                   const file = e.target.files?.[0];
                   if (file) {
                     const reader = new FileReader();
@@ -192,6 +236,9 @@ export default function CompanyForm({
             </div>
             <span className="text-dark font-bold">Logo</span>
           </div>
+          {errors.logoUrl && (
+            <p className="text-red-500 text-sm mb-4 -mt-4">{errors.logoUrl}</p>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Organization Type */}
@@ -200,11 +247,11 @@ export default function CompanyForm({
                 htmlFor="organization"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Organization Type
+                Organization Type *
               </Label>
               <Input
                 id="organization"
-                type="tel"
+                type="text"
                 placeholder="NGO"
                 value={formData.organization}
                 onChange={(e) =>
@@ -212,6 +259,11 @@ export default function CompanyForm({
                 }
                 className="w-full"
               />
+              {errors.organization && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.organization}
+                </p>
+              )}
             </div>
 
             {/* Industry/Field */}
@@ -220,16 +272,21 @@ export default function CompanyForm({
                 htmlFor="industry"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Industry/Field
+                Industry/Field *
               </Label>
               <Input
                 id="industry"
                 type="text"
-                placeholder="Technology"
-                value={formData.industries}
-                onChange={(e) => handleInputChange("industries", e.target.value)}
+                placeholder="Technology, Healthcare, Education"
+                value={formData.industries.join(", ")}
+                onChange={(e) =>
+                  handleInputChange("industries", e.target.value)
+                }
                 className="w-full"
               />
+              {errors.industries && (
+                <p className="text-red-500 text-sm mt-1">{errors.industries}</p>
+              )}
             </div>
 
             {/* Official Website URL */}
@@ -238,14 +295,16 @@ export default function CompanyForm({
                 htmlFor="officialWebsiteURL"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Official Website URL
+                Official Website URL (Optional)
               </Label>
               <Input
                 id="website"
                 type="text"
                 placeholder="www.example.com"
                 value={formData.websiteUrl}
-                onChange={(e) => handleInputChange("websiteUrl", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("websiteUrl", e.target.value)
+                }
                 className="w-full"
               />
             </div>

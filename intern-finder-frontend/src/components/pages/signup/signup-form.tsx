@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -160,6 +160,26 @@ export function SignUpForm() {
     setFieldError,
     clearErrors,
   } = useFormValidationStore();
+
+  // Handle browser back button
+  useEffect(() => {
+    const handleBackButton = (event: PopStateEvent) => {
+      // If this is the second/final form, prevent default back behavior
+      // and navigate to first form instead
+      event.preventDefault();
+      window.history.pushState(null, "", window.location.href);
+      // Navigate to first form - adjust the path as needed for your application
+      router.push("/signup");
+    };
+
+    // Add event listener for popstate (back/forward navigation)
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [router]);
 
   const handleInputChange = (field: FormField, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));

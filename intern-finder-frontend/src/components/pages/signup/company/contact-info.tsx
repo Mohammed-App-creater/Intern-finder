@@ -9,8 +9,10 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { useFormValidation } from "@/app/signup/company/page";
 
-interface FormData {
+interface ContactFormData {
   contactName: string;
   contactJobTitle: string;
   contactEmail: string;
@@ -18,15 +20,17 @@ interface FormData {
 }
 
 interface ContactInfoFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+  onSubmit: (data: Partial<ContactFormData>) => void;
+  initialData?: Partial<ContactFormData>;
+  onBack?: () => void;
 }
 
 export default function ContactInfoForm({
   onSubmit,
   initialData,
+  onBack,
 }: ContactInfoFormProps) {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ContactFormData>({
     contactName: "",
     contactJobTitle: "",
     contactEmail: "",
@@ -35,14 +39,41 @@ export default function ContactInfoForm({
   });
 
   const router = useRouter();
-  
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const { errors, clearError } = useFormValidation();
+
+  const handleInputChange = (field: keyof ContactFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Basic validation
+    let isValid = true;
+
+    if (!formData.contactName.trim()) {
+      isValid = false;
+    }
+
+    if (!formData.contactJobTitle.trim()) {
+      isValid = false;
+    }
+
+    if (
+      !formData.contactEmail.trim() ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)
+    ) {
+      isValid = false;
+    }
+
+    if (!formData.contactPhone.trim()) {
+      isValid = false;
+    }
+
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -54,6 +85,18 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 flex flex-col p-8 gap-25"
       >
+        {/* Back Button */}
+        {onBack && (
+          <Button
+            variant="none"
+            onClick={onBack}
+            className="absolute top-4 left-4 z-50 flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        )}
+
         {/* Logo */}
         <div
           onClick={() => router.push("/")}
@@ -88,7 +131,7 @@ export default function ContactInfoForm({
                     htmlFor="fullName"
                     className="text-sm font-medium text-dark"
                   >
-                    Full Name
+                    Full Name *
                   </Label>
                   <Input
                     id="fullName"
@@ -100,6 +143,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {errors.contactName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contactName}
+                    </p>
+                  )}
                 </div>
 
                 {/* Job Title */}
@@ -108,7 +156,7 @@ export default function ContactInfoForm({
                     htmlFor="jobTitle"
                     className="text-sm font-medium text-dark"
                   >
-                    Job Title
+                    Job Title *
                   </Label>
                   <Input
                     id="jobTitle"
@@ -120,6 +168,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {errors.contactJobTitle && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contactJobTitle}
+                    </p>
+                  )}
                 </div>
 
                 {/* Email Address */}
@@ -128,7 +181,7 @@ export default function ContactInfoForm({
                     htmlFor="emailAddress"
                     className="text-sm font-medium text-dark"
                   >
-                    Email Address
+                    Email Address *
                   </Label>
                   <Input
                     id="emailAddress"
@@ -140,6 +193,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {errors.contactEmail && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contactEmail}
+                    </p>
+                  )}
                 </div>
 
                 {/* Phone Number */}
@@ -148,7 +206,7 @@ export default function ContactInfoForm({
                     htmlFor="phoneNumber"
                     className="text-sm font-medium text-dark"
                   >
-                    Phone Number
+                    Phone Number *
                   </Label>
                   <Input
                     id="phoneNumber"
@@ -160,6 +218,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {errors.contactPhone && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contactPhone}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
