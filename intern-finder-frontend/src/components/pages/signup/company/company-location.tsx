@@ -42,35 +42,57 @@ export default function CompanyLocationForm({
     ...initialData,
   });
 
+  const [localErrors, setLocalErrors] = useState<
+    Partial<Record<keyof LocationFormData, string>>
+  >({});
+
   const router = useRouter();
-  const { errors, clearError } = useFormValidation();
+  const { errors, setError, clearError } = useFormValidation();
 
   const handleInputChange = (field: keyof LocationFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     clearError(field);
+    // Also clear local errors when user starts typing
+    setLocalErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof LocationFormData, string>> = {};
+
+    if (!formData.headQuarter.trim()) {
+      newErrors.headQuarter = "Headquarters location is required";
+    }
+
+    if (!formData.workType.trim()) {
+      newErrors.workType = "Work environment is required";
+    }
+
+    setLocalErrors(newErrors);
+
+    // Also update the global form validation errors if needed
+    Object.entries(newErrors).forEach(([field, error]) => {
+      if (error && setError) {
+        setError(field as keyof LocationFormData, error);
+      }
+    });
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic validation
-    let isValid = true;
-
-    if (!formData.headQuarter.trim()) {
-      isValid = false;
-    }
-
-    if (!formData.workType.trim()) {
-      isValid = false;
-    }
-
-    if (isValid) {
+    if (validateForm()) {
       onSubmit(formData);
     }
   };
 
+  // Use either localErrors or the global errors, depending on your setup
+  const displayErrors =
+    Object.keys(localErrors).length > 0 ? localErrors : errors;
+
   return (
-    <div className="min-h-screen flex">
+    <div className="relative min-h-screen flex">
       {/* Left side - Teal background with text */}
       <motion.div
         initial={{ x: 800, opacity: 1 }}
@@ -78,18 +100,6 @@ export default function CompanyLocationForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
       >
-        {/* Back Button */}
-        {onBack && (
-          <Button
-            variant="none"
-            onClick={onBack}
-            className="absolute top-4 left-4 z-50 flex items-center gap-2 text-white"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-        )}
-
         {/* Logo */}
         <div
           onClick={() => router.push("/")}
@@ -125,6 +135,17 @@ export default function CompanyLocationForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 p-8 flex flex-col justify-center"
       >
+        {/* Back Button */}
+        <div className="absolute top-15 right-15">
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-2 text-dark text-lg cursor-pointer"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back
+          </button>
+        </div>
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
           <h2 className="text-2xl font-extrabold text-dark mb-12">
@@ -147,9 +168,9 @@ export default function CompanyLocationForm({
                 }
                 field="headQuarter"
               />
-              {errors.headQuarter && (
+              {displayErrors.headQuarter && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.headQuarter}
+                  {displayErrors.headQuarter}
                 </p>
               )}
             </div>
@@ -194,8 +215,10 @@ export default function CompanyLocationForm({
                   <SelectItem value="on-site">On-site</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.workType && (
-                <p className="text-red-500 text-sm mt-1">{errors.workType}</p>
+              {displayErrors.workType && (
+                <p className="text-red-500 text-sm mt-1">
+                  {displayErrors.workType}
+                </p>
               )}
             </div>
 

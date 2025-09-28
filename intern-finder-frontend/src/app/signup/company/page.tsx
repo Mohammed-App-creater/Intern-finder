@@ -10,8 +10,8 @@ import { useCompanyRegisterStep2 } from "@/hooks/useAuth";
 import { CompanyRegisterStep2Dto } from "@/types/auth";
 import { useAuthStore, tempoAuthstore } from "@/store/auth";
 import { setCookie } from "cookies-next";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useToastMessages } from "@/hooks/useToastMessages";
+import { getErrorMessage, getValidationErrors } from "@/utils/error-handler";
 
 // Types for form data
 interface CompanyFormData {
@@ -200,6 +200,7 @@ export default function CompanySignup() {
   const user = useAuthStore();
   const router = useRouter();
   const { validateStep, clearAllErrors } = useFormValidation();
+  const { showSuccess, showError } = useToastMessages();
 
   // Handle browser back button
   useEffect(() => {
@@ -250,10 +251,24 @@ export default function CompanySignup() {
         user.setAuth(response.token, response.company);
         setCookie("token", response.token);
         clearAllErrors();
-        router.push("/client/dashboard");
+        showSuccess("Registration successful! Redirecting to dashboard...");
+        setTimeout(() => {
+          router.push("/client/dashboard");
+        }, 2000);
       },
-      onError: (error) => {
+      onError: (error: unknown) => {
         console.error("Registration error:", error);
+
+        // Handle validation errors from API
+        const validationErrors = getValidationErrors(error);
+        if (Object.keys(validationErrors).length > 0) {
+          // You can map these to specific form fields if needed
+          const errorMessage = Object.values(validationErrors).join(", ");
+          showError(errorMessage);
+        } else {
+          const errorMessage = getErrorMessage(error);
+          showError(errorMessage);
+        }
       },
     });
     console.log("Complete form data:", completeData);
@@ -262,7 +277,6 @@ export default function CompanySignup() {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      // Add to history when moving back via button
       window.history.pushState(null, "", window.location.href);
     }
   };
@@ -310,19 +324,5 @@ export default function CompanySignup() {
     },
   ];
 
-  return (
-    <div className="relative">
-      {currentStep > 0 && (
-        <Button
-          variant="none"
-          onClick={handleBack}
-          className="absolute top-4 left-4 z-50 flex items-center gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </Button>
-      )}
-      {steps[currentStep].component}
-    </div>
-  );
+  return <div className="relative">{steps[currentStep].component}</div>;
 }
