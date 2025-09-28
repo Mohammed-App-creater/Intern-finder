@@ -10,7 +10,7 @@ import Logo from "@/components/icons/logo.png";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { useFormValidation } from "@/app/signup/company/page";
+import useFormValidation from "@/components/auth/useFormValidation";
 
 interface ContactFormData {
   contactName: string;

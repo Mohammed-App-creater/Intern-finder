@@ -11,7 +11,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useUploadProfilePicture } from "@/hooks/useFileUpload";
-import { useFormValidation } from "@/app/signup/company/page";
+import useFormValidation from "@/components/auth/useFormValidation";
 
 interface CompanyFormData {
   organization: string;
@@ -27,7 +27,7 @@ interface CompanyFormProps {
   onBack?: () => void;
 }
 
-export default function CompanyForm({
+export default function CompanyForm({ 
   onSubmit,
   initialData,
 }: CompanyFormProps) {
