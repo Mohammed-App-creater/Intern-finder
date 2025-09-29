@@ -79,18 +79,18 @@ export const useJobFormStore = create<JobFormState>()(
             break;
           case "jobDescription":
             isValid =
-              (value as string).length >= 10 && (value as string).length <= 500;
-            message = "Job description must be between 10 and 500 characters";
+              (value as string).length >= 10 && (value as string).length <= 1500;
+            message = "Job description must be between 10 and 1500 characters";
             break;
           case "responsibilities":
             isValid =
-              (value as string).length >= 10 && (value as string).length <= 500;
-            message = "Responsibilities must be between 10 and 500 characters";
+              (value as string).length >= 10 && (value as string).length <= 1500;
+            message = "Responsibilities must be between 10 and 1500 characters";
             break;
           case "skills":
             isValid =
-              (value as string).length >= 5 && (value as string).length <= 500;
-            message = "Skills must be between 5 and 500 characters";
+              (value as string).length >= 5 && (value as string).length <= 1500;
+            message = "Skills must be between 5 and 1500 characters";
             break;
           default:
             isValid = true;

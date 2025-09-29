@@ -115,10 +115,10 @@ export default function PostJobPage() {
 
   if (isSubmitting) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[90vh] flex items-center justify-center pb-10 mb-10">
         <div className="text-center">
           <div className="loader mb-4"></div>
-          <p className="text-lg font-medium">Posting your job...</p>
+          <p className="text-4xl font-bold text-primary">Posting your job...</p>
         </div>
       </div>
     );
