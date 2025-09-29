@@ -40,8 +40,8 @@ export default function PostJobPage() {
 
   const convertToJobPosting = (source: jobFormData): JobPosting => {
     const skillsArray = parseSkills(source.skills || "");
-    const salaryMin = Number(source.salaryMin) || 0;
-    const salaryMax = Number(source.salaryMax) || 0;
+    const salaryMin = Number(source.salaryMin) || 100;
+    const salaryMax = Number(source.salaryMax) || 500;
 
     return {
       title: source.jobTitle || "",
