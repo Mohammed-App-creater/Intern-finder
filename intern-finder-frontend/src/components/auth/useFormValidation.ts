@@ -14,7 +14,7 @@ interface CompanyFormData {
   contactJobTitle: string;
   contactEmail: string;
   contactPhone: string;
-  companyDescription: string;
+  description: string;
   techStack: string[];
   teamSize: string;
   socialMediaLink: string;
@@ -129,7 +129,7 @@ export const useFormValidation = create<FormValidationState>()(
             break;
 
           case 3: // Company About
-            if (!data.companyDescription?.trim()) {
+            if (!data.description?.trim()) {
               setError("companyDescription", "Company description is required");
               isValid = false;
             } else {

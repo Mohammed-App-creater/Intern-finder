@@ -25,7 +25,7 @@ interface CompanyFormData {
   contactJobTitle: string;
   contactEmail: string;
   contactPhone: string;
-  companyDescription: string;
+  description: string;
   techStack: string[];
   teamSize: string;
   socialMediaLink: string;
@@ -52,7 +52,7 @@ export default function CompanySignup() {
     contactJobTitle: "",
     contactEmail: "",
     contactPhone: "",
-    companyDescription: "",
+    description: "",
     techStack: [""],
     teamSize: "",
     socialMediaLink: "",

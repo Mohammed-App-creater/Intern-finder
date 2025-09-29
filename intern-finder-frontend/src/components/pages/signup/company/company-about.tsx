@@ -21,7 +21,7 @@ import { ArrowLeft } from "lucide-react";
 import useFormValidation from "@/components/auth/useFormValidation";
 
 interface AboutFormData {
-  companyDescription: string;
+  description: string;
   teamSize: string;
   socialMediaLink: string;
   linkedinUrl: string;
@@ -64,7 +64,7 @@ export default function CompanyAboutForm({
   onBack,
 }: CompanyAboutFormProps) {
   const [formData, setFormData] = useState<AboutFormData>({
-    companyDescription: "",
+    description: "",
     teamSize: "",
     socialMediaLink: "",
     linkedinUrl: "",
@@ -102,8 +102,8 @@ export default function CompanyAboutForm({
     const newErrors: Partial<Record<keyof AboutFormData, string>> = {};
 
     // Required field validation
-    if (!formData.companyDescription.trim()) {
-      newErrors.companyDescription = "Company description is required";
+    if (!formData.description.trim()) {
+      newErrors.description = "Company description is required";
     }
 
     if (!formData.teamSize.trim()) {
@@ -219,15 +219,15 @@ export default function CompanyAboutForm({
                   <Textarea
                     id="bio"
                     placeholder="Tell us about your company..."
-                    value={formData.companyDescription}
+                    value={formData.description}
                     onChange={(e) =>
-                      handleInputChange("companyDescription", e.target.value)
+                      handleInputChange("description", e.target.value)
                     }
                     className="w-full min-h-24"
                   />
-                  {displayErrors.companyDescription && (
+                  {displayErrors.description && (
                     <p className="text-red-500 text-sm mt-1">
-                      {displayErrors.companyDescription}
+                      {displayErrors.description}
                     </p>
                   )}
                 </div>
@@ -255,7 +255,7 @@ export default function CompanyAboutForm({
                       <SelectItem value="50-100">50-100</SelectItem>
                       <SelectItem value="101-200">100-200</SelectItem>
                       <SelectItem value="201-500">201-500</SelectItem>
-                      <SelectItem value="more than 500">
+                      <SelectItem value="500+">
                         more than 500
                       </SelectItem>
                     </SelectContent>

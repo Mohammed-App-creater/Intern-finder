@@ -17,11 +17,13 @@ interface JobFormData {
 interface JobReviewStepProps {
   formData: JobFormData;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
 export function JobReviewStep({
   formData,
   onSubmit,
+  isSubmitting = false,
 }: JobReviewStepProps) {
   const responsibilities =
     formData.responsibilities
@@ -80,8 +82,9 @@ export function JobReviewStep({
         <Button
           onClick={onSubmit}
           className="bg-primary text-white hover:bg-primary/90"
+          disabled={isSubmitting}
         >
-          Post Job
+          {isSubmitting ? "Posting..." : "Post Job"}
         </Button>
       </div>
     </div>
