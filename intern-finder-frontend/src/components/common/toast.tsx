@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 export type ToastType = "success" | "error" | "warning" | "info";
@@ -61,12 +61,27 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
 };
 
 const Toast = ({ toast, onClose }: ToastProps) => {
+  const [progress, setProgress] = useState(100);
+
   useEffect(() => {
+    const duration = toast.duration || 5000;
+    const start = Date.now();
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const percent = Math.max(100 - (elapsed / duration) * 100, 0);
+      setProgress(percent);
+    }, 50);
+
     const timer = setTimeout(() => {
       onClose(toast.id);
-    }, toast.duration || 5000);
+      clearInterval(interval);
+    }, duration);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
   }, [toast.id, toast.duration, onClose]);
 
   const bgColors = {
@@ -93,33 +108,40 @@ const Toast = ({ toast, onClose }: ToastProps) => {
   return createPortal(
     <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right-full duration-300">
       <div
-        className={`flex items-center w-full max-w-sm p-4 mb-4 rounded-lg shadow-lg border ${
+        className={`relative flex flex-col items-start w-full max-w-sm rounded-lg shadow-lg border overflow-hidden ${
           bgColors[toast.type]
         } ${textColors[toast.type]}`}
         role="alert"
       >
-        <div
-          className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
-            iconColors[toast.type]
-          }`}
-        >
-          <ToastIcon type={toast.type} />
+        <div className="flex items-center w-full p-4">
+          <div
+            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
+              iconColors[toast.type]
+            }`}
+          >
+            <ToastIcon type={toast.type} />
+          </div>
+          <div className="ml-3 font-bold text-md">{toast.message}</div>
+          <button
+            type="button"
+            className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 hover:bg-opacity-50 transition-colors cursor-pointer"
+            onClick={() => onClose(toast.id)}
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
         </div>
-        <div className="ml-3 font-bold text-md">{toast.message}</div>
-        <button
-          type="button"
-          className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 hover:bg-opacity-50 transition-colors cursor-pointer"
-          onClick={() => onClose(toast.id)}
-          aria-label="Close"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+        {/* Progress Bar */}
+        <div
+          className="absolute bottom-0 left-0 h-1 bg-black/40"
+          style={{ width: `${progress}%` }}
+        />
       </div>
     </div>,
     document.body

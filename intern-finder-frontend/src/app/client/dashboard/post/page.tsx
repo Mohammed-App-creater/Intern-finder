@@ -127,6 +127,9 @@ export default function PostJobPage() {
         <span className="font-medium text-2xl font-['Clash_Display']">
           Post a Job
         </span>
+        <span className="font-medium text-2xl font-['Clash_Display']">
+          Post a Job
+        </span>
       </div>
 
       <div className="p-8">
@@ -149,7 +152,11 @@ export default function PostJobPage() {
         )}
 
         {currentStep === 3 && (
-          <JobReviewStep formData={formData} onSubmit={handleSubmit} />
+          <JobReviewStep
+            formData={formData}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
         )}
       </div>
     </div>

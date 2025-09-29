@@ -15,36 +15,84 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import useFormValidation from "@/components/auth/useFormValidation";
+
+interface LocationFormData {
+  headQuarter: string;
+  otherLocation: string;
+  workType: string;
+}
 
 interface CompanyLocationFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+  onSubmit: (data: Partial<LocationFormData>) => void;
+  initialData?: Partial<LocationFormData>;
+  onBack?: () => void;
 }
 
 export default function CompanyLocationForm({
   onSubmit,
   initialData,
+  onBack,
 }: CompanyLocationFormProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LocationFormData>({
     headQuarter: "",
     otherLocation: "",
     workType: "",
     ...initialData,
   });
 
-  const router = useRouter();
+  const [localErrors, setLocalErrors] = useState<
+    Partial<Record<keyof LocationFormData, string>>
+  >({});
 
-  const handleInputChange = (field: string, value: string) => {
+  const router = useRouter();
+  const { errors, setError, clearError } = useFormValidation();
+
+  const handleInputChange = (field: keyof LocationFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
+    // Also clear local errors when user starts typing
+    setLocalErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof LocationFormData, string>> = {};
+
+    if (!formData.headQuarter.trim()) {
+      newErrors.headQuarter = "Headquarters location is required";
+    }
+
+    if (!formData.workType.trim()) {
+      newErrors.workType = "Work environment is required";
+    }
+
+    setLocalErrors(newErrors);
+
+    // Also update the global form validation errors if needed
+    Object.entries(newErrors).forEach(([field, error]) => {
+      if (error && setError) {
+        setError(field as keyof LocationFormData, error);
+      }
+    });
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    if (validateForm()) {
+      onSubmit(formData);
+    }
   };
 
+  // Use either localErrors or the global errors, depending on your setup
+  const displayErrors =
+    Object.keys(localErrors).length > 0 ? localErrors : errors;
+
   return (
-    <div className="min-h-screen flex">
+    <div className="relative min-h-screen flex">
       {/* Left side - Teal background with text */}
       <motion.div
         initial={{ x: 800, opacity: 1 }}
@@ -87,6 +135,17 @@ export default function CompanyLocationForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 p-8 flex flex-col justify-center"
       >
+        {/* Back Button */}
+        <div className="absolute top-15 right-15">
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-2 text-dark text-lg cursor-pointer"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back
+          </button>
+        </div>
         <div className="max-w-md mx-auto w-full">
           {/* Header text */}
           <h2 className="text-2xl font-extrabold text-dark mb-12">
@@ -100,13 +159,20 @@ export default function CompanyLocationForm({
                 htmlFor="location"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Headquarters Location
+                Headquarters Location *
               </Label>
               <LocationInput
                 formData={{ location: formData.headQuarter }}
-                handleInputChange={handleInputChange}
+                handleInputChange={(field: string, value: string) =>
+                  handleInputChange("headQuarter", value)
+                }
                 field="headQuarter"
               />
+              {displayErrors.headQuarter && (
+                <p className="text-red-500 text-sm mt-1">
+                  {displayErrors.headQuarter}
+                </p>
+              )}
             </div>
 
             {/* Other Branch/ Office (optional) */}
@@ -115,11 +181,13 @@ export default function CompanyLocationForm({
                 htmlFor="location"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Other Branch/ Office (optional)
+                Other Branch/ Office (Optional)
               </Label>
               <LocationInput
                 formData={{ location: formData.otherLocation }}
-                handleInputChange={handleInputChange}
+                handleInputChange={(field: string, value: string) =>
+                  handleInputChange("otherLocation", value)
+                }
                 field="otherLocation"
               />
             </div>
@@ -130,7 +198,7 @@ export default function CompanyLocationForm({
                 htmlFor="workType"
                 className="text-sm font-medium text-dark mb-2 block"
               >
-                Work Environment
+                Work Environment *
               </Label>
               <Select
                 value={formData.workType}
@@ -139,14 +207,19 @@ export default function CompanyLocationForm({
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Remote" />
+                  <SelectValue placeholder="Select work environment" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="fulltime">Remote</SelectItem>
-                  <SelectItem value="parttime">Hybrid</SelectItem>
-                  <SelectItem value="contract">On-site</SelectItem>
+                  <SelectItem value="remote">Remote</SelectItem>
+                  <SelectItem value="hybrid">Hybrid</SelectItem>
+                  <SelectItem value="on-site">On-site</SelectItem>
                 </SelectContent>
               </Select>
+              {displayErrors.workType && (
+                <p className="text-red-500 text-sm mt-1">
+                  {displayErrors.workType}
+                </p>
+              )}
             </div>
 
             {/* Continue Button */}

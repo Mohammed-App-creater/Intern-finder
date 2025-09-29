@@ -17,24 +17,53 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import useFormValidation from "@/components/auth/useFormValidation";
 
-interface FormData {
+interface AboutFormData {
   description: string;
   teamSize: string;
   socialMediaLink: string;
   linkedinUrl: string;
 }
 
-interface ContactInfoFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+interface CompanyAboutFormProps {
+  onSubmit: (data: Partial<AboutFormData>) => void;
+  initialData?: Partial<AboutFormData>;
+  onBack?: () => void;
 }
 
-export default function ContactInfoForm({
+// URL validation function
+const isValidUrl = (url: string): boolean => {
+  if (!url.trim()) return true; // Empty URLs are valid (optional fields)
+
+  try {
+    const urlObj = new URL(url);
+    return urlObj.protocol === "http:" || urlObj.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+// Function to format URL - add https:// if missing
+const formatUrl = (url: string): string => {
+  if (!url.trim()) return url;
+
+  // If it already starts with http:// or https://, return as is
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+
+  // Otherwise, add https://
+  return `https://${url}`;
+};
+
+export default function CompanyAboutForm({
   onSubmit,
   initialData,
-}: ContactInfoFormProps) {
-  const [formData, setFormData] = useState<FormData>({
+  onBack,
+}: CompanyAboutFormProps) {
+  const [formData, setFormData] = useState<AboutFormData>({
     description: "",
     teamSize: "",
     socialMediaLink: "",
@@ -42,16 +71,93 @@ export default function ContactInfoForm({
     ...initialData,
   });
 
-  const router = useRouter();
+  const [localErrors, setLocalErrors] = useState<
+    Partial<Record<keyof AboutFormData, string>>
+  >({});
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const router = useRouter();
+  const { errors, setError, clearError } = useFormValidation();
+
+  const handleInputChange = (field: keyof AboutFormData, value: string) => {
+    let formattedValue = value;
+
+    // Auto-format URLs as user types (for optional fields)
+    if (
+      (field === "socialMediaLink" || field === "linkedinUrl") &&
+      value.trim()
+    ) {
+      // Don't auto-format if user is deleting text
+      if (value.length > formData[field].length) {
+        formattedValue = formatUrl(value);
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: formattedValue }));
+    clearError(field);
+    // Also clear local errors when user starts typing
+    setLocalErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof AboutFormData, string>> = {};
+
+    // Required field validation
+    if (!formData.description.trim()) {
+      newErrors.description = "Company description is required";
+    }
+
+    if (!formData.teamSize.trim()) {
+      newErrors.teamSize = "Team size is required";
+    }
+
+    // URL validation for optional fields
+    if (
+      formData.socialMediaLink.trim() &&
+      !isValidUrl(formData.socialMediaLink)
+    ) {
+      newErrors.socialMediaLink =
+        "Please enter a valid URL starting with http:// or https://";
+    }
+
+    if (formData.linkedinUrl.trim() && !isValidUrl(formData.linkedinUrl)) {
+      newErrors.linkedinUrl =
+        "Please enter a valid URL starting with http:// or https://";
+    }
+
+    setLocalErrors(newErrors);
+
+    // Also update the global form validation errors if needed
+    Object.entries(newErrors).forEach(([field, error]) => {
+      if (error && setError) {
+        setError(field as keyof AboutFormData, error);
+      }
+    });
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    // Format URLs before submitting
+    const formattedData = {
+      ...formData,
+      socialMediaLink: formData.socialMediaLink.trim()
+        ? formatUrl(formData.socialMediaLink)
+        : "",
+      linkedinUrl: formData.linkedinUrl.trim()
+        ? formatUrl(formData.linkedinUrl)
+        : "",
+    };
+
+    if (validateForm()) {
+      onSubmit(formattedData);
+    }
   };
+
+  // Use either localErrors or the global errors, depending on your setup
+  const displayErrors =
+    Object.keys(localErrors).length > 0 ? localErrors : errors;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -62,22 +168,34 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 flex flex-col p-8 gap-25"
       >
-        {/* Logo */}
-        <div
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 mb-8 cursor-pointer"
-        >
-          <Image
-            src={Logo}
-            alt="Company Logo"
-            width={30}
-            height={30}
-            priority
-          />
-          <div className="flex cursor-pointer">
-            <span className="text-xl font-bold text-light">Intern Fin</span>
-            <span className="text-xl font-bold text-dark">der</span>
+        {/* Logo and Back Button */}
+        <div className="flex items-center justify-between mb-8">
+          <div
+            onClick={() => router.push("/")}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Image
+              src={Logo}
+              alt="Company Logo"
+              width={30}
+              height={30}
+              priority
+            />
+            <div className="flex">
+              <span className="text-xl font-bold text-light">Intern Fin</span>
+              <span className="text-xl font-bold text-dark">der</span>
+            </div>
           </div>
+
+          {/* Back Button */}
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-2 text-dark text-lg cursor-pointer"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back
+          </button>
         </div>
 
         {/* Form Content */}
@@ -96,7 +214,7 @@ export default function ContactInfoForm({
                     htmlFor="bio"
                     className="text-sm font-medium text-dark"
                   >
-                    Company Description
+                    Company Description *
                   </Label>
                   <Textarea
                     id="bio"
@@ -107,6 +225,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full min-h-24"
                   />
+                  {displayErrors.description && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.description}
+                    </p>
+                  )}
                 </div>
 
                 {/* Team Size */}
@@ -115,7 +238,7 @@ export default function ContactInfoForm({
                     htmlFor="TeamSize"
                     className="text-sm font-medium text-dark mb-2 block"
                   >
-                    Team Size
+                    Team Size *
                   </Label>
                   <Select
                     value={formData.teamSize}
@@ -124,7 +247,7 @@ export default function ContactInfoForm({
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="1-10" />
+                      <SelectValue placeholder="Select team size" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1-10">1-10</SelectItem>
@@ -132,51 +255,66 @@ export default function ContactInfoForm({
                       <SelectItem value="50-100">50-100</SelectItem>
                       <SelectItem value="101-200">100-200</SelectItem>
                       <SelectItem value="201-500">201-500</SelectItem>
-                      <SelectItem value="more than 500">
+                      <SelectItem value="500+">
                         more than 500
                       </SelectItem>
                     </SelectContent>
                   </Select>
+                  {displayErrors.teamSize && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.teamSize}
+                    </p>
+                  )}
                 </div>
 
                 {/* Social Media Link */}
                 <div className="space-y-2">
                   <Label
-                    htmlFor="link"
+                    htmlFor="socialMediaLink"
                     className="text-sm font-medium text-dark"
                   >
-                    Social Media Link
+                    Social Media Link (Optional)
                   </Label>
                   <Input
                     id="socialMediaLink"
-                    type="link"
-                    placeholder="www.facebook.com/company"
+                    type="text"
+                    placeholder="https://www.facebook.com/company"
                     value={formData.socialMediaLink}
                     onChange={(e) =>
                       handleInputChange("socialMediaLink", e.target.value)
                     }
                     className="w-full"
                   />
+                  {displayErrors.socialMediaLink && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.socialMediaLink}
+                    </p>
+                  )}
                 </div>
 
                 {/* LinkedIn */}
                 <div className="space-y-2">
                   <Label
-                    htmlFor="link"
+                    htmlFor="linkedIn"
                     className="text-sm font-medium text-dark"
                   >
-                    LinkedIn
+                    LinkedIn (Optional)
                   </Label>
                   <Input
                     id="linkedIn"
-                    type="link"
-                    placeholder="www.linkedin.com/in/company"
+                    type="text"
+                    placeholder="https://www.linkedin.com/company"
                     value={formData.linkedinUrl}
                     onChange={(e) =>
                       handleInputChange("linkedinUrl", e.target.value)
                     }
                     className="w-full"
                   />
+                  {displayErrors.linkedinUrl && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.linkedinUrl}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

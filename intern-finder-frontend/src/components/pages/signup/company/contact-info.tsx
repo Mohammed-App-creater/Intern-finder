@@ -9,8 +9,10 @@ import Image from "next/image";
 import Logo from "@/components/icons/logo.png";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import useFormValidation from "@/components/auth/useFormValidation";
 
-interface FormData {
+interface ContactFormData {
   contactName: string;
   contactJobTitle: string;
   contactEmail: string;
@@ -18,15 +20,17 @@ interface FormData {
 }
 
 interface ContactInfoFormProps {
-  onSubmit: (data: object) => void;
-  initialData?: object;
+  onSubmit: (data: Partial<ContactFormData>) => void;
+  initialData?: Partial<ContactFormData>;
+  onBack?: () => void;
 }
 
 export default function ContactInfoForm({
   onSubmit,
   initialData,
+  onBack,
 }: ContactInfoFormProps) {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ContactFormData>({
     contactName: "",
     contactJobTitle: "",
     contactEmail: "",
@@ -34,16 +38,64 @@ export default function ContactInfoForm({
     ...initialData,
   });
 
+  const [localErrors, setLocalErrors] = useState<
+    Partial<Record<keyof ContactFormData, string>>
+  >({});
+
   const router = useRouter();
-  
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const { errors, setError, clearError } = useFormValidation();
+
+  const handleInputChange = (field: keyof ContactFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    clearError(field);
+    // Also clear local errors when user starts typing
+    setLocalErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+
+    if (!formData.contactName.trim()) {
+      newErrors.contactName = "Full name is required";
+    }
+
+    if (!formData.contactJobTitle.trim()) {
+      newErrors.contactJobTitle = "Job title is required";
+    }
+
+    if (!formData.contactEmail.trim()) {
+      newErrors.contactEmail = "Email address is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)) {
+      newErrors.contactEmail = "Please enter a valid email address";
+    }
+
+    if (!formData.contactPhone.trim()) {
+      newErrors.contactPhone = "Phone number is required";
+    }
+
+    setLocalErrors(newErrors);
+
+    // Also update the global form validation errors if needed
+    Object.entries(newErrors).forEach(([field, error]) => {
+      if (error && setError) {
+        setError(field as keyof ContactFormData, error);
+      }
+    });
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    if (validateForm()) {
+      onSubmit(formData);
+    }
   };
+
+  // Use either localErrors or the global errors, depending on your setup
+  const displayErrors =
+    Object.keys(localErrors).length > 0 ? localErrors : errors;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -54,22 +106,34 @@ export default function ContactInfoForm({
         transition={{ duration: 1, ease: "easeOut" }}
         className="flex-1 flex flex-col p-8 gap-25"
       >
-        {/* Logo */}
-        <div
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 mb-8 cursor-pointer"
-        >
-          <Image
-            src={Logo}
-            alt="Company Logo"
-            width={30}
-            height={30}
-            priority
-          />
-          <div className="flex cursor-pointer">
-            <span className="text-xl font-bold text-light">Intern Fin</span>
-            <span className="text-xl font-bold text-dark">der</span>
+        {/* Logo and Back Button */}
+        <div className="flex items-center justify-between mb-8">
+          <div
+            onClick={() => router.push("/")}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Image
+              src={Logo}
+              alt="Company Logo"
+              width={30}
+              height={30}
+              priority
+            />
+            <div className="flex">
+              <span className="text-xl font-bold text-light">Intern Fin</span>
+              <span className="text-xl font-bold text-dark">der</span>
+            </div>
           </div>
+
+          {/* Back Button */}
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-2 text-dark text-lg cursor-pointer"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back
+          </button>
         </div>
 
         {/* Form Content */}
@@ -88,7 +152,7 @@ export default function ContactInfoForm({
                     htmlFor="fullName"
                     className="text-sm font-medium text-dark"
                   >
-                    Full Name
+                    Full Name *
                   </Label>
                   <Input
                     id="fullName"
@@ -100,6 +164,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {displayErrors.contactName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.contactName}
+                    </p>
+                  )}
                 </div>
 
                 {/* Job Title */}
@@ -108,7 +177,7 @@ export default function ContactInfoForm({
                     htmlFor="jobTitle"
                     className="text-sm font-medium text-dark"
                   >
-                    Job Title
+                    Job Title *
                   </Label>
                   <Input
                     id="jobTitle"
@@ -120,6 +189,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {displayErrors.contactJobTitle && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.contactJobTitle}
+                    </p>
+                  )}
                 </div>
 
                 {/* Email Address */}
@@ -128,7 +202,7 @@ export default function ContactInfoForm({
                     htmlFor="emailAddress"
                     className="text-sm font-medium text-dark"
                   >
-                    Email Address
+                    Email Address *
                   </Label>
                   <Input
                     id="emailAddress"
@@ -140,6 +214,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {displayErrors.contactEmail && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.contactEmail}
+                    </p>
+                  )}
                 </div>
 
                 {/* Phone Number */}
@@ -148,7 +227,7 @@ export default function ContactInfoForm({
                     htmlFor="phoneNumber"
                     className="text-sm font-medium text-dark"
                   >
-                    Phone Number
+                    Phone Number *
                   </Label>
                   <Input
                     id="phoneNumber"
@@ -160,6 +239,11 @@ export default function ContactInfoForm({
                     }
                     className="w-full"
                   />
+                  {displayErrors.contactPhone && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {displayErrors.contactPhone}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
