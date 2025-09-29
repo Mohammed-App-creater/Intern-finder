@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import JobCard from "@/components/pages/jobs/apply-card";
 import RelatedJobCard from "@/components/common/job-card";
@@ -17,17 +19,65 @@ import {
   Wallet,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRelatedJobs } from "@/hooks/useJob";
+import { useJobDetail, useRelatedJobs } from "@/hooks/useJob";
+import { useParams } from "next/navigation";
 
 export default function JobDetail() {
-  const { data, isLoading, isError } = useRelatedJobs();
+  const params = useParams();
+  const jobId = params["job-detail"] as string;
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  const {
+    data: jobDetail,
+    isLoading: jobDetailLoading,
+    isError: jobDetailError,
+  } = useJobDetail(jobId);
+  const {
+    data: relatedJobs,
+    isLoading: relatedJobsLoading,
+    isError: relatedJobsError,
+  } = useRelatedJobs();
+
+  if (jobDetailLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
+        <div className="text-center">
+          {/* Main Spinner */}
+          <div className="relative inline-block">
+            {/* Outer Ring - Primary Color */}
+            <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+
+            {/* Inner Ring - Secondary Color */}
+            <div
+              className="absolute top-1/2 left-1/2 w-10 h-10 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin"
+              style={{
+                animationDirection: "reverse",
+                animationDuration: "1.5s",
+                transform: "translate(-50%, -50%)",
+              }}
+            ></div>
+
+            {/* Center Dot - Accent Color */}
+            <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-accent rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+          </div>
+
+          {/* Loading Text */}
+          <div className="mt-6 space-y-2">
+            <h2 className="text-xl font-semibold text-primary">Loading</h2>
+            <p className="text-primary animate-pulse">
+              Please wait while we process your request...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  if (isError) {
+  if (jobDetailError) {
     return <div>Error</div>;
+  }
+
+  if (!jobDetail) {
+    return <div>Job not found</div>;
   }
 
   return (
@@ -40,64 +90,41 @@ export default function JobDetail() {
         </div>
       </div>
       <section className="container mx-auto">
-        {/* Job Listings */}
+        {/* Job Detail */}
         <div className="space-y-4 mb-10">
-          {data?.map((job, index) => (
-            <JobCard key={index} job={job} />
-          ))}
+          <JobCard job={jobDetail} />
         </div>
         <div className="flex gap-5">
           <div>
             <h2 className="text-2xl font-bold mb-4">Job Description</h2>
-            <p className="text-lg text-light mb-6">
-              We are looking for a Forward Security Director with 5+ years of
-              security management experience and expertise in risk assessment,
-              crisis response, and team leadership. The ideal candidate will
-              have a strong background in both physical and information
-              security, proficiency with tools like SIEM, access control
-              systems, and knowledge of frameworks such as NIST. Relevant
-              certifications (e.g., CISSP, CPP) are highly desirable.
-            </p>
+            <p className="text-lg text-light mb-6">{jobDetail.description}</p>
             <h2 className="text-2xl font-semibold mb-3">
               Key Responsibilities
             </h2>
             <ul className="list-disc list-inside mb-6 text-lg text-light">
-              <li>Develop and implement security policies and procedures.</li>
-              <li>Conduct risk assessments and vulnerability analyses.</li>
-              <li>Manage security personnel and oversee training programs.</li>
-              <li>Coordinate with law enforcement and emergency services.</li>
-              <li>Monitor security systems and respond to incidents.</li>
+              {jobDetail.responsibilities
+                .split("\n")
+                .filter((item) => item.trim())
+                .map((responsibility, index) => (
+                  <li key={index}>{responsibility.trim()}</li>
+                ))}
             </ul>
             <h2 className="text-2xl font-semibold mb-3">Professional Skills</h2>
             <ul className="list-disc list-inside text-lg text-light mb-6">
-              <li>
-                Bachelor&apos;s degree in Criminal Justice, Security Management,
-                or related field.
-              </li>
-              <li>Minimum of 7 years of experience in security management.</li>
-              <li>Strong leadership and communication skills.</li>
-              <li>Ability to work under pressure and make quick decisions.</li>
-              <li>
-                Knowledge of current security technologies and best practices.
-              </li>
+              {jobDetail.professionalSkills.map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
             </ul>
             <h2 className="text-2xl font-semibold mb-3">Tags</h2>
             <div className="flex gap-5 my-6">
-              <span className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2">
-                Full time
-              </span>
-              <span className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2">
-                Remote
-              </span>
-              <span className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2">
-                Senior Level
-              </span>
-              <span className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2">
-                Security
-              </span>
-              <span className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2">
-                Technology
-              </span>
+              {jobDetail.tags.slice(0, 5).map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-block bg-secondary text-primary font-bold text-sm px-3 py-1 rounded-full mr-2 mb-2"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
             <h2 className="text-2xl font-semibold mb-3">Share Job</h2>
             <div className="flex gap-10 mt-5 mb-15">
@@ -130,7 +157,9 @@ export default function JobDetail() {
             </p>
             {/* Related Job Cards */}
             <div className="space-y-4 mb-30">
-              {data?.map((job, index) => (
+              {relatedJobsLoading && <div>Loading related jobs...</div>}
+              {relatedJobsError && <div>Error loading related jobs</div>}
+              {relatedJobs?.map((job, index) => (
                 <RelatedJobCard key={index} job={job} />
               ))}
             </div>
@@ -148,7 +177,7 @@ export default function JobDetail() {
                   <div>
                     <p className="text-dark">Job Title</p>
                     <p className="text-sm text-light font-medium">
-                      Forward Security Director
+                      {jobDetail.title}
                     </p>
                   </div>
                 </div>
@@ -156,7 +185,9 @@ export default function JobDetail() {
                   <Clock className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-dark">Job Type</p>
-                    <p className="text-sm text-light font-medium">Full Time</p>
+                    <p className="text-sm text-light font-medium">
+                      {jobDetail.environmentType}
+                    </p>
                   </div>
                 </div>
 
@@ -164,14 +195,18 @@ export default function JobDetail() {
                   <Briefcase className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-dark">Category</p>
-                    <p className="text-sm text-light font-medium">Technology</p>
+                    <p className="text-sm text-light font-medium">
+                      {jobDetail.categories.join(", ")}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Medal className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-dark">Experience</p>
-                    <p className="text-sm text-light font-medium">5 Years</p>
+                    <p className="text-sm text-light font-medium">
+                      {jobDetail.minExperienceYears} Years
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -179,7 +214,7 @@ export default function JobDetail() {
                   <div>
                     <p className="text-dark">Degree</p>
                     <p className="text-sm text-light font-medium">
-                      Bachelor&apos;s
+                      {jobDetail.degree || "Not specified"}
                     </p>
                   </div>
                 </div>
@@ -188,7 +223,8 @@ export default function JobDetail() {
                   <div>
                     <p className="text-dark">Offered Salary</p>
                     <p className="text-sm text-light font-medium">
-                      $80k - $120k
+                      ${jobDetail.minSalary.toLocaleString()} - $
+                      {jobDetail.maxSalary.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -197,7 +233,7 @@ export default function JobDetail() {
                   <div>
                     <p className="text-dark">Location</p>
                     <p className="text-sm text-light font-medium">
-                      New York, USA
+                      {jobDetail.location}
                     </p>
                   </div>
                 </div>

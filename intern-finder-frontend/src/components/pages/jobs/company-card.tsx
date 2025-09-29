@@ -49,7 +49,7 @@ export default function CompanyCard() {
           {companies.map((company, index) => (
             <Card
               key={index}
-              className="border-0 shadow-sm hover:shadow-md transition-shadow w-fit h-fit"
+              className="bg-white border-0 shadow-sm hover:shadow-md transition-shadow w-fit h-fit"
             >
               <CardContent className="flex flex-col items-center p-6 text-center">
                 {/* Company Icon */}

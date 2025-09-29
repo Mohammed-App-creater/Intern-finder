@@ -1,15 +1,11 @@
 import { Bookmark, Briefcase, Clock, DollarSign, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image"
+import Image from "next/image";
 import { JobListing } from "@/types/job";
-import { changeDateToTimeAgo } from "@/lib/utils"
-
-
+import { changeDateToTimeAgo } from "@/lib/utils";
+import Link from "next/link";
 
 export default function ApplyCard({ job }: { job: JobListing }) {
-
-  
-
   return (
     <div className="flex flex-col rounded-lg p-6 shadow-md">
       <div className="flex justify-between pb-2">
@@ -28,9 +24,7 @@ export default function ApplyCard({ job }: { job: JobListing }) {
           height={40}
         />
         <div className="flex-1">
-          <h3 className="text-xl font-semibold text-dark mb-1">
-            {job.title}
-          </h3>
+          <h3 className="text-xl font-semibold text-dark mb-1">{job.title}</h3>
           <p className="text-dark font-light mb-4">{job.company.companyName}</p>
         </div>
       </div>
@@ -46,16 +40,20 @@ export default function ApplyCard({ job }: { job: JobListing }) {
           </div>
           <div className="flex items-center gap-1">
             <DollarSign className="w-4 h-4 primary" />
-            <span>{job.minSalary} - {job.maxSalary}</span>
+            <span>
+              {job.minSalary} - {job.maxSalary}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <MapPin className="w-4 h-4 primary" />
             <span>{job.location}</span>
           </div>
         </div>
-        <Button className="bg-primary hover:bg-teal-600  text-white cursor-pointer">
-          Job Details
-        </Button>
+        <Link href={`/jobs/${job.id}`}>
+          <Button className="bg-primary hover:bg-teal-600  text-white cursor-pointer">
+            Job Details
+          </Button>
+        </Link>
       </div>
     </div>
   );

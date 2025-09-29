@@ -1,19 +1,18 @@
-
 export interface JobListing {
+  id: string;
+  title: string;
+  categories: string[];
+  tags: string[];
+  location: string;
+  minSalary: number;
+  maxSalary: number;
+  environmentType: "Remote" | "Onsite" | "Hybrid" | string; // allow extension
+  createdAt: string; // ISO timestamp
+  company: {
     id: string;
-    title: string;
-    categories: string[];
-    tags: string[];
-    location: string;
-    minSalary: number;
-    maxSalary: number;
-    environmentType: "Remote" | "Onsite" | "Hybrid" | string; // allow extension
-    createdAt: string; // ISO timestamp
-    company: {
-        id: string;
-        companyName: string;
-        logoUrl?: string;
-    };
+    companyName: string;
+    logoUrl?: string;
+  };
 }
 
 export interface JobFilters {
@@ -69,7 +68,6 @@ export interface JobPostingResponse {
   updatedAt: string; // or Date if you plan to convert to Date objects
 }
 
-
 export interface RecentApplication {
   id: string;
   jobTitle: string;
@@ -113,4 +111,39 @@ export interface JobFilterStore {
   filters: JobFilters;
   setFilters: (filters: Partial<JobFilters>) => void;
   resetFilters: () => void;
+}
+
+export interface JobDetail {
+  id: string;
+  companyId: string;
+  title: string;
+  environmentType: "Remote" | "Onsite" | "Hybrid" | string;
+  categories: string[];
+  salaryType: "paid" | "unpaid" | "volunteer";
+  minSalary: number;
+  maxSalary: number;
+  responsibilities: string;
+  description: string;
+  professionalSkills: string[];
+  tags: string[];
+  minExperienceYears: number;
+  degree: string;
+  location: string;
+  status: string;
+  capacity: number;
+  requiredSkills: string[];
+  viewCount: number;
+  createdAt: string;
+  updatedAt: string;
+  company: {
+    id: string;
+    companyName: string;
+    logoUrl?: string;
+  };
+}
+
+export interface JobDetailResponse {
+  success: boolean;
+  message: string;
+  data: JobDetail;
 }
