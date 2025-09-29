@@ -1,7 +1,8 @@
-import api  from '@/lib/axios';
+import api from '@/lib/axios';
 import { TalentTotalInterView, TalentStates, TalentTotalJobsApplied, TalentRecentApplications, TalentUpcomingInterview } from "@/types/dashboard";
 import { BasicInfo, Password, Notification } from '@/types/setting';
 import { TalentDto } from '@/types/user';
+import { RecentApplicationsData } from '@/types/job';
 
 export const getTalentDashboardTotalJobsApplied = async (talentId: string): Promise<TalentTotalJobsApplied> => {
     const { data } = await api.get(`talent/${talentId}/dashboard/total-jobs-applied`);
@@ -30,22 +31,29 @@ export const getTalentDashboardRecentApplications = async (talentId: string): Pr
 
 // Update
 
-export const UpdateBasicInfoTalent =  async (talentId: string, BasicInfo: BasicInfo): Promise<TalentDto>  => {
+export const UpdateBasicInfoTalent = async (talentId: string, BasicInfo: BasicInfo): Promise<TalentDto> => {
     const { data } = await api.put(`/talent/${talentId}/settings/basic-info`, BasicInfo)
     return data.data;
 }
- 
-export const UpdateEmail =  async (talentId: string, email:  string): Promise<TalentDto>  => {
-    const { data } = await api.put(`/talent/${talentId}/settings/email`, {email: email})
+
+export const UpdateEmail = async (talentId: string, email: string): Promise<TalentDto> => {
+    const { data } = await api.put(`/talent/${talentId}/settings/email`, { email: email })
     return data.data;
 }
 
-export const UpdatePassword =  async (talentId: string, Passwords:  Password): Promise<TalentDto>  => {
+export const UpdatePassword = async (talentId: string, Passwords: Password): Promise<TalentDto> => {
     const { data } = await api.put(`/talent/${talentId}/settings/password`, Passwords)
     return data.data;
-} 
+}
 
-export const UpdateNotification =  async (talentId: string, notification:  Notification): Promise<TalentDto>  => {
+export const UpdateNotification = async (talentId: string, notification: Notification): Promise<TalentDto> => {
     const { data } = await api.put(`/talent/${talentId}/settings/notifications`, notification)
     return data.data;
-} 
+}
+
+// talent - job
+
+export const getMyAppliedJobs = async (talentId: string): Promise<RecentApplicationsData> => {
+    const { data } = await api.get(`talent/${talentId}/dashboard/recent-applications`);
+    return data.data;
+};

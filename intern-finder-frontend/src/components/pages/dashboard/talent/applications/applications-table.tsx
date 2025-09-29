@@ -1,54 +1,68 @@
+"use client";
 import { Search, Filter, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/common/status-badge";
 import { Pagination } from "@/components/common/pagination";
 import Image from "next/image";
+import { useMyAppliedJobs } from "@/hooks/useJob";
+import { useAuthStore } from "@/store/auth";
+import { StatusBadgeProps } from "@/types/job";
 
-const applications = [
-  {
-    id: 1,
-    company: "Microsoft",
-    logo: "https://cdn-icons-png.flaticon.com/128/732/732221.png",
-    role: "Social Media Assistant",
-    dateApplied: "24 July 2021",
-    status: "In Review" as const,
-  },
-  {
-    id: 2,
-    company: "Cursor",
-    logo: "https://cdn-icons-png.flaticon.com/128/5969/5969205.png",
-    role: "Social Media Assistant",
-    dateApplied: "20 July 2021",
-    status: "Shortlisted" as const,
-  },
-  {
-    id: 3,
-    company: "Packer",
-    logo: "https://cdn-icons-png.flaticon.com/128/564/564419.png",
-    role: "Social Media Assistant",
-    dateApplied: "18 July 2021",
-    status: "Offered" as const,
-  },
-  {
-    id: 4,
-    company: "Divvy",
-    logo: "https://cdn-icons-png.flaticon.com/128/5968/5968771.png",
-    role: "Social Media Assistant",
-    dateApplied: "14 July 2021",
-    status: "Interviewing" as const,
-  },
-  {
-    id: 5,
-    company: "EAsport",
-    logo: "https://cdn-icons-png.flaticon.com/128/732/732193.png",
-    role: "Social Media Assistant",
-    dateApplied: "10 July 2021",
-    status: "Unsuitable" as const,
-  },
-];
+// const applications = [
+//   {
+//     id: 1,
+//     company: "Microsoft",
+//     logo: "https://cdn-icons-png.flaticon.com/128/732/732221.png",
+//     role: "Social Media Assistant",
+//     dateApplied: "24 July 2021",
+//     status: "In Review" as const,
+//   },
+//   {
+//     id: 2,
+//     company: "Cursor",
+//     logo: "https://cdn-icons-png.flaticon.com/128/5969/5969205.png",
+//     role: "Social Media Assistant",
+//     dateApplied: "20 July 2021",
+//     status: "Shortlisted" as const,
+//   },
+//   {
+//     id: 3,
+//     company: "Packer",
+//     logo: "https://cdn-icons-png.flaticon.com/128/564/564419.png",
+//     role: "Social Media Assistant",
+//     dateApplied: "18 July 2021",
+//     status: "Offered" as const,
+//   },
+//   {
+//     id: 4,
+//     company: "Divvy",
+//     logo: "https://cdn-icons-png.flaticon.com/128/5968/5968771.png",
+//     role: "Social Media Assistant",
+//     dateApplied: "14 July 2021",
+//     status: "Interviewing" as const,
+//   },
+//   {
+//     id: 5,
+//     company: "EAsport",
+//     logo: "https://cdn-icons-png.flaticon.com/128/732/732193.png",
+//     role: "Social Media Assistant",
+//     dateApplied: "10 July 2021",
+//     status: "Unsuitable" as const,
+//   },
+// ];
 
-export function ApplicationsTable() {
+export function ApplicationsTable() { 
+  const user = useAuthStore().user;
+  const talentId = user?.role === "TALENT" ? user.id : "";
+  const { data, isLoading, isError } = useMyAppliedJobs(talentId!);
+  console.log("applied jobs data:", data);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Error loading applications.</div>;
+  }
   return (
     <div className="border-1 rounded-lg shadow-sm p-5">
       <div className="p-6 border-b">
@@ -96,42 +110,50 @@ export function ApplicationsTable() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {applications.map((application) => (
-              <tr key={application.id} className="hover:bg-secondary border-none">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-light">
-                  {application.id}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={application.logo || "/images/image_placeholder.jpg"}
-                      alt="Company Logo"
-                      width={250}
-                      height={250}
-                      className="w-8 h-8 flex items-center justify-center text-wrap text-xs"
-                    />
+            {data?.recentApplications.length ? (
+              data.recentApplications.map((application, index) => (
+                <tr key={application.id} className="hover:bg-secondary border-none">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-light">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={application.companyLogo || "/images/image_placeholder.jpg"}
+                        alt="Company Logo"
+                        width={250}
+                        height={250}
+                        className="w-8 h-8 flex items-center justify-center text-wrap text-xs"
+                      />
 
-                    <span className="text-sm font-medium text-dark">
-                      {application.company}
-                    </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-dark">
-                  {application.role}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-dark">
-                  {application.dateApplied}
-                </td>
-                <td>
-                  <StatusBadge status={application.status} className="w-fit" />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <Button variant="ghost" size="sm">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
+                      <span className="text-sm font-medium text-dark">
+                        {application.companyName}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-dark">
+                    {application.jobTitle}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-dark">
+                    {application.appliedAt}
+                  </td>
+                  <td>
+                    <StatusBadge status={application.status as StatusBadgeProps["status"]} className="w-fit" />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <Button variant="ghost" size="sm">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-6 py-4 whitespace-nowrap text-sm text-dark text-center">
+                  No applications found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

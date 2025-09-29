@@ -83,3 +83,15 @@ export interface TalentDto {
   createdAt?: string;
   updatedAt?: string;
 }
+
+
+export interface companyQueryParams {
+  page: number;
+  limit: number;
+  search?: string;
+  location?: string;
+  industries?: string[];
+  teamSize?: string[];
+  sortBy: "companyName" | "employeeCount" | "createdAt";
+  sortOrder: "asc" | "desc";
+}

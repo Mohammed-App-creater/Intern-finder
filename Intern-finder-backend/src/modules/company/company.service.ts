@@ -421,7 +421,7 @@ export const getAllCompany = async (params: GetAllCompaniesDTO) => {
   const companies = await prisma.company.findMany({
     where: whereConditions,
     skip,
-    take: limit,
+    take: Number(limit),
     orderBy: {
       [sortBy]: sortOrder
     },

@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { getJobListings } from "@/services/job.service";
-import { JobFilters } from "@/types/job";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getJobListings, postJob } from "@/services/job.service";
+import { JobFilters, JobPosting } from "@/types/job";
+import { getMyAppliedJobs } from "@/services/talent.service";
 
 
 export const useJobListings = (filters: JobFilters) => {
@@ -14,5 +15,22 @@ export const useRelatedJobs = () => {
   return useQuery({
     queryKey: ["job", "related"],
     queryFn: () => getJobListings({}), // Adjust parameters as needed
+  });
+}
+
+export const usePostJob = () => {
+  return useMutation({
+    mutationKey: ["job", "post"],
+    mutationFn: (variables: { companyId: string; jobData: JobPosting }) =>
+      postJob(variables.companyId, variables.jobData),
+  });
+}
+
+// Talent - Job
+
+export const useMyAppliedJobs = (talentId: string) => {
+  return useQuery({
+    queryKey: ["talent", talentId, "applied-jobs"],
+    queryFn: () => getMyAppliedJobs(talentId),
   });
 }

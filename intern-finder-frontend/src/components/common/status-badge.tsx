@@ -27,6 +27,18 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   const getStatusStyles = (status: string) => {
     switch (status) {
+      case "accepted":
+        return "text-green-500 border-green-500";
+      case "offered":
+        return "text-purple-400 border-purple-400";
+      case "pending":
+        return "text-yellow-400 border-yellow-400";
+      case "rejected":
+        return "text-red-400 border-red-400";
+      case "shortlisted":
+        return "text-purple-500 border-purple-500";
+      case "interview":
+        return "text-yellow-400 border-yellow-400";
       case "In Review":
         return "text-yellow-400 border-yellow-400";
       case "Interviewing":
