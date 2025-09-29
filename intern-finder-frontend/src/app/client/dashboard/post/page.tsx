@@ -155,7 +155,7 @@ export default function PostJobPage() {
           <JobReviewStep
             formData={formData}
             onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
+            isSubmitting={isLoading}
           />
         )}
       </div>
