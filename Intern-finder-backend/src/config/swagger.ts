@@ -19,6 +19,10 @@ const options: swaggerJSDoc.Options = {
         url: "https://intern-finder-qom0.onrender.com/api",
         description: "Production server",
       },
+      {
+        url: "https://intern-finder-qom0.onrender.com/",
+        description: "Production server without /api prefix",
+      }
     ],
     tags: [
       { name: "Auth", description: "Authentication routes (talent/company login & register)" },
