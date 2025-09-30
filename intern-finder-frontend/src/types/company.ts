@@ -1,6 +1,6 @@
 export interface CompanyDashboardStats {
   totalJobs: number;
-  newMessages: number;
+  newMassages: number;
   newCandidates: number;
 }
 
