@@ -3,6 +3,7 @@ import { JobStatistics } from "@/components/pages/dashboard/client/job-statistic
 import { StatusCards } from "@/components/pages/dashboard/client/status-cards";
 import { ApplicantsSummary } from "@/components/pages/dashboard/client/application-summary";
 import { JobUpdates } from "@/components/pages/dashboard/client/job-updates";
+import { JobOpenCard } from "@/components/pages/dashboard/client/job-open-card";
 
 export default function Dashboard() {
   return (
@@ -14,13 +15,7 @@ export default function Dashboard() {
         <div className="flex justify-between">
           <JobStatistics />
           <div className="flex flex-col gap-8  w-[32.5%]">
-            <div className="flex flex-col gap-5 border p-4 bg-white">
-              <h1 className="font-bold text-xl">Job Open</h1>
-              <div className="flex items-end gap-3">
-                <h1 className="flex items-end font-bold text-5xl">12</h1>
-                <p className="text-light">Jobs Opened</p>
-              </div>
-            </div>
+            <JobOpenCard />
             <ApplicantsSummary />
           </div>
         </div>
