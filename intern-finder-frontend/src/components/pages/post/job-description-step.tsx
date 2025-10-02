@@ -4,29 +4,21 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Bold, Italic, List, AlignLeft, Link } from "lucide-react";
-
-interface JobFormData {
-  jobDescription?: string;
-  responsibilities?: string;
-  skills?: string;
-  jobTitle?: string;
-  employmentTypes?: string[];
-  category?: string;
-  salaryMin?: number;
-  salaryMax?: number;
-}
+import { useJobFormStore } from "@/store/job-form-store";
 
 interface JobDescriptionStepProps {
-  formData: JobFormData;
-  updateFormData: (data: Partial<JobFormData>) => void;
   onNext: () => void;
 }
 
-export function JobDescriptionStep({
-  formData,
-  updateFormData,
-  onNext,
-}: JobDescriptionStepProps) {
+export function JobDescriptionStep({ onNext }: JobDescriptionStepProps) {
+  const { formData, updateFormData, errors, validateStep } = useJobFormStore();
+
+  const handleNext = () => {
+    if (validateStep(2)) {
+      onNext();
+    }
+  };
+
   const EditorToolbar = () => (
     <div className="flex items-center space-x-2 p-2 border-t border-b">
       <Button variant="none" size="sm">
@@ -60,76 +52,94 @@ export function JobDescriptionStep({
       <div className="space-y-6">
         <div className="flex gap-5 pb-5 pt-2">
           <div className="flex flex-col gap-2 w-200">
-            <Label className="text-dark font-medium">Job Descriptions</Label>
+            <Label className="text-dark font-medium">Job Descriptions *</Label>
             <p className="text-light text-sm mb-2">
-              Job titles must be describe one interns
+              Describe the job position in detail
             </p>
           </div>
           <div className="flex flex-col w-full gap-2">
             <div className="border overflow-hidden w-full">
               <Textarea
                 placeholder="Enter job description"
-                value={formData.jobDescription || ""}
+                value={formData.jobDescription}
                 onChange={(e) =>
                   updateFormData({ jobDescription: e.target.value })
                 }
                 className="min-h-50 border-0 focus-visible:ring-0"
+                required
               />
               <EditorToolbar />
             </div>
+            {errors.jobDescription && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.jobDescription}
+              </p>
+            )}
             <div className="flex justify-between items-center p-2 text-xs text-light">
-              <span>Maximum 500 characters</span>
-              <span>{(formData.jobDescription || "").length} / 500</span>
+              <span>Between 10-500 characters</span>
+              <span>{formData.jobDescription.length} / 500</span>
             </div>
           </div>
         </div>
         <div className="border-b"></div>
         <div className="flex gap-5 pb-5 pt-2">
           <div className="flex flex-col gap-2 w-200">
-            <Label className="text-dark font-medium">Responsibilities</Label>
+            <Label className="text-dark font-medium">Responsibilities *</Label>
             <p className="text-light text-sm mb-2">
-              Outline the core responsibilities of the interns
+              Outline the core responsibilities of the position
             </p>
           </div>
           <div className="flex flex-col w-full gap-2">
             <div className="border overflow-hidden w-full">
               <Textarea
                 placeholder="Enter responsibilities"
-                value={formData.responsibilities || ""}
+                value={formData.responsibilities}
                 onChange={(e) =>
                   updateFormData({ responsibilities: e.target.value })
                 }
                 className="min-h-50 border-0 focus-visible:ring-0"
+                required
               />
               <EditorToolbar />
             </div>
+            {errors.responsibilities && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.responsibilities}
+              </p>
+            )}
             <div className="flex justify-between items-center p-2 text-xs text-light">
-              <span>Maximum 500 characters</span>
-              <span>{(formData.responsibilities || "").length} / 500</span>
+              <span>Between 10-500 characters</span>
+              <span>{formData.responsibilities.length} / 500</span>
             </div>
           </div>
         </div>
         <div className="border-b"></div>
         <div className="flex gap-5 pb-5 pt-2">
           <div className="flex flex-col gap-2 w-200">
-            <Label className="text-dark font-medium">Professional Skills</Label>
+            <Label className="text-dark font-medium">
+              Professional Skills *
+            </Label>
             <p className="text-light text-sm mb-2">
-              Add the skills you are looking for in the interns
+              Add the skills you are looking for
             </p>
           </div>
           <div className="flex flex-col w-full gap-2">
             <div className="border overflow-hidden w-full">
               <Textarea
                 placeholder="Enter skills"
-                value={formData.skills || ""}
+                value={formData.skills}
                 onChange={(e) => updateFormData({ skills: e.target.value })}
                 className="min-h-50 border-0 focus-visible:ring-0"
+                required
               />
               <EditorToolbar />
             </div>
+            {errors.skills && (
+              <p className="text-red-500 text-xs mt-1">{errors.skills}</p>
+            )}
             <div className="flex justify-between items-center p-2 text-xs text-light">
-              <span>Maximum 500 characters</span>
-              <span>{(formData.skills || "").length} / 500</span>
+              <span>Between 5-500 characters</span>
+              <span>{formData.skills.length} / 500</span>
             </div>
           </div>
         </div>
@@ -137,7 +147,7 @@ export function JobDescriptionStep({
 
       <div className="flex justify-end">
         <Button
-          onClick={onNext}
+          onClick={handleNext}
           className="bg-primary text-white hover:bg-primary/90"
         >
           Next Step

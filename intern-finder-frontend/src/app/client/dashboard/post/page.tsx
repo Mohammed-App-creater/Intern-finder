@@ -10,17 +10,9 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import { usePostJob } from "@/hooks/useJob";
 import { JobPosting } from "@/types/job";
-
-interface jobFormData {
-  category: string;
-  employmentTypes: string[];
-  jobDescription: string;
-  salaryMax: string;
-  salaryMin: string;
-  jobTitle: string;
-  responsibilities: string;
-  skills: string;
-}
+import { useToastMessages } from "@/hooks/useToastMessages";
+import { getErrorMessage, getValidationErrors } from "@/utils/error-handler";
+import { useJobFormStore } from "@/store/job-form-store";
 
 const parseSkills = (skillsInput: string): string[] => {
   return skillsInput
@@ -31,33 +23,36 @@ const parseSkills = (skillsInput: string): string[] => {
 
 export default function PostJobPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const postJobMutation = usePostJob();
   const user = useAuthStore().user;
-  const companyId = user?.role === "COMPANY" ? (user?.id ?? "") : "";
+  const companyId = user?.role === "COMPANY" ? user?.id ?? "" : "";
+  const { showSuccess, showError, showWarning } = useToastMessages();
 
-  const convertToJobPosting = (source: jobFormData): JobPosting => {
-    const skillsArray = parseSkills(source.skills || "");
-    const salaryMin = Number(source.salaryMin) || 100;
-    const salaryMax = Number(source.salaryMax) || 500;
+  // Use the Zustand store instead of local state
+  const { formData, clearErrors } = useJobFormStore();
+
+  const convertToJobPosting = (): JobPosting => {
+    const skillsArray = parseSkills(formData.skills || "");
+    const salaryMin = formData.salaryMin || 0;
+    const salaryMax = formData.salaryMax || 0;
 
     return {
-      title: source.jobTitle || "",
-      environmentType: "Remote", 
-      categories: [source.category || ""].filter((cat) => cat.length > 0),
-      salaryType: "paid", 
-      minSalary: salaryMin, 
+      title: formData.jobTitle || "",
+      environmentType: "Remote",
+      categories: [formData.category || ""].filter((cat) => cat.length > 0),
+      salaryType: salaryMin > 0 || salaryMax > 0 ? "paid" : "unpaid",
+      minSalary: salaryMin,
       maxSalary: salaryMax,
-      responsibilities: source.responsibilities || "",
-      description: source.jobDescription || "",
+      responsibilities: formData.responsibilities || "",
+      description: formData.jobDescription || "",
       professionalSkills: skillsArray,
-      tags: skillsArray, 
-      minExperienceYears: 0, 
-      degree: "", 
-      location: "Remote", 
-      capacity: 1, 
+      tags: skillsArray,
+      minExperienceYears: 0,
+      degree: "",
+      location: "Remote",
+      capacity: 1,
       requiredSkills: skillsArray,
     };
   };
@@ -76,10 +71,6 @@ export default function PostJobPage() {
     { number: 3, title: "Job Review", icon: <Eye className="w-5 h-5" /> },
   ];
 
-  const updateFormData = (newData: object) => {
-    setFormData((prev) => ({ ...prev, ...newData }));
-  };
-
   const handleNext = () => {
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
@@ -89,44 +80,59 @@ export default function PostJobPage() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      clearErrors();
     } else {
       router.back();
     }
   };
 
   const handleSubmit = () => {
-    setIsLoading(true);
-    postJobMutation.mutate({ companyId, jobData: convertToJobPosting(formData as jobFormData) }, {
-      onSuccess: () => {
-        setIsLoading(false);
-        router.push("/client/dashboard");
-      },
-      onError: (error) => {
-        console.error("Error posting job:", error);
-        setIsLoading(false);
+    setIsSubmitting(true);
+    postJobMutation.mutate(
+      { companyId, jobData: convertToJobPosting() },
+      {
+        onSuccess: () => {
+          setIsSubmitting(false);
+          showSuccess("Job posted successfully!");
+          router.push("/client/dashboard");
+        },
+        onError: (error) => {
+          console.error("Error posting job:", error);
+          setIsSubmitting(false);
+
+          const validationErrors = getValidationErrors(error);
+          if (Object.keys(validationErrors).length > 0) {
+            showWarning("Please fix the validation errors in the form");
+            console.log("Validation errors:", validationErrors);
+          } else {
+            const errorMessage = getErrorMessage(error);
+            showError(errorMessage);
+          }
+        },
       }
-    });
+    );
   };
 
-  if (isLoading) {
+  if (isSubmitting) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[90vh] flex items-center justify-center pb-10 mb-10">
         <div className="text-center">
           <div className="loader mb-4"></div>
-          <p className="text-lg font-medium">Posting your job...</p>
+          <p className="text-4xl font-bold text-primary">Posting your job...</p>
         </div>
       </div>
     );
-  } 
+  }
+
   return (
     <div className="min-h-screen p-6 mt-2">
       <div className="flex gap-4 mb-3">
-        <button className="flex items-center space-x-2 text-dark hover:text-light transition-colors cursor-pointer">
-          <ArrowLeft className="w-6 h-6" onClick={handleBack} />
+        <button
+          className="flex items-center space-x-2 text-dark hover:text-light transition-colors cursor-pointer"
+          onClick={handleBack}
+        >
+          <ArrowLeft className="w-6 h-6" />
         </button>
-        <span className="font-medium text-2xl font-['Clash_Display']">
-          Post a Job
-        </span>
         <span className="font-medium text-2xl font-['Clash_Display']">
           Post a Job
         </span>
@@ -135,27 +141,15 @@ export default function PostJobPage() {
       <div className="p-8">
         <StepIndicator currentStep={currentStep} steps={steps} />
 
-        {currentStep === 1 && (
-          <JobInformationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            onNext={handleNext}
-          />
-        )}
+        {currentStep === 1 && <JobInformationStep onNext={handleNext} />}
 
-        {currentStep === 2 && (
-          <JobDescriptionStep
-            formData={formData}
-            updateFormData={updateFormData}
-            onNext={handleNext}
-          />
-        )}
+        {currentStep === 2 && <JobDescriptionStep onNext={handleNext} />}
 
         {currentStep === 3 && (
           <JobReviewStep
             formData={formData}
             onSubmit={handleSubmit}
-            isSubmitting={isLoading}
+            isSubmitting={isSubmitting}
           />
         )}
       </div>

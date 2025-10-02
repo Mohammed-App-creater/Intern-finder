@@ -12,29 +12,34 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-
-interface JobFormData {
-  jobDescription?: string;
-  responsibilities?: string;
-  skills?: string;
-  jobTitle?: string;
-  employmentTypes?: string[];
-  category?: string;
-  salaryMin?: number;
-  salaryMax?: number;
-}
+import { useState } from "react";
+import { useJobFormStore } from "@/store/job-form-store";
 
 interface JobInformationStepProps {
-  formData: JobFormData;
-  updateFormData: (data: Partial<JobFormData>) => void;
   onNext: () => void;
 }
 
-export function JobInformationStep({
-  formData,
-  updateFormData,
-  onNext,
-}: JobInformationStepProps) {
+export function JobInformationStep({ onNext }: JobInformationStepProps) {
+  const { formData, updateFormData, errors, validateStep } = useJobFormStore();
+  const [isSalaryFree, setIsSalaryFree] = useState(false);
+
+  const handleNext = () => {
+    if (validateStep(1)) {
+      onNext();
+    }
+  };
+
+  const handleFreeButtonClick = () => {
+    setIsSalaryFree(!isSalaryFree);
+    if (!isSalaryFree) {
+      // When setting to free, clear the salary values
+      updateFormData({ salaryMin: 0, salaryMax: 0 });
+    } else {
+      // When unsetting free, restore default values
+      updateFormData({ salaryMin: 5000, salaryMax: 22000 });
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="border-b pb-4">
@@ -50,30 +55,36 @@ export function JobInformationStep({
         <div className="grid grid-cols-2 gap-10 max-w-5xl">
           <div className="flex flex-col gap-2">
             <Label htmlFor="jobTitle" className="text-dark font-medium">
-              Job Title
+              Job Title *
             </Label>
             <p className="text-light text-sm mb-2">
-              Job titles must be describe one interns
+              Job titles must describe one position
             </p>
           </div>
           <div className="flex flex-col gap-2">
             <Input
               id="jobTitle"
               placeholder="e.g. Software Engineer"
-              value={formData.jobTitle || ""}
+              value={formData.jobTitle}
               onChange={(e) => updateFormData({ jobTitle: e.target.value })}
               className="mt-1 w-85"
+              required
             />
-            <p className="text-light text-xs mt-1">At least 80 characters</p>
+            {errors.jobTitle && (
+              <p className="text-red-500 text-xs mt-1">{errors.jobTitle}</p>
+            )}
+            <p className="text-light text-xs mt-1">At least 5 characters</p>
           </div>
         </div>
         <div className="border-b pb-4"></div>
 
         <div className="grid grid-cols-2 gap-10 max-w-5xl pt-2">
           <div className="flex flex-col gap-2">
-            <Label className="text-dark font-medium">Type of Employment</Label>
+            <Label className="text-dark font-medium">
+              Type of Employment *
+            </Label>
             <p className="text-light text-sm mb-3">
-              You can select multiple type of interns
+              You can select multiple employment types
             </p>
           </div>
 
@@ -82,9 +93,9 @@ export function JobInformationStep({
               <div key={type} className="flex items-center space-x-2">
                 <Checkbox
                   id={type}
-                  checked={formData.employmentTypes?.includes(type) || false}
+                  checked={formData.employmentTypes.includes(type)}
                   onCheckedChange={(checked) => {
-                    const types = formData.employmentTypes || [];
+                    const types = formData.employmentTypes;
                     if (checked) {
                       updateFormData({ employmentTypes: [...types, type] });
                     } else {
@@ -101,21 +112,24 @@ export function JobInformationStep({
                 </Label>
               </div>
             ))}
+            {errors.employmentTypes && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.employmentTypes}
+              </p>
+            )}
           </div>
         </div>
         <div className="border-b pb-4"></div>
 
         <div className="grid grid-cols-2 gap-10 max-w-5xl pt-2">
           <div className="flex flex-col gap-2">
-            <Label className="text-dark font-medium">Categories</Label>
-            <p className="text-light text-sm mb-2">
-              You can select multiple internship categories
-            </p>
+            <Label className="text-dark font-medium">Categories *</Label>
+            <p className="text-light text-sm mb-2">Select the job category</p>
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-dark font-light">Select Job Categories</p>
             <Select
-              value={formData.category || ""}
+              value={formData.category}
               onValueChange={(value) => updateFormData({ category: value })}
             >
               <SelectTrigger className="w-85">
@@ -128,58 +142,74 @@ export function JobInformationStep({
                 <SelectItem value="sales">Sales</SelectItem>
               </SelectContent>
             </Select>
+            {errors.category && (
+              <p className="text-red-500 text-xs mt-1">{errors.category}</p>
+            )}
           </div>
         </div>
         <div className="border-b pb-4"></div>
 
         <div className="grid grid-cols-2 gap-10 max-w-5xl pb-10 pt-2">
           <div className="flex flex-col gap-2">
-            <Label className="text-dark font-medium">Salary</Label>
+            <Label className="text-dark font-medium">Salary *</Label>
             <p className="text-light text-sm mb-4 max-w-xs">
-              Please specify the estimated salary range for the role. *You can
-              leave this blank
+              Please specify the estimated salary range for the role
             </p>
           </div>
 
           <div className="flex items-center justify-between max-w-lg pr-1">
             <div className="flex flex-col gap-6">
-              <div className="flex items-center space-x-20">
-                <div className="flex items-center space-x-2 border p-2">
-                  <span className="text-light">$</span>
-                  <span className="border h-5"></span>
-                  <span className="text-dark font-medium">
-                    {formData.salaryMin || 5000}
-                  </span>
-                </div>
-                <span className="text-light">to</span>
-                <div className="flex items-center space-x-2 border p-2">
-                  <span className="text-light">$</span>
-                  <span className="border h-5"></span>
-                  <span className="text-dark font-medium">
-                    {formData.salaryMax || 22000}
-                  </span>
-                </div>
-              </div>
-              <Slider
-                value={[
-                  formData.salaryMin || 5000,
-                  formData.salaryMax || 22000,
-                ]}
-                onValueChange={([min, max]) =>
-                  updateFormData({ salaryMin: min, salaryMax: max })
-                }
-                max={50000}
-                min={1000}
-                step={1000}
-                className="w-full"
-              />
+              {!isSalaryFree && (
+                <>
+                  <div className="flex items-center space-x-20">
+                    <div className="flex items-center space-x-2 border p-2">
+                      <span className="text-light">$</span>
+                      <span className="border h-5"></span>
+                      <span className="text-dark font-medium">
+                        {formData.salaryMin || 5000}
+                      </span>
+                    </div>
+                    <span className="text-light">to</span>
+                    <div className="flex items-center space-x-2 border p-2">
+                      <span className="text-light">$</span>
+                      <span className="border h-5"></span>
+                      <span className="text-dark font-medium">
+                        {formData.salaryMax || 22000}
+                      </span>
+                    </div>
+                  </div>
+                  <Slider
+                    value={[
+                      formData.salaryMin || 5000,
+                      formData.salaryMax || 22000,
+                    ]}
+                    onValueChange={([min, max]) =>
+                      updateFormData({ salaryMin: min, salaryMax: max })
+                    }
+                    max={50000}
+                    min={1000}
+                    step={1000}
+                    className="w-full"
+                  />
+                </>
+              )}
+              {(errors.salaryMin || errors.salaryMax) && !isSalaryFree && (
+                <p className="text-red-500 text-xs">
+                  {errors.salaryMin || errors.salaryMax}
+                </p>
+              )}
             </div>
             <Button
-              variant="outline"
+              variant="none"
               size="sm"
-              className="bg-primary text-white border-primary"
+              className={`border-primary ${
+                isSalaryFree
+                  ? "bg-primary text-white hover:bg-primary/80"
+                  : "bg-primary text-white hover:bg-primary/80"
+              }`}
+              onClick={handleFreeButtonClick}
             >
-              Free
+              {isSalaryFree ? "Paid" : "Free"}
             </Button>
           </div>
         </div>
@@ -187,7 +217,7 @@ export function JobInformationStep({
 
       <div className="flex justify-end max-w-5xl">
         <Button
-          onClick={onNext}
+          onClick={handleNext}
           className="bg-primary text-white hover:bg-primary/90"
         >
           Next Step
