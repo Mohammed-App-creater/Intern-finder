@@ -9,6 +9,7 @@ export const authorizeCompanyMember = (req: Request, res: Response, next: NextFu
   if (!user) return res.status(401).json({ error: "Unauthorized" });
 
   // allow if user.isAdmin (global) OR user.companyId === companyId OR user.companies includes companyId
+  if (user.role === 'COMPANY') return next();
   if (user.isAdmin) return next();
   if (user.companyId && user.companyId === companyId) return next();
   if (Array.isArray(user.companyIds) && user.companyIds.includes(companyId)) return next();

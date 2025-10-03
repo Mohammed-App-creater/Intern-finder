@@ -1,4 +1,4 @@
-import { topCompanies, companyList } from "@/services/company.service";
+import { topCompanies, companyList, AllApplicants } from "@/services/company.service";
 import { useCompanyFilterStore } from "@/store/company";
 import { useQuery } from "@tanstack/react-query";
 
@@ -18,5 +18,12 @@ export const useCompanyList = () => {
   return useQuery({
     queryKey: ["companies", "list", filters],
     queryFn: () => companyList(filters),
+  });
+};
+
+export const useAllApplicants = () => {
+  return useQuery({
+    queryKey: ["applicants", "all"],
+    queryFn: () => AllApplicants(),
   });
 };

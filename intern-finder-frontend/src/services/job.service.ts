@@ -5,6 +5,8 @@ import {
   JobPosting,
   JobPostingResponse,
   JobDetailResponse,
+  ApplyToJobPayload,
+  ApplyToJobResponse
 } from "@/types/job";
 
 export const getJobListings = async (
@@ -26,5 +28,10 @@ export const postJob = async (
   jobData: JobPosting
 ): Promise<JobPostingResponse> => {
   const res = await api.post(`/job/${companyId}/create`, jobData);
+  return res.data.data;
+};
+
+export const ApplyToJob = async ( data: ApplyToJobPayload ): Promise<ApplyToJobResponse> => {
+  const res = await api.post(`/job/${data.jobId}/apply`, data);
   return res.data.data;
 };

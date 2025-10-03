@@ -40,3 +40,31 @@ export interface JobUpdate {
 export interface JobUpdatesResponse {
   data: JobUpdate[];
 }
+
+
+export interface Applicant {
+  id: string;
+  appliedAt: string;
+  talent: {
+    id: string;
+    fullName: string;
+    profileImageUrl: string;
+    rating: number;
+  };
+  job: {
+    id: string;
+    title: "Front-end Developer"
+  },
+  Interview: []
+}
+
+export interface ApplicantsResponse {
+  success: boolean;
+  message: string;
+  data: {
+    total: number;
+    page: number;
+    limit: number;
+    items: Applicant[];
+  };
+}

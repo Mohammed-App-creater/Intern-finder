@@ -10,6 +10,9 @@ import JobApplicationPopup from "./job-apply-form";
 
 export default function ApplyCard({ job }: { job: JobListing }) {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  
+  
+
   return (
     <>
       <div className="flex flex-col rounded-lg p-6 shadow-md">

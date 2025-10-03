@@ -88,7 +88,7 @@ export class JobApplicationService {
 
     static async listJobApplicationsForCompany(
         companyId: string,
-        params: {
+        query: {
             jobId?: string;
             stage?: string;
             q?: string;
@@ -98,7 +98,7 @@ export class JobApplicationService {
             order?: "asc" | "desc";
         }
     ) {
-        const { jobId, stage, q, page = 1, limit = 20, sortBy = "appliedAt", order = "desc" } = params;
+        const { jobId, stage, q, page = 1, limit = 20, sortBy = "appliedAt", order = "desc" } = query;
 
         // If jobId provided, ensure the job belongs to company
         if (jobId) {

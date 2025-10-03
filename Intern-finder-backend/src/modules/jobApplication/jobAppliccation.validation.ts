@@ -13,13 +13,13 @@ export const applicationIdParamSchema = z.object({
 });
 
 export const listApplicationsQuerySchema = z.object({
-  jobId: z.uuid().optional(),
-  stage: z.string().optional(), 
-  q: z.string().optional(), 
-  page: z.coerce.number().int().positive().optional().default(1),
-  limit: z.coerce.number().int().positive().max(100).optional().default(20),
-  sortBy: z.enum(["appliedAt", "stage"]).optional().default("appliedAt"),
-  order: z.enum(["asc", "desc"]).optional().default("desc"),
+    jobId: z.uuid().optional(),
+    stage: z.string().optional(),
+    q: z.string().optional(),
+    page: z.coerce.number().int().positive().optional().default(1),
+    limit: z.coerce.number().int().positive().max(100).optional().default(20),
+    sortBy: z.enum(["appliedAt", "stage"]).optional().default("appliedAt"),
+    order: z.enum(["asc", "desc"]).optional().default("desc"),
 });
 
 // Body: update status
@@ -28,7 +28,13 @@ export const updateStatusSchema = z.object({
 });
 
 // Params: job id
-export const jobIdParamSchema = z.object({
-    jobId: z.uuid(),
+export const jobIdQuerySchema = z.object({
+    jobId: z.uuid().optional(),
+    stage: z.string().optional(),
+    q: z.string().optional(),
+    page: z.coerce.number().int().positive().optional().default(1),
+    limit: z.coerce.number().int().positive().max(100).optional().default(20),
+    sortBy: z.enum(["appliedAt", "stage"]).optional().default("appliedAt"),
+    order: z.enum(["asc", "desc"]).optional().default("desc"),
 });
 

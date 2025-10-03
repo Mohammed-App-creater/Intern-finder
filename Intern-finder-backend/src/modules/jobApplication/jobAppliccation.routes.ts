@@ -11,7 +11,7 @@ import {
     createApplicationSchema,
     applicationIdParamSchema,
     updateStatusSchema,
-    jobIdParamSchema,
+    jobIdQuerySchema,
 } from "./jobAppliccation.validation";
 
 const router = Router();
@@ -122,9 +122,9 @@ router.get("/me", authenticate, listMyApplications);
  */
 // Company lists applications for a specific job they own
 router.get(
-    "/job/:jobId",
+    "/job",
     authenticate,
-    validate(jobIdParamSchema, "params"),
+    validate(jobIdQuerySchema, "query"),
     listJobApplicationsForCompany
 );
 

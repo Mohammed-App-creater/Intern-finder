@@ -39,5 +39,11 @@ export const jobIdSchema = z.object({
   jobId: z.uuid(),
 });
 
+export const jobApplicationSchema = z.object({
+  talentId: z.uuid(),
+  additionalInfo: z.string().max(500).optional(),
+  resumeUrl: z.url(),
+});
+
 export type JobFilters = z.infer<typeof jobFiltersSchema>;
 export type CreateJobInput = z.infer<typeof createJobSchema>;

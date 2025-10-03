@@ -86,25 +86,25 @@ export interface RecentApplicationsData {
 
 export interface StatusBadgeProps {
   status:
-    | "accepted"
-    | "offered"
-    | "pending"
-    | "rejected"
-    | "shortlisted"
-    | "interview"
-    | "In Review"
-    | "Interviewing"
-    | "Interviewed"
-    | "Shortlisted"
-    | "Declined"
-    | "Unsuitable"
-    | "Hired"
-    | "Interview"
-    | "Offered"
-    | "Fulltime"
-    | "Freelance"
-    | "Live"
-    | "Closed";
+  | "accepted"
+  | "offered"
+  | "pending"
+  | "rejected"
+  | "shortlisted"
+  | "interview"
+  | "In Review"
+  | "Interviewing"
+  | "Interviewed"
+  | "Shortlisted"
+  | "Declined"
+  | "Unsuitable"
+  | "Hired"
+  | "Interview"
+  | "Offered"
+  | "Fulltime"
+  | "Freelance"
+  | "Live"
+  | "Closed";
 }
 
 export interface JobFilterStore {
@@ -146,4 +146,25 @@ export interface JobDetailResponse {
   success: boolean;
   message: string;
   data: JobDetail;
+}
+
+export interface ApplyToJobResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    jobId: string;
+    talentId: string;
+    status: string;
+    appliedAt: string;
+    additionalInfo: string;
+    resumeUrl: string;
+  }
+}
+
+export interface ApplyToJobPayload {
+  jobId: string;
+  talentId: string;
+  applicantId: string;
+  resumeUrl: string;
 }

@@ -29,106 +29,108 @@ import {
 import { StarRating } from "./star-rating";
 import { StatusBadge } from "./status-badge";
 import JobDetail from "@/components/pages/dashboard/client/joblisting/job-detail";
+import { useAllApplicants } from "@/hooks/useCompany";
+import { Applicant } from "@/types/company";
 
-const applicants = [
-  {
-    id: 1,
-    name: "Jake Gyll",
-    avatar: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg",
-    score: 0.0,
-    stage: "Interview" as const,
-    appliedDate: "13 July, 2021",
-    jobRole: "Designer",
-  },
-  {
-    id: 2,
-    name: "Guy Hawkins",
-    avatar:
-      "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg",
-    score: 0.0,
-    stage: "Interview" as const,
-    appliedDate: "13 July, 2021",
-    jobRole: "JavaScript Dev",
-  },
-  {
-    id: 3,
-    name: "Cyndy Lillibridge",
-    avatar: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
-    score: 4.5,
-    stage: "Shortlisted" as const,
-    appliedDate: "12 July, 2021",
-    jobRole: "Golang Dev",
-  },
-  {
-    id: 4,
-    name: "Rodolfo Goode",
-    avatar:
-      "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg",
-    score: 3.75,
-    stage: "Declined" as const,
-    appliedDate: "11 July, 2021",
-    jobRole: "NET Dev",
-  },
-  {
-    id: 5,
-    name: "Leif Floyd",
-    avatar:
-      "https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg",
-    score: 4.8,
-    stage: "Hired" as const,
-    appliedDate: "11 July, 2021",
-    jobRole: "Graphic Design",
-  },
-  {
-    id: 6,
-    name: "Jenny Wilson",
-    avatar: "https://images.pexels.com/photos/943084/pexels-photo-943084.jpeg",
-    score: 4.6,
-    stage: "Hired" as const,
-    appliedDate: "9 July, 2021",
-    jobRole: "Designer",
-  },
-  {
-    id: 7,
-    name: "Jerome Bell",
-    avatar:
-      "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg",
-    score: 4.0,
-    stage: "Interviewed" as const,
-    appliedDate: "5 July, 2021",
-    jobRole: "Designer",
-  },
-  {
-    id: 8,
-    name: "Eleanor Pena",
-    avatar:
-      "https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg",
-    score: 3.9,
-    stage: "Declined" as const,
-    appliedDate: "5 July, 2021",
-    jobRole: "Designer",
-  },
-  {
-    id: 9,
-    name: "Darrell Steward",
-    avatar:
-      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg",
-    score: 4.2,
-    stage: "Shortlisted" as const,
-    appliedDate: "3 July, 2021",
-    jobRole: "Designer",
-  },
-  {
-    id: 10,
-    name: "Floyd Miles",
-    avatar:
-      "https://images.pexels.com/photos/1080213/pexels-photo-1080213.jpeg",
-    score: 4.1,
-    stage: "Interviewed" as const,
-    appliedDate: "1 July, 2021",
-    jobRole: "Designer",
-  },
-];
+// const applicants = [
+//   {
+//     id: 1,
+//     name: "Jake Gyll",
+//     avatar: "https://images.pexels.com/photos/432059/pexels-photo-432059.jpeg",
+//     score: 0.0,
+//     stage: "Interview" as const,
+//     appliedDate: "13 July, 2021",
+//     jobRole: "Designer",
+//   },
+//   {
+//     id: 2,
+//     name: "Guy Hawkins",
+//     avatar:
+//       "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg",
+//     score: 0.0,
+//     stage: "Interview" as const,
+//     appliedDate: "13 July, 2021",
+//     jobRole: "JavaScript Dev",
+//   },
+//   {
+//     id: 3,
+//     name: "Cyndy Lillibridge",
+//     avatar: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
+//     score: 4.5,
+//     stage: "Shortlisted" as const,
+//     appliedDate: "12 July, 2021",
+//     jobRole: "Golang Dev",
+//   },
+//   {
+//     id: 4,
+//     name: "Rodolfo Goode",
+//     avatar:
+//       "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg",
+//     score: 3.75,
+//     stage: "Declined" as const,
+//     appliedDate: "11 July, 2021",
+//     jobRole: "NET Dev",
+//   },
+//   {
+//     id: 5,
+//     name: "Leif Floyd",
+//     avatar:
+//       "https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg",
+//     score: 4.8,
+//     stage: "Hired" as const,
+//     appliedDate: "11 July, 2021",
+//     jobRole: "Graphic Design",
+//   },
+//   {
+//     id: 6,
+//     name: "Jenny Wilson",
+//     avatar: "https://images.pexels.com/photos/943084/pexels-photo-943084.jpeg",
+//     score: 4.6,
+//     stage: "Hired" as const,
+//     appliedDate: "9 July, 2021",
+//     jobRole: "Designer",
+//   },
+//   {
+//     id: 7,
+//     name: "Jerome Bell",
+//     avatar:
+//       "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg",
+//     score: 4.0,
+//     stage: "Interviewed" as const,
+//     appliedDate: "5 July, 2021",
+//     jobRole: "Designer",
+//   },
+//   {
+//     id: 8,
+//     name: "Eleanor Pena",
+//     avatar:
+//       "https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg",
+//     score: 3.9,
+//     stage: "Declined" as const,
+//     appliedDate: "5 July, 2021",
+//     jobRole: "Designer",
+//   },
+//   {
+//     id: 9,
+//     name: "Darrell Steward",
+//     avatar:
+//       "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg",
+//     score: 4.2,
+//     stage: "Shortlisted" as const,
+//     appliedDate: "3 July, 2021",
+//     jobRole: "Designer",
+//   },
+//   {
+//     id: 10,
+//     name: "Floyd Miles",
+//     avatar:
+//       "https://images.pexels.com/photos/1080213/pexels-photo-1080213.jpeg",
+//     score: 4.1,
+//     stage: "Interviewed" as const,
+//     appliedDate: "1 July, 2021",
+//     jobRole: "Designer",
+//   },
+// ];
 
 interface ApplicantManagementProps {
   activeTab: "applicants" | "job-details";
@@ -142,9 +144,11 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  const { data: applicants } = useAllApplicants();
+
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedApplicants(applicants.map((a) => a.id));
+      setSelectedApplicants(applicants?.data?.items?.map((a) => Number(a.id)) ?? []);
     } else {
       setSelectedApplicants([]);
     }
@@ -158,23 +162,24 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
     }
   };
 
-  const filteredApplicants = applicants.filter(
-    (applicant) =>
-      applicant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      applicant.jobRole.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredApplicants = applicants?.data?.items?.filter(
+    (applicant: Applicant) =>
+      applicant.talent.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      applicant.job.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getApplicantsByStage = () => {
-    const stages = {
-      "In Review": filteredApplicants.filter(
-        (a) => a.stage === "Interview" && a.score === 0
-      ),
-      Interview: filteredApplicants.filter(
-        (a) => a.stage === "Interview" && a.score > 0
-      ),
-      Hired: filteredApplicants.filter((a) => a.stage === "Hired"),
-      Declined: filteredApplicants.filter((a) => a.stage === "Declined"),
-    };
+    const stages = [ "In Review", "Interview", "Hired", "Declined", applicants?.data?.items]
+    // {
+    //   // "In Review": filteredApplicants?.filter(
+    //   //   (a) => a.Interview?.status === "Interview" && a.score === 0
+    //   // ),
+    //   // Interview: filteredApplicants?.filter(
+    //   //   (a) => a.Interview?.status === "Interview" && a.score > 0
+    //   // ),
+    //   // Hired: filteredApplicants?.filter((a) => a.Hired?.status === "Hired"),
+    //   // Declined: filteredApplicants?.filter((a) => a.Declined?.status === "Declined"),
+    // };
     return stages;
   };
 
@@ -225,7 +230,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                   ></div>
                   <span className="text-dark font-medium">{stage}</span>
                   <span className="bg-gray-200 text-dark px-1">
-                    {applicants.length}
+                    {applicants?.length}
                   </span>
                 </div>
                 <DropdownMenu>
@@ -243,7 +248,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
               </div>
               {/* Applicant Cards */}
               <div className="p-4 space-y-4">
-                {applicants.map((applicant) => (
+                {Array.isArray(applicants) && applicants?.map((applicant) => (
                   <div
                     key={applicant.id}
                     className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow"
@@ -251,13 +256,13 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                     <div className="flex items-center gap-3 mb-3">
                       <Avatar className="w-12 h-12">
                         <AvatarImage
-                          src={applicant.avatar || "/placeholder.svg"}
-                          alt={applicant.name}
+                          src={applicant?.talent?.profileImageUrl || "/placeholder.svg"}
+                          alt={applicant?.talent?.fullName || "Applicant"}
                           width={40}
                           height={40}
                         />
                         <AvatarFallback>
-                          {applicant.name
+                          {applicant?.talent?.fullName || "<Unknown>"
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
@@ -265,7 +270,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                       </Avatar>
                       <div className="flex-1">
                         <h3 className="text-dark font-medium">
-                          {applicant.name}
+                          {applicant?.talent?.fullName || "Unknown"}
                         </h3>
                         <button
                           className="text-primary text-sm cursor-pointer"
@@ -287,12 +292,12 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-dark text-sm">
-                          {applicant.appliedDate}
+                          {applicant?.appliedAt}
                         </span>
                         <div className="flex items-center gap-1">
-                          <StarRating rating={applicant.score} size="sm" />
+                          <StarRating rating={applicant?.talent?.rating || 4} size="sm" />
                           <span className="text-dark text-sm">
-                            {applicant.score.toFixed(1)}
+                            {applicant?.talent?.rating?.toFixed(1) || "N/A"}
                           </span>
                         </div>
                       </div>
@@ -315,7 +320,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
           {/* Header */}
           <div className="flex items-center justify-between py-6">
             <h2 className="text-dark text-2xl font-semibold font-['Clash_Display']">
-              Total Applicants: {filteredApplicants.length}
+              Total Applicants: {filteredApplicants?.length || 0}
             </h2>
 
             <div className="flex items-center gap-4">
@@ -381,7 +386,8 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                       <th className="text-left p-4 w-12">
                         <Checkbox
                           checked={
-                            selectedApplicants.length === applicants.length
+                            selectedApplicants.length === applicants?.data?.items?.length &&
+                            applicants?.data?.items?.length > 0
                           }
                           onCheckedChange={handleSelectAll}
                         />
@@ -407,14 +413,14 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                     </tr>
                   </thead>
                   <tbody className="border mt-2">
-                    {filteredApplicants.map((applicant) => (
+                    {filteredApplicants?.map((applicant) => (
                       <tr key={applicant.id}>
                         <td className="mt-2 p-4">
                           <Checkbox
-                            checked={selectedApplicants.includes(applicant.id)}
+                            checked={selectedApplicants.includes(Number(applicant?.talent?.id))}
                             onCheckedChange={(checked) =>
                               handleSelectApplicant(
-                                applicant.id,
+                                Number(applicant?.talent?.id),
                                 checked as boolean
                               )
                             }
@@ -424,39 +430,39 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                           <div className="flex items-center gap-3">
                             <Avatar className="w-10 h-10">
                               <AvatarImage
-                                src={applicant.avatar || "/placeholder.svg"}
-                                alt={applicant.name}
+                                src={applicant?.talent?.profileImageUrl || "/placeholder.svg"}
+                                alt={applicant?.talent?.fullName || "Applicant"}
                               />
                               <AvatarFallback>
-                                {applicant.name
+                                {applicant?.talent?.fullName || "<Unknown>"
                                   .split(" ")
                                   .map((n) => n[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
                             <span className="text-dark font-medium">
-                              {applicant.name}
+                              {applicant?.talent?.fullName || "<Unknown>"}
                             </span>
                           </div>
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <StarRating rating={applicant.score} />
+                            <StarRating rating={applicant?.talent?.rating} />
                             <span className="text-dark font-medium">
-                              {applicant.score.toFixed(1)}
+                              {applicant?.talent?.rating?.toFixed(1)}
                             </span>
                           </div>
                         </td>
                         <td className="p-4">
-                          <StatusBadge status={applicant.stage} />
+                          <StatusBadge status={"In Review"} />
                         </td>
                         <td className="p-4">
                           <span className="text-light">
-                            {applicant.appliedDate}
+                            {applicant?.appliedAt}
                           </span>
                         </td>
                         <td className="p-4">
-                          <span className="text-dark">{applicant.jobRole}</span>
+                          <span className="text-dark">{applicant?.job?.title || "<Unknown>"}</span>
                         </td>
                         <td className="p-4">
                           <div className="flex items-center justify-between pr-10">
@@ -466,7 +472,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
                               className="text-primary border border-primary bg-secondary rounded-sm p-5"
                               onClick={() =>
                                 router.push(
-                                  `/client/dashboard/applicants/${applicant.id}`
+                                  `/client/dashboard/applicants/${applicant?.id}`
                                 )
                               }
                             >
