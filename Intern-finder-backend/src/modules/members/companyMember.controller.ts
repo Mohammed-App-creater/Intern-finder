@@ -21,8 +21,9 @@ export class CompanyMemberController {
     try {
       const { companyId } = req.params;
       const body = req.body;
-      const requesterId = (req as any).auth?.userId;
-      const created = await CompanyMemberService.addMember({ companyId, body, requesterId });
+      const requesterId = req.user?.id;
+      console.log("Add member request body:", requesterId, req?.user?.role);
+      const created = await CompanyMemberService.addMember({ companyId, body, requesterId, companyRole: req?.user?.role });
       return res.status(201).json(created);
     } catch (err: any) {
       if (err instanceof NotFoundError) return res.status(404).json({ message: err.message });

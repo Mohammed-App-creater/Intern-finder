@@ -145,7 +145,7 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const { data: applicants } = useAllApplicants();
-
+  console.log("Fetched applicants:", applicants);
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
       setSelectedApplicants(applicants?.data?.items?.map((a) => Number(a.id)) ?? []);
@@ -169,17 +169,17 @@ export function ApplicantManagement({ activeTab }: ApplicantManagementProps) {
   );
 
   const getApplicantsByStage = () => {
-    const stages = [ "In Review", "Interview", "Hired", "Declined", applicants?.data?.items]
-    // {
-    //   // "In Review": filteredApplicants?.filter(
-    //   //   (a) => a.Interview?.status === "Interview" && a.score === 0
-    //   // ),
-    //   // Interview: filteredApplicants?.filter(
-    //   //   (a) => a.Interview?.status === "Interview" && a.score > 0
-    //   // ),
-    //   // Hired: filteredApplicants?.filter((a) => a.Hired?.status === "Hired"),
-    //   // Declined: filteredApplicants?.filter((a) => a.Declined?.status === "Declined"),
-    // };
+    const stages = 
+    {
+      "In Review": filteredApplicants?.filter(
+        (a) => a.Interview[0]?.status === "In_REVIEW"
+      ),
+      Interview: filteredApplicants?.filter(
+        (a) => a.Interview[0]?.status === "SCHEDULED"
+      ),
+      Hired: filteredApplicants?.filter((a) => a.Interview[0]?.status === "COMPLETED"),
+      Declined: filteredApplicants?.filter((a) => a.Interview[0]?.status === "CANCELLED"),
+    };
     return stages;
   };
 

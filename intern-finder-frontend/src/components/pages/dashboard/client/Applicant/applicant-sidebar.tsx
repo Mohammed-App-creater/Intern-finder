@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function ApplicantSidebar() {
+  
   return (
     <div className="w-80 space-y-6">
       {/* Profile Section */}

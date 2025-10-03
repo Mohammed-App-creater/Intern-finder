@@ -55,7 +55,11 @@ export interface Applicant {
     id: string;
     title: "Front-end Developer"
   },
-  Interview: []
+  Interview: [
+    {
+      status: "SCHEDULED" | "COMPLETED" | "CANCELLED" | "In_REVIEW";
+    }
+  ]
 }
 
 export interface ApplicantsResponse {

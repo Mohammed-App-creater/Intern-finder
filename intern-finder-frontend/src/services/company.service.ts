@@ -15,6 +15,6 @@ export const companyList = async ( queryParams: companyQueryParams): Promise<Com
 }
 
 export const AllApplicants = async (): Promise<ApplicantsResponse> => {
-  const response = await api.get('/job-applications/job');
-  return response.data.data;
+  const response = await api.get('/job-application/job');
+  return response.data;
 }
