@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createJobController, getAllJobsController, getJobByIdController, getJobsByCompanyIdController } from "./job.controller";
+import { applyToJobController, createJobController, getAllJobsController, getJobByIdController, getJobsByCompanyIdController } from "./job.controller";
 import { validate } from "../../middlewares/validate";
 import { companyIdSchema, createJobSchema, jobIdSchema } from "./job.validation";
 
@@ -273,6 +273,54 @@ router.get("/:jobId", validate(jobIdSchema, "params"), getJobByIdController);
  *           type: integer
  *           format: int32
  */
+
+/**
+ * @swagger
+ * /job/{jobId}/apply:
+ *   post:
+ *     summary: Apply to a job
+ *     tags:
+ *       - Job
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UUID of the job to apply for
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               talentId:
+ *                 type: string
+ *               additionalInfo:
+ *                 type: string
+ *               resumeUrl:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Application submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/JobApplication'
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Bad request or invalid ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+router.post("/:jobId/apply", validate(jobIdSchema, "params"), applyToJobController);
 
 export default router;
 

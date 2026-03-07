@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getJobListings, postJob, getJobDetail } from "@/services/job.service";
-import { JobFilters, JobPosting } from "@/types/job";
+import { getJobListings, postJob, getJobDetail, ApplyToJob } from "@/services/job.service";
+import { ApplyToJobPayload, JobFilters, JobPosting } from "@/types/job";
 import { getMyAppliedJobs } from "@/services/talent.service";
 
 export const useJobListings = (filters: JobFilters) => {
@@ -40,5 +40,13 @@ export const useMyAppliedJobs = (talentId: string) => {
   return useQuery({
     queryKey: ["talent", talentId, "applied-jobs"],
     queryFn: () => getMyAppliedJobs(talentId),
+  });
+};
+
+export const useApplyToJob = () => {
+  return useMutation({
+    mutationKey: ["job", "apply"],
+    mutationFn: (data: ApplyToJobPayload) =>
+      ApplyToJob(data),
   });
 };

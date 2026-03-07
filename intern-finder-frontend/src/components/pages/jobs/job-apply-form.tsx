@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -13,7 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
+import { useApplyToJob } from "@/hooks/useJob";
+import { useAuthStore } from "@/store/auth";
+import { useRouter, useParams } from "next/navigation";
+import { useUploadResume } from "@/hooks/useFileUpload";
 interface JobApplicationPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,40 +24,176 @@ interface JobApplicationPopupProps {
   logo?: string;
 }
 
-export default function JobApplicationPopup({
-  isOpen,
-  onClose,
-  jobTitle = "",
-  companyName = "",
-  logo="/images/image_placeholder.jpg",
-}: JobApplicationPopupProps) {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    previousTitle: "",
-    linkedinUrl: "",
-    portfolioUrl: "",
-    additionalInfo: "",
-    resume: null as File | null,
-  });
+interface JobApplicationPayload {
+  jobId: string;
+  talentId: string;
+  applicantId: string;
+  resumeUrl: string;
+}
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+export default function JobApplicationPopup(props: JobApplicationPopupProps) {
+  const {
+    isOpen,
+    onClose,
+    jobTitle = "",
+    companyName = "",
+    logo = "/images/image_placeholder.jpg",
+  } = props;
+  const router = useRouter();
+  const params = useParams() || {};
+  const jobId: string = params?.["job-detail"] as string || "";
+
+  const { user } = useAuthStore();
+  const talentId = user?.role === "TALENT" ? user?.id || "" : "";
+  const applicantId = user?.id || "";
+
+  const applyHook = useApplyToJob();
+  const uploadHook = useUploadResume();
+
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [additionalInfo, setAdditionalInfo] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <h2 className="text-lg font-semibold">
+          Please log in to apply for jobs
+        </h2>
+        <Button onClick={() => router.push("/login")}>Login</Button>
+      </div>
+    );
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    if (!file) {
+      console.log("handleFileChange: no file selected");
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowed = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    console.log("handleFileChange: selected file", {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    });
+
+    if (!allowed.includes(file.type)) {
+      const msg = `Only PDF / DOC / DOCX files are allowed. Detected type: ${file.type}`;
+      console.log("handleFileChange: invalid type ->", msg);
+      setSubmitError("Only PDF / DOC / DOCX files are allowed.");
+      return;
+    }
+
+    if (file.size > maxSize) {
+      const msg = `File too large. Maximum size is 5MB. Selected size: ${(
+        file.size /
+        (1024 * 1024)
+      ).toFixed(2)} MB`;
+      console.log("handleFileChange: file too large ->", msg);
+      setSubmitError("File too large. Maximum size is 5MB.");
+      return;
+    }
+
+    setSubmitError(null);
+    setResumeFile(file);
+    console.log("handleFileChange: file accepted", {
+      name: file.name,
+      sizeMB: (file.size / (1024 * 1024)).toFixed(2),
+    });
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFormData((prev) => ({ ...prev, resume: file }));
+  const uploadFile = async (file: File | null): Promise<string | null> => {
+    if (!file) return null;
+    setIsUploading(true);
+    try {
+      if (uploadHook?.mutateAsync) {
+        const res = await uploadHook.mutateAsync(file);
+        return res?.url ?? null;
+      }
+
+      if (uploadHook?.mutate) {
+        return await new Promise<string | null>((resolve, reject) => {
+          uploadHook.mutate(file, {
+            onSuccess: (res: unknown) => {
+              if (res && typeof res === "object" && "url" in res) {
+                resolve((res as { url?: string }).url ?? null);
+                console.log("Upload response:", res);
+              } else {
+                resolve(null);
+              }
+            },
+            onError: (err: unknown) => {
+              reject(err);
+              console.error("Upload error:", err);
+            },
+          });
+        });
+      }
+
+      if (typeof uploadHook === "function") {
+        const res = await (uploadHook as (file: File) => Promise<unknown>)(
+          file
+        );
+        if (res && typeof res === "object" && "url" in res) {
+          return (res as { url?: string }).url ?? null;
+        }
+        return null;
+      }
+
+      return null;
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      return null;
+    } finally {
+      setIsUploading(false);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-    onClose();
+  const applyToJob = async (payload: JobApplicationPayload) => {
+    if (applyHook?.mutateAsync) {
+      return applyHook.mutateAsync(payload);
+    }
+
+    if (applyHook?.mutate) {
+      return await new Promise((resolve, reject) => {
+        applyHook.mutate(payload, {
+          onSuccess: (res: unknown) => {
+            resolve(res);
+            console.log("Apply response:", res);
+          },
+          onError: (err: unknown) => {
+            reject(err);
+            console.error("Apply error:", err);
+          },
+        });
+      });
+    }
+
+    if (typeof applyHook === "function") {
+      return (
+        applyHook as (payload: JobApplicationPayload) => Promise<unknown>
+      )(payload);
+    }
+
+    throw new Error("apply hook not available");
+  };
+
+  // Manual validation for additionalInfo
+  const validate = (): string | null => {
+    if (additionalInfo.length > 2000) {
+      return "Max 2000 characters";
+    }
+    return null;
   };
 
   return (
@@ -74,126 +212,48 @@ export default function JobApplicationPopup({
         </DialogHeader>
 
         <div className="px-6 pb-6">
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-dark mb-2">
-              Submit your application
-            </h3>
-            <p className="text-sm text-light">
-              The following is required and will only be shared with{" "}
-              {companyName}
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label
-                htmlFor="fullName"
-                className="text-sm font-medium text-dark"
-              >
-                Full name
-              </Label>
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="Enter your full name"
-                value={formData.fullName}
-                onChange={(e) => handleInputChange("fullName", e.target.value)}
-                className="mt-1"
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="email" className="text-sm font-medium text-dark">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-                className="mt-1"
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="phone" className="text-sm font-medium text-dark">
-                Phone number
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
-                value={formData.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
-                className="mt-1"
-                required
-              />
-            </div>
-
-            <div>
-              <Label
-                htmlFor="previousTitle"
-                className="text-sm font-medium text-dark"
-              >
-                Current or previous internship title
-              </Label>
-              <Input
-                id="previousTitle"
-                type="text"
-                placeholder="What's your current or previous job title?"
-                value={formData.previousTitle}
-                onChange={(e) =>
-                  handleInputChange("previousTitle", e.target.value)
+          <form
+            className="space-y-4"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setSubmitError(null);
+              const validationError = validate();
+              if (validationError) {
+                setSubmitError(validationError);
+                return;
+              }
+              setIsSubmitting(true);
+              try {
+                let resumeUrl: string | null = null;
+                if (resumeFile) {
+                  resumeUrl = await uploadFile(resumeFile);
                 }
-                className="mt-1 mb-10"
-              />
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-md font-bold text-dark">LINKS</h4>
-
-              <div>
-                <Label
-                  htmlFor="linkedin"
-                  className="text-sm font-medium text-dark"
-                >
-                  LinkedIn URL
-                </Label>
-                <Input
-                  id="linkedin"
-                  type="url"
-                  placeholder="Paste your LinkedIn URL"
-                  value={formData.linkedinUrl}
-                  onChange={(e) =>
-                    handleInputChange("linkedinUrl", e.target.value)
-                  }
-                  className="mt-1"
-                />
-              </div>
-
-              <div>
-                <Label
-                  htmlFor="portfolio"
-                  className="text-sm font-medium text-dark"
-                >
-                  Portfolio URL
-                </Label>
-                <Input
-                  id="portfolio"
-                  type="url"
-                  placeholder="Paste your portfolio URL"
-                  value={formData.portfolioUrl}
-                  onChange={(e) =>
-                    handleInputChange("portfolioUrl", e.target.value)
-                  }
-                  className="mt-1"
-                />
-              </div>
-            </div>
-
+                const payload: JobApplicationPayload = {
+                  jobId,
+                  talentId,
+                  applicantId,
+                  resumeUrl: resumeUrl ?? "",
+                };
+                await applyToJob(payload);
+                onClose();
+              } catch (err) {
+                console.error("Error applying to job:", err);
+                let errorMsg = "Failed to submit application";
+                if (
+                  err &&
+                  typeof err === "object" &&
+                  err !== null &&
+                  "message" in err
+                ) {
+                  // @ts-expect-error: err may not have a message property, but we expect it from error objects
+                  errorMsg = err.message;
+                }
+                setSubmitError(errorMsg);
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+          >
             <div>
               <Label
                 htmlFor="additionalInfo"
@@ -203,42 +263,12 @@ export default function JobApplicationPopup({
               </Label>
               <Textarea
                 id="additionalInfo"
+                name="additionalInfo"
                 placeholder="Add a cover letter or anything else you want to share"
-                value={formData.additionalInfo}
-                onChange={(e) =>
-                  handleInputChange("additionalInfo", e.target.value)
-                }
+                value={additionalInfo}
+                onChange={(e) => setAdditionalInfo(e.target.value)}
                 className="mt-1 min-h-[100px]"
               />
-              <div className="flex justify-between items-center mt-2">
-                <div className="flex gap-2">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                  >
-                    <span className="font-bold text-light">B</span>
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                  >
-                    <span className="italic text-light">I</span>
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                  >
-                    <span className="underline text-light">U</span>
-                  </Button>
-                </div>
-                <span className="text-xs text-light">0 / 500</span>
-              </div>
             </div>
 
             <div>
@@ -250,7 +280,7 @@ export default function JobApplicationPopup({
                   type="file"
                   id="resume"
                   accept=".pdf,.doc,.docx"
-                  onChange={handleFileUpload}
+                  onChange={handleFileChange}
                   className="hidden"
                 />
                 <Label
@@ -269,23 +299,31 @@ export default function JobApplicationPopup({
                     </span>
                   </div>
                 </Label>
-                {formData.resume && (
+
+                {resumeFile && (
                   <p className="text-sm text-dark mt-2">
-                    Selected: {formData.resume.name}
+                    Selected: {resumeFile.name}
                   </p>
+                )}
+
+                {submitError && (
+                  <p className="text-xs text-red-600 mt-2">{submitError}</p>
                 )}
               </div>
             </div>
 
             <Button
               type="submit"
+              disabled={isSubmitting || isUploading}
               className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3"
             >
-              Submit Application
+              {isSubmitting || isUploading
+                ? "Submitting..."
+                : "Submit Application"}
             </Button>
 
             <p className="text-xs text-light text-center">
-              By sending this request you can confirm that you accept our{" "}
+              By sending this request you confirm that you accept our{" "}
               <a href="#" className="text-primary hover:underline">
                 Terms of Service
               </a>{" "}

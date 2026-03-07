@@ -34,10 +34,12 @@ export class CompanyMemberService {
   }
 
   // 2. Add company member
-  static async addMember({ companyId, body, requesterId }: any) {
+  static async addMember({ companyId, body, requesterId, companyRole }: any) {
     // requester must be company admin
     const adminRecord = await prisma.companyMember.findFirst({ where: { companyId, talentId: requesterId, active: true, isAdmin: true } });
-    if (!adminRecord) throw new ForbiddenError("Only company admins can add members");
+    if ( !companyRole || companyRole !== 'COMPANY' ) {
+      if (!adminRecord ) throw new ForbiddenError("Only company admins can add members");
+    }
 
     const { talentId, role, isAdmin } = body;
 

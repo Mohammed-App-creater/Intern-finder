@@ -145,3 +145,24 @@ export const getJobsByCompanyId = async (companyId: string) => {
   return jobs;
 };
 
+// apply to a job
+export const applyToJob = async (jobId: string, talentId: string, additionalInfo: string, resumeUrl: string) => {
+  try {
+    const job = await prisma.job.findUnique({ where: { id: jobId } });
+    if (!job) throw new Error("Job not found");
+
+    const application = await prisma.jobApplication.create({
+      data: {
+        jobId,
+        talentId: talentId,
+        additionalInfo: additionalInfo,
+        resumeUrl: resumeUrl,
+      },
+    });
+
+    return application;
+  } catch (error) {
+    console.error("Error applying to job:", error);
+    throw new Error("Failed to apply to job");
+  }
+};
