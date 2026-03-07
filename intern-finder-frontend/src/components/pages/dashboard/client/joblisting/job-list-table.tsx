@@ -84,22 +84,24 @@ const jobData = [
 
 export function JobListTable() {
   return (
-    <div className="bg-white rounded-lg border">
+    <div className="bg-white rounded-lg border overflow-x-auto">
       <JobListHeader />
-      <div className="grid grid-cols-[2.1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-4 border-b text-sm font-medium text-light">
-        <div>Roles</div>
-        <div>Status</div>
-        <div>Date Posted</div>
-        <div>Due Date</div>
-        <div>Job Type</div>
-        <div>Applicants</div>
-        <div>Needs</div>
-        <div></div>
-      </div>
-      <div className="divide-y">
-        {jobData.map((job) => (
-          <JobRow key={job.id} job={job} />
-        ))}
+      <div className="min-w-[800px]">
+        <div className="grid grid-cols-[2.1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-4 border-b text-sm font-medium text-light">
+          <div>Roles</div>
+          <div>Status</div>
+          <div>Date Posted</div>
+          <div>Due Date</div>
+          <div>Job Type</div>
+          <div>Applicants</div>
+          <div>Needs</div>
+          <div></div>
+        </div>
+        <div className="divide-y">
+          {jobData.map((job) => (
+            <JobRow key={job.id} job={job} />
+          ))}
+        </div>
       </div>
       <JobListPagination />
     </div>

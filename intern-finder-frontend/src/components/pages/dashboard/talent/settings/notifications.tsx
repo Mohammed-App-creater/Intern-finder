@@ -50,7 +50,7 @@ export default function NotificationsTab() {
         </p>
       </div>
 
-      <div className="flex justify-between max-w-4xl">
+      <div className="flex flex-col lg:flex-row justify-between gap-6 w-full">
         <div>
           <h3 className="text-base font-medium text-dark mb-6">
             Notifications
@@ -60,7 +60,7 @@ export default function NotificationsTab() {
           </p>
         </div>
 
-        <div className="space-y-6 max-w-sm">
+        <div className="space-y-6 w-full md:max-w-sm">
           <div className="flex items-start gap-3">
             <Checkbox
               id="applications"

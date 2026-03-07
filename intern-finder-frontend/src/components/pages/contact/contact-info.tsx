@@ -4,7 +4,7 @@ export function ContactInfo() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h1 className="text-4xl font-bold text-dark mb-4 leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dark mb-4 leading-tight">
           You Will Grow, You Will Succeed. We Promise That
         </h1>
         <p className="text-light text-base leading-relaxed">

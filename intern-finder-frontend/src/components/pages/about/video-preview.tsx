@@ -4,9 +4,9 @@ import { Play } from "lucide-react"
 
 export default function VideoPreview() {
   return (
-    <div className="max-w-7xl mx-auto rounded-2xl py-16">
+    <div className="max-w-7xl mx-auto md:rounded-2xl md:py-12">
       {/* Hero Section with Video Background */}
-      <section className="relative h-150 flex items-center justify-center overflow-hidden rounded-t-2xl">
+      <section className="relative h-96 sm:h-150 flex items-center justify-center overflow-hidden md:rounded-t-2xl">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -27,16 +27,16 @@ export default function VideoPreview() {
 
           {/* Hero Text */}
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-balance">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-balance">
               Good Life Begins With
             </h1>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-balance">A Good Company</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-balance">A Good Company</h2>
           </div>
         </div>
       </section>
 
       {/* Feature Cards Section */}
-      <section className="bg-black py-8 rounded-b-2xl">
+      <section className="bg-black py-8 md:rounded-b-2xl">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Feature Card 1 */}

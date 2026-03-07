@@ -12,8 +12,8 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold text-dark mb-8 font-['Clash_Display']">Browse Companies</h1>
       <SearchBar />
       <PopularTags />
-      <div className="flex gap-8">
-        <aside className="w-64 flex-shrink-0">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <aside className="w-full lg:w-64 flex-shrink-0 space-y-6 lg:space-y-0">
           <IndustryFilter />
           <CompanySizeFilter />
         </aside>

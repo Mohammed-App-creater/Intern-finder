@@ -152,7 +152,7 @@ export default function UserProfileDropdown() {
             </span>
           )}
         </div>
-        <div className="hidden sm:block text-left">
+        <div className="block text-left">
           <p className="text-dark font-medium text-sm">
             {getDisplayName() || "User"}
           </p>
@@ -169,7 +169,7 @@ export default function UserProfileDropdown() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 bottom-full mb-2 w-48 rounded-md border bg-white shadow-lg dark:bg-gray-800 dark:border-gray-700 z-50">
+        <div className="absolute md:right-0 ml-2 bottom-full mb-2 w-48 rounded-md border bg-white shadow-lg dark:bg-gray-800 dark:border-gray-700 z-50">
           <div className="p-2 space-y-1">
             {/* Dark/Light Mode Toggle */}
             <button

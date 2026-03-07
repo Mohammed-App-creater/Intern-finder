@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 
 export function SocialLinksTab() {
   return (
-    <div className="grid grid-cols-2 max-w-6xl">
+    <div className="grid gird-col-1 md:grid-cols-2 max-w-6xl">
       {/* Basic Information */}
       <div className="max-w-xs">
         <h2 className="text-lg font-medium text-dark mb-2">

@@ -78,7 +78,7 @@ export default function LoginDetailsTab() {
         </p>
       </div>
       <div className=" mb-10 border-b pb-10">
-        <div className="flex justify-between max-w-4xl">
+        <div className="flex flex-col lg:flex-row justify-between gap-6 w-full">
           <div>
             <h3 className="text-base font-medium text-dark mb-2">
               Update Email
@@ -115,7 +115,7 @@ export default function LoginDetailsTab() {
                   onChange={(e) =>
                     setEmailData({ ...emailData, newEmail: e.target.value })
                   }
-                  className="mt-1 min-w-100"
+                  className="mt-1 w-full md:min-w-80 lg:min-w-100"
                 />
               </div>
 
@@ -138,7 +138,7 @@ export default function LoginDetailsTab() {
         </div>
       </div>
 
-      <div className="flex justify-between max-w-4xl">
+      <div className="flex flex-col lg:flex-row justify-between gap-6 w-full">
         <div>
           <h3 className="text-base font-medium text-dark mb-2">New Password</h3>
           <p className="text-light text-sm mb-6 max-w-60">
@@ -165,7 +165,7 @@ export default function LoginDetailsTab() {
                   oldPassword: e.target.value,
                 })
               }
-              className="mt-1 min-w-100"
+              className="mt-1 w-full md:min-w-80 lg:min-w-100"
             />
             <p className="text-light text-xs mt-1">Minimum 8 characters</p>
           </div>
@@ -210,7 +210,7 @@ export default function LoginDetailsTab() {
         </div>
       </div>
       <div className="pt-5 border-t">
-        <div className="max-w-6xl flex justify-end items-center gap-3">
+        <div className="w-full flex flex-col sm:flex-row justify-end items-center gap-3">
           <Button variant="none">
             <h4 className="text-red-500 font-medium">Close Account</h4>
             <Info className="w-5 h-5 text-red-500" />

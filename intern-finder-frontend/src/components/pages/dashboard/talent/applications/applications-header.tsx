@@ -5,7 +5,7 @@ export function ApplicationsHeader() {
   return (
     <div className="mb-8 font-['Clash_Display']">
       <h1 className="text-3xl font-bold text-dark mb-8">My Applications</h1>
-      <div className="flex items-center justify-between pr-10">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 pr-0 md:pr-10">
         <div>
           <h2 className="text-xl font-bold text-dark">Keep it up, Jake</h2>
           <p className="text-sm text-light">
@@ -14,7 +14,7 @@ export function ApplicationsHeader() {
         </div>
         <Button
           variant="outline"
-          className="flex items-center gap-5 text-sm text-light"
+          className="flex items-center gap-5 text-sm text-light w-full md:w-auto justify-between md:justify-start"
         >
           <span>Jul 19 - Jul 25</span>
           <Calendar className="w-4 h-4 text-primary" />

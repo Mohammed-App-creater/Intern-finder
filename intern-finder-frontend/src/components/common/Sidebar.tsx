@@ -156,7 +156,7 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        "w-70 bg-secondary border-r border-border h-170 flex flex-col rounded-lg my-10 ml-10 pb-2 flex-shrink-0",
+        "w-70 bg-secondary border-r border-border h-170 flex flex-col rounded-lg my-10 ml-10 pb-2 flex-shrink-0 gap-10 lg:gap-0",
         className
       )}
     >
@@ -257,7 +257,7 @@ export function Sidebar({ className }: SidebarProps) {
         </div>
       </nav>
       {/* User Profile Section */}
-      <div className="flex justify-center mb-5">
+      <div className="flex lg:justify-center lg:mb-5">
         <UserProfile />
       </div>
     </div>

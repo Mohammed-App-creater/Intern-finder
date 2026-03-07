@@ -55,21 +55,21 @@ const categories = [
 
 export default function Categories() {
   return (
-    <div className="min-h-screen bg-secondary py-16 px-4">
+    <div className="min-h-screen bg-secondary py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-text-dark mb-4">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-dark mb-3 sm:mb-4">
             Browse by Category
           </h1>
-          <p className="text-text-dark font-light text-lg max-w-2xl mx-auto">
+          <p className="text-text-dark font-light text-base sm:text-lg max-w-2xl mx-auto px-4">
             Discover exciting opportunities in today&apos;s most in-demand tech
             fields. Find your perfect role in the digital economy.
           </p>
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {categories.map((category, index) => {
             const IconComponent = category.icon;
             return (
@@ -77,14 +77,14 @@ export default function Categories() {
                 key={index}
                 className="bg-white hover:shadow-lg transition-shadow duration-200 cursor-pointer border-0 shadow-sm"
               >
-                <CardContent className="p-8 text-center">
-                  <div className="mb-6">
-                    <IconComponent className="w-12 h-12 text-primary mx-auto" />
+                <CardContent className="p-4 sm:p-6 md:p-8 text-center">
+                  <div className="mb-4 sm:mb-5 md:mb-6">
+                    <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-primary mx-auto" />
                   </div>
-                  <h3 className="text-xl font-semibold text-text-dark mb-3">
+                  <h3 className="text-lg sm:text-xl font-semibold text-text-dark mb-2 sm:mb-3">
                     {category.title}
                   </h3>
-                  <p className="text-primary font-light bg-secondary p-1 rounded-[10px] w-fit h-fit mx-auto">
+                  <p className="text-primary font-light bg-secondary p-1 sm:p-2 rounded-[10px] w-fit h-fit mx-auto text-sm sm:text-base">
                     {category.jobCount}
                   </p>
                 </CardContent>

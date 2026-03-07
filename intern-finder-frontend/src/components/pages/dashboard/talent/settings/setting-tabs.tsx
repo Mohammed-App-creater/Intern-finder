@@ -9,28 +9,28 @@ export default function SettingTabs() {
   return (
     <div className="">
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-transparent border-b rounded-none h-auto p-0">
+        <TabsList className="flex w-full bg-transparent border-b rounded-none h-auto p-0 overflow-x-auto">
           <TabsTrigger
             value="profile"
-            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary data-[state=active]:bg-transparent rounded-none py-4 px-6"
+            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary data-[state=active]:bg-transparent rounded-none py-3 md:py-4 px-3 md:px-6 text-sm md:text-base shrink-0"
           >
             My Profile
           </TabsTrigger>
           <TabsTrigger
             value="login"
-            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary rounded-none py-4 px-6"
+            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary rounded-none py-3 md:py-4 px-3 md:px-6 text-sm md:text-base shrink-0"
           >
             Login Details
           </TabsTrigger>
           <TabsTrigger
             value="notifications"
-            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary data-[state=active]:bg-transparent rounded-none py-4 px-6"
+            className="cursor-pointer text-light hover:text-primary/50 data-[state=active]:text-primary data-[state=active]:border-b-3 data-[state=active]:border-primary data-[state=active]:bg-transparent rounded-none py-3 md:py-4 px-3 md:px-6 text-sm md:text-base shrink-0"
           >
             Notifications
           </TabsTrigger>
         </TabsList>
 
-        <div className="p-6">
+        <div className="p-2 md:p-6">
           <TabsContent value="profile" className="mt-0">
             <MyProfileTab />
           </TabsContent>

@@ -78,9 +78,9 @@ export function JobStatistics() {
     : getStaticChartData();
 
   return (
-    <Card className="w-[66.3%] bg-white p-6 rounded-none border">
+    <Card className="w-full bg-white p-4 md:p-6 rounded-none border">
       <div className="mb-6 border-b">
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row justify-between gap-4">
           <div>
             <h3 className="text-dark font-semibold text-lg mb-2">
               Job statistics
@@ -103,7 +103,7 @@ export function JobStatistics() {
             <button className="p-2 cursor-pointer">Year</button>
           </div>
         </div>
-        <div className="flex gap-10 mt-4">
+        <div className="flex flex-wrap gap-4 md:gap-10 mt-4">
           <button className="text-dark font-medium border-b-3 border-primary pb-2 cursor-pointer">
             Overview
           </button>
@@ -111,10 +111,11 @@ export function JobStatistics() {
           <button className="text-light cursor-pointer">Jobs Applied</button>
         </div>
       </div>
-      <div className="flex items-end gap-5 mb-4">
+      <div className="flex flex-col lg:flex-row items-end gap-5 mb-4">
+        <div className="flex items-end gap-2 sm:gap-5 w-full lg:flex-1 overflow-x-auto">
         {chartData.map((data, index) => (
-          <div key={index} className="flex flex-col items-center flex-1">
-            <div className="flex flex-col items-center justify-end h-90 w-15 gap-1">
+          <div key={index} className="flex flex-col items-center flex-1 min-w-8">
+            <div className="flex flex-col items-center justify-end h-40 sm:h-60 md:h-90 w-6 sm:w-10 md:w-15 gap-1">
               <div
                 className="bg-blue-800 w-full"
                 style={{ height: `${(data.jobView / 25) * 100}%` }}
@@ -127,8 +128,11 @@ export function JobStatistics() {
             <span className="text-light text-xs mt-2">{data.day}</span>
           </div>
         ))}
+        </div>
         {/* Pass API data to JobMetrics component */}
+        <div className="w-full lg:w-auto">
         <JobMetrics views={weeklyStats?.views} applied={weeklyStats?.applied} />
+        </div>
       </div>
 
       <div className="flex gap-6 text-sm">

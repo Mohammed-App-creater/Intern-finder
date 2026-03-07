@@ -188,14 +188,14 @@ export default function TalentFinalForm({
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Side - Form */}
       <AnimatePresence mode="wait">
         <motion.div
           initial={{ x: 800, opacity: 1 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex-1 flex flex-col p-8 gap-25"
+          className="flex-1 flex flex-col p-4 sm:p-6 md:p-8 gap-10 md:gap-25"
         >
           {/* Logo and Back Button */}
           <div className="flex items-center justify-between mb-8">
@@ -228,7 +228,7 @@ export default function TalentFinalForm({
           </div>
 
           {/* Form Content */}
-          <div className="flex-1 flex flex-col max-w-md mx-auto p-4 md:p-8 min-w-200">
+          <div className="flex-1 flex flex-col max-w-md mx-auto p-4 md:p-8 md:min-w-200">
             <h1 className="text-3xl font-bold text-dark mb-8">
               Let&apos;s go to the finishing steps
             </h1>
@@ -367,7 +367,7 @@ export default function TalentFinalForm({
           initial={{ x: -800, opacity: 1 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
+          className="hidden lg:flex flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] items-center justify-center p-6 z-10"
         >
           <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
             One more step for the Masterpiece profile

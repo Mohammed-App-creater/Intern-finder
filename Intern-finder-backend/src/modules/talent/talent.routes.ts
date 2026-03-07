@@ -129,7 +129,6 @@ router.post("/register/step1", validate(RegisterStep1Schema, "body"), talentCont
  *               - program
  *               - workingEnvironment
  *               - preferredRole
- *               - linkedinUrl
  *               - bio
  *     responses:
  *       '200':

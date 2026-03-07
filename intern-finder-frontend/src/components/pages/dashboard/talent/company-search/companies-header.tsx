@@ -17,7 +17,7 @@ export function CompaniesHeader() {
   };
 
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
       <div>
         <h2 className="text-2xl font-bold text-dark mb-1">All Companies</h2>
         <p className="text-light">Showing 72 results</p>
@@ -26,10 +26,10 @@ export function CompaniesHeader() {
       <div className="flex items-center gap-4">
         {/* Sort Dropdown */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-light">Sort by:</span>
+          <span className="text-sm text-light hidden sm:inline">Sort by:</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-dark">
+              <Button variant="ghost" className="text-dark px-2 sm:px-4">
                 {filters.sortBy === "createdAt"
                   ? "Newest"
                   : filters.sortBy === "employeeCount"

@@ -8,7 +8,9 @@ import {
   Star,
   Pin,
   Smile,
+  ArrowLeft,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -179,15 +181,26 @@ const messages: Message[] = [
 export function MessagingInterface() {
   const [selectedContact, setSelectedContact] = useState<Contact>(contacts[0]);
   const [messageInput, setMessageInput] = useState("");
+  const [showMobileChat, setShowMobileChat] = useState(false);
+
+  const handleContactSelect = (contact: Contact) => {
+    setSelectedContact(contact);
+    setShowMobileChat(true);
+  };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col w-full">
       <h1 className="text-3xl font-bold text-dark mb-8 font-['Clash_Display']">
         Messages
       </h1>
-      <div className="flex">
+      <div className="flex h-[calc(100vh-200px)] md:h-[600px] lg:h-[700px] border border-border rounded-lg overflow-hidden bg-card">
         {/* Left Sidebar - Messages List */}
-        <div className="w-80 border-r border-t border-b border-border bg-card overflow-y-scroll h-3/4">
+        <div 
+          className={cn(
+            "w-full md:w-80 border-r border-border bg-card flex flex-col",
+            showMobileChat ? "hidden md:flex" : "flex"
+          )}
+        >
           <div className="flex items-center px-12 py-6 border-b border-border">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
@@ -198,11 +211,11 @@ export function MessagingInterface() {
             </div>
           </div>
 
-          <div className="overflow-y-auto">
+          <div className="overflow-y-auto flex-1">
             {contacts.map((contact) => (
               <div
                 key={contact.id}
-                onClick={() => setSelectedContact(contact)}
+                onClick={() => handleContactSelect(contact)}
                 className={`flex items-center gap-3 p-4 hover:bg-secondary/50 cursor-pointer border-b border-border/50 ${
                   selectedContact.id === contact.id ? "bg-secondary" : ""
                 }`}
@@ -241,11 +254,24 @@ export function MessagingInterface() {
         </div>
 
         {/* Right Main Area - Conversation */}
-        <div className="flex-1 flex flex-col h-3/4">
+        <div 
+          className={cn(
+            "flex-1 flex flex-col bg-card",
+            showMobileChat ? "flex" : "hidden md:flex"
+          )}
+        >
           {/* Header */}
-          <div className="flex items-center justify-between p-3 border-b border-t border-border bg-card">
+          <div className="flex items-center justify-between p-3 border-b border-border bg-card h-16 shrink-0">
             <div className="flex items-center gap-3">
-              <Avatar className="w-15 h-15">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="md:hidden -ml-2 text-dark"
+                onClick={() => setShowMobileChat(false)}
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+              <Avatar className="w-10 h-10">
                 <AvatarImage
                   src={selectedContact.avatar || "/placeholder.svg"}
                   alt={selectedContact.name}

@@ -6,7 +6,7 @@ export function InterviewScheduleTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <h2 className="text-xl font-semibold text-dark">Interview List</h2>
         <Button variant="none" className="text-primary font-semibold">
           <Plus className="w-4 h-4 mr-1" />
@@ -20,7 +20,7 @@ export function InterviewScheduleTab() {
         <div>
           <h3 className="text-light text-sm mb-4">Tomorrow • 10 July, 2021</h3>
           <div className="bg-white border rounded-lg p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarImage
@@ -39,7 +39,7 @@ export function InterviewScheduleTab() {
                 <p className="font-medium text-dark">10:00 AM - 11:30 AM</p>
                 <p className="text-light text-sm">Silver Crysta Room, Nomad</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="none"
                   className="text-primary border bg-transparent"
@@ -59,7 +59,7 @@ export function InterviewScheduleTab() {
         <div>
           <h3 className="text-light text-sm mb-4">11 July, 2021</h3>
           <div className="bg-white border rounded-lg p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarImage
@@ -78,7 +78,7 @@ export function InterviewScheduleTab() {
                 <p className="font-medium text-dark">10:00 AM - 11:00 AM</p>
                 <p className="text-light text-sm">Silver Crysta Room, Nomad</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="none"
                   className="text-primary border bg-transparent"
@@ -98,7 +98,7 @@ export function InterviewScheduleTab() {
         <div>
           <h3 className="text-light text-sm mb-4">12 July, 2021</h3>
           <div className="bg-white border rounded-lg p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarImage
@@ -117,7 +117,7 @@ export function InterviewScheduleTab() {
                 <p className="font-medium text-dark">10:00 AM - 11:00 AM</p>
                 <p className="text-light text-sm">Silver Crysta Room, Nomad</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="none"
                   className="text-primary border bg-transparent"
@@ -137,7 +137,7 @@ export function InterviewScheduleTab() {
         <div>
           <h3 className="text-light text-sm mb-4">13 July, 2021</h3>
           <div className="bg-white border rounded-lg p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarImage
@@ -156,7 +156,7 @@ export function InterviewScheduleTab() {
                 <p className="font-medium text-dark">10:00 AM - 11:00 AM</p>
                 <p className="text-light text-sm">Silver Crysta Room, Nomad</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="none"
                   className="text-primary border bg-transparent"

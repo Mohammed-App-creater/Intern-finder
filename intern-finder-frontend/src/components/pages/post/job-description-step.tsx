@@ -50,8 +50,8 @@ export function JobDescriptionStep({ onNext }: JobDescriptionStepProps) {
       </div>
 
       <div className="space-y-6">
-        <div className="flex gap-5 pb-5 pt-2">
-          <div className="flex flex-col gap-2 w-200">
+        <div className="flex flex-col md:flex-row gap-5 pb-5 pt-2">
+          <div className="flex flex-col gap-2 w-full md:w-200 shrink-0">
             <Label className="text-dark font-medium">Job Descriptions *</Label>
             <p className="text-light text-sm mb-2">
               Describe the job position in detail
@@ -82,8 +82,8 @@ export function JobDescriptionStep({ onNext }: JobDescriptionStepProps) {
           </div>
         </div>
         <div className="border-b"></div>
-        <div className="flex gap-5 pb-5 pt-2">
-          <div className="flex flex-col gap-2 w-200">
+        <div className="flex flex-col md:flex-row gap-5 pb-5 pt-2">
+          <div className="flex flex-col gap-2 w-full md:w-200 shrink-0">
             <Label className="text-dark font-medium">Responsibilities *</Label>
             <p className="text-light text-sm mb-2">
               Outline the core responsibilities of the position
@@ -114,8 +114,8 @@ export function JobDescriptionStep({ onNext }: JobDescriptionStepProps) {
           </div>
         </div>
         <div className="border-b"></div>
-        <div className="flex gap-5 pb-5 pt-2">
-          <div className="flex flex-col gap-2 w-200">
+        <div className="flex flex-col md:flex-row gap-5 pb-5 pt-2">
+          <div className="flex flex-col gap-2 w-full md:w-200 shrink-0">
             <Label className="text-dark font-medium">
               Professional Skills *
             </Label>

@@ -25,10 +25,10 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 bg-secondary">
+    <section className="py-12 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-dark mb-4">How it works</h2>
+          <h2 className="text-3xl sm:text-5xl font-bold text-dark mb-4">How it works</h2>
           <p className="text-dark max-w-2xl mx-auto">
             An integrated platform that connects talented students with amazing internship opportunities through a
             streamlined process.

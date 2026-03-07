@@ -32,14 +32,14 @@ export function OverviewTab() {
       </div>
 
       {/* Company Logo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
-        <div className="max-w-xs">
+      <div className="flex flex-col lg:flex-row gap-8 w-full">
+        <div className="w-full lg:max-w-xs">
           <h3 className="text-base font-medium text-dark mb-2">Company Logo</h3>
           <p className="text-light text-sm mb-4">
             This image will be shown publicly as your company logo
           </p>
         </div>
-        <div className="flex items-center gap-10">
+        <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-10 flex-1">
           <Image
             src={"https://cdn-icons-png.flaticon.com/128/5968/5968835.png"}
             alt="Company Logo"
@@ -62,8 +62,8 @@ export function OverviewTab() {
       <div className="border-b w-full pb-4"></div>
 
       {/* Company Details */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
-        <div className="max-w-xs">
+      <div className="flex flex-col lg:flex-row gap-8 w-full">
+        <div className="w-full lg:max-w-xs">
           <h3 className="text-base font-medium text-dark mb-2">
             Company Details
           </h3>
@@ -106,11 +106,11 @@ export function OverviewTab() {
             onItemsChange={(items) => console.log("Location updated:", items)}
           />
 
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
             <div>
               <Label className="text-dark text-sm font-medium">Employee</Label>
               <Select defaultValue="1-50">
-                <SelectTrigger className="mt-1 w-60 rounded-none cursor-pointer">
+                <SelectTrigger className="mt-1 w-full sm:w-60 rounded-none cursor-pointer">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -124,7 +124,7 @@ export function OverviewTab() {
             <div>
               <Label className="text-dark text-sm font-medium">Industry</Label>
               <Select defaultValue="technology">
-                <SelectTrigger className="mt-1 w-60 rounded-none cursor-pointer">
+                <SelectTrigger className="mt-1 w-full sm:w-60 rounded-none cursor-pointer">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -197,7 +197,7 @@ export function OverviewTab() {
       <div className="border-b w-full pb-4"></div>
 
       {/* About Company */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
+      <div className="flex flex-col lg:flex-row gap-8 w-full">
         <div>
           <h3 className="text-base font-medium text-dark mb-2">
             About Company
@@ -226,7 +226,7 @@ export function OverviewTab() {
         </div>
       </div>
 
-      <div className="flex justify-end max-w-5xl">
+      <div className="flex justify-end w-full">
         <Button className="bg-primary text-white hover:bg-primary/90">
           Save Changes
         </Button>

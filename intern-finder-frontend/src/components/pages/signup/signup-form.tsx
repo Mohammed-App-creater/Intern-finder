@@ -318,13 +318,13 @@ export function SignUpForm() {
   const hasErrors = Object.values(errors).some((error) => error !== "");
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left side - Form */}
       <motion.div
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 p-8 flex flex-col"
+        className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col w-full"
       >
         {/* Logo */}
         <div
@@ -577,7 +577,7 @@ export function SignUpForm() {
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-3 z-10"
+        className="hidden lg:flex flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] items-center justify-center p-3 z-10"
       >
         <div className="text-left text-white max-w-lg">
           <blockquote className="text-6xl font-bold leading-relaxed mb-8 text-white w-150">

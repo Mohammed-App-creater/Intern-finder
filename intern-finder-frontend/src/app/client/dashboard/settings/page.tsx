@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SettingsPage() {
   return (
-    <div className="min-h-screen p-6 mt-2">
+    <div className="min-h-screen p-4 md:p-6 mt-2">
       <h1 className="text-2xl font-semibold text-dark mb-8 font-['Clash_Display']">Settings</h1>
 
       <Tabs defaultValue="overview" className="w-full">

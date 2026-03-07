@@ -2,17 +2,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function ResumeTab() {
   return (
-    <div className="max-w-4xl mx-auto border-t-8 border-t-text-dark">
-      <div className="max-w-4xl mx-auto bg-white p-8 border">
-        <div className="grid grid-cols-3 gap-8 mb-8">
-          <div className="col-span-2 space-y-6">
+    <div className="w-full max-w-4xl mx-auto border-t-8 border-t-text-dark">
+      <div className="w-full max-w-4xl mx-auto bg-white p-4 sm:p-8 border">
+        <div className="flex flex-col-reverse sm:grid sm:grid-cols-3 gap-6 sm:gap-8 mb-8">
+          <div className="sm:col-span-2 space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-3xl font-bold text-dark mb-2">Jerome Bell</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-dark mb-2">Jerome Bell</h1>
               <p className="text-lg text-light">Product Designer</p>
             </div>
           </div>
-          <Avatar className="w-20 h-20 border">
+          <Avatar className="w-16 h-16 sm:w-20 sm:h-20 border mx-auto sm:mx-0">
             <AvatarImage
               src="https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg"
               alt="Profile Picture"
@@ -21,9 +21,9 @@ export function ResumeTab() {
           </Avatar>
         </div>
 
-        <div className="grid grid-cols-3 gap-8">
+        <div className="flex flex-col sm:grid sm:grid-cols-3 gap-6 sm:gap-8">
           {/* Left Column - Main Content */}
-          <div className="col-span-2 space-y-6">
+          <div className="sm:col-span-2 space-y-6">
             {/* Experience */}
             <section>
               <h2 className="text-lg font-semibold text-dark mb-4 uppercase tracking-wide">

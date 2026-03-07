@@ -52,7 +52,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
       </div>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-10 max-w-5xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl">
           <div className="flex flex-col gap-2">
             <Label htmlFor="jobTitle" className="text-dark font-medium">
               Job Title *
@@ -67,7 +67,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
               placeholder="e.g. Software Engineer"
               value={formData.jobTitle}
               onChange={(e) => updateFormData({ jobTitle: e.target.value })}
-              className="mt-1 w-85"
+              className="mt-1 w-full md:w-85"
               required
             />
             {errors.jobTitle && (
@@ -78,7 +78,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
         </div>
         <div className="border-b pb-4"></div>
 
-        <div className="grid grid-cols-2 gap-10 max-w-5xl pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl pt-2">
           <div className="flex flex-col gap-2">
             <Label className="text-dark font-medium">
               Type of Employment *
@@ -121,7 +121,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
         </div>
         <div className="border-b pb-4"></div>
 
-        <div className="grid grid-cols-2 gap-10 max-w-5xl pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl pt-2">
           <div className="flex flex-col gap-2">
             <Label className="text-dark font-medium">Categories *</Label>
             <p className="text-light text-sm mb-2">Select the job category</p>
@@ -132,7 +132,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
               value={formData.category}
               onValueChange={(value) => updateFormData({ category: value })}
             >
-              <SelectTrigger className="w-85">
+              <SelectTrigger className="w-full md:w-85">
                 <SelectValue placeholder="Select Job Categories" />
               </SelectTrigger>
               <SelectContent>
@@ -149,7 +149,7 @@ export function JobInformationStep({ onNext }: JobInformationStepProps) {
         </div>
         <div className="border-b pb-4"></div>
 
-        <div className="grid grid-cols-2 gap-10 max-w-5xl pb-10 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 max-w-5xl pb-10 pt-2">
           <div className="flex flex-col gap-2">
             <Label className="text-dark font-medium">Salary *</Label>
             <p className="text-light text-sm mb-4 max-w-xs">

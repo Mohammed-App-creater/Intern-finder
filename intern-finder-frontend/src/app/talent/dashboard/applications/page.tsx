@@ -5,7 +5,7 @@ import { StatusTabs } from "@/components/pages/dashboard/talent/applications/sta
 export default function ApplicationsPage() {
   return (
     <div className="min-h-screen">
-      <div className="pt-10 px-8">
+      <div className="p-4 md:pt-10 md:px-8">
         <ApplicationsHeader />
         <StatusTabs />
         <ApplicationsTable />

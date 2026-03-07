@@ -1,6 +1,7 @@
 import Footer from "@/components/common/footer";
 import Navbar from "@/components/common/navbar";
 import { Sidebar } from "@/components/common/Sidebar";
+import { DashboardMobileNav } from "@/components/layout/dashboard-mobile-nav";
 
 export default function DashboardLayout({
   children,
@@ -12,9 +13,12 @@ export default function DashboardLayout({
       <div className="bg-black">
         <Navbar />
       </div>
-      <div className="flex w-full">
-        <Sidebar />
-        <div className="w-[calc(100%)] font-['Epilogue']">
+      <div className="flex flex-col lg:flex-row w-full">
+        <DashboardMobileNav />
+        <div className="hidden lg:block">
+          <Sidebar />
+        </div>
+        <div className="w-full lg:w-[calc(100%-250px)] font-['Epilogue']">
           {children}
         </div>
       </div>

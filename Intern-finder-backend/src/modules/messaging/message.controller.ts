@@ -4,7 +4,7 @@ import { createMessageSchema, createConversationSchema } from "./message.validat
 
 export const messageController = {
   async getMessages(req: Request, res: Response) {
-    const { conversationId } = req.params;
+    const conversationId = req.params.conversationId as string;
     const messages = await messageService.getMessages(conversationId);
     res.json(messages);
   },

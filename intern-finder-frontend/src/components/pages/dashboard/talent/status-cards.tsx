@@ -48,7 +48,7 @@ export function StatusCards() {
               alt={"Document Icon"}
               width={100}
               height={100}
-              className="absolute top-16 right-15 w-40 h-20"
+              className="absolute top-16 right-5 w-20 h-10 md:w-40 md:h-20 md:right-15"
             />
           </div>
         </CardContent>
@@ -69,7 +69,7 @@ export function StatusCards() {
               alt={"Document Icon"}
               width={100}
               height={100}
-              className="absolute top-16 right-15 w-40 h-20"
+              className="absolute top-16 right-5 w-20 h-10 md:w-40 md:h-20 md:right-15"
             />
           </div>
         </CardContent>

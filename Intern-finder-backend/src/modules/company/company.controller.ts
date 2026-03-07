@@ -19,7 +19,7 @@ export const registerStep1Handler = async (req: Request, res: Response, next: Ne
 
 export const registerStep2Handler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const companyId = req.params.companyId;
+        const companyId = req.params.companyId as string;
         const data = req.body;
         const company = await registerStep2(companyId, data);
         res.status(200).json(company);
@@ -82,7 +82,7 @@ export const getAllCompanyHandler = async (req: Request, res: Response, next: Ne
 
 export const getCompanyByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const companyId = req.params.companyId;
+        const companyId = req.params.companyId as string;
         const company = await getCompanyById(companyId);
         if (!company) {
             return res.status(404).json({ error: "Company not found" });
@@ -107,7 +107,7 @@ export const getCompanyByIdHandler = async (req: Request, res: Response, next: N
 
 export const updateCompanyHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const companyId = req.params.companyId;
+        const companyId = req.params.companyId as string;
         const data = req.body;
         const company = await updateCompany(companyId, data);
         res.status(200).json({
@@ -132,7 +132,7 @@ export const updateCompanyHandler = async (req: Request, res: Response, next: Ne
 
 export const getCompanyDashboardTopStatusHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const companyId = req.params.companyId;
+        const companyId = req.params.companyId as string;
         const dashboardData = await companyDashboardTopStats(companyId);
         res.status(200).json({
             success: true,
@@ -154,7 +154,7 @@ export const getCompanyDashboardTopStatusHandler = async (req: Request, res: Res
 
 export const getMiddleStatsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const { day } = req.query;
         const dayDate = day ? new Date(day as string) : new Date();
 
@@ -171,7 +171,7 @@ export const getMiddleStatsController = async (req: Request, res: Response, next
 
 export const getMonthlyStatsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const { day } = req.query;
         const dayDate = day ? new Date(day as string) : new Date();
 
@@ -188,7 +188,7 @@ export const getMonthlyStatsController = async (req: Request, res: Response, nex
 
 export const getYearlyStatsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const { day } = req.query;
         const dayDate = day ? new Date(day as string) : new Date();
 
@@ -205,7 +205,7 @@ export const getYearlyStatsController = async (req: Request, res: Response, next
 
 export const getCompanyDashboardOpenJobsCountController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const stats = await companyDashboardOpenJobs(companyId);
         res.status(200).json(successResponse(stats, "Open jobs count fetched"));
     } catch (error: any) {
@@ -218,15 +218,15 @@ export const getCompanyDashboardOpenJobsCountController = async (req: Request, r
 
 export const getCompanyDashboardApplicationSummery = async (req: Request, res: Response, next: NextFunction) => {
     try{
-    const { companyId } = req.params;
-    return res.status(200).json(successResponse(companyDashboardApplicationSummary(req.params.companyId), "Application summary fetched"));
+    const companyId = req.params.companyId as string;
+    return res.status(200).json(successResponse(await companyDashboardApplicationSummary(companyId), "Application summary fetched"));
     } catch (error) {
         next(error);
     }
 }
 
 export const getCompanyDashboardJobUpdate = async (req: Request, res: Response, next: NextFunction) => {
-    const { companyId } = req.params;
+    const companyId = req.params.companyId as string;
     try {
         const jobUpdates = await getLatestJobsUpdate(companyId);
         res.status(200).json(successResponse(jobUpdates, "Job updates fetched"));

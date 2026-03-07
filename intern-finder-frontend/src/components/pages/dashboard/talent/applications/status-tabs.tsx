@@ -12,12 +12,12 @@ const statusData = [
 export function StatusTabs() {
   return (
     <div className="mb-6">
-      <div className="flex gap-1 border-b">
+      <div className="flex gap-1 border-b overflow-x-auto pb-1 no-scrollbar">
         {statusData.map((status) => (
           <Button
             key={status.label}
             variant={status.active ? "default" : "ghost"}
-            className={`rounded-none border-b-2 px-4 py-2 ${
+            className={`rounded-none border-b-2 px-4 py-2 shrink-0 ${
               status.active
                 ? "border-primary text-primary bg-transparent hover:bg-transparent"
                 : "border-transparent text-light hover:text-dark"

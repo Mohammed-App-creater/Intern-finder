@@ -37,10 +37,10 @@ export function RecentApplications() {
             applications.map((app) => (
               <div
                 key={app.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
+                className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg gap-4"
               >
-                <div className="flex items-center gap-4">
-                  <Avatar className="w-12 h-12 rounded-sm">
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                  <Avatar className="w-12 h-12 rounded-sm shrink-0">
                     <AvatarImage src={app.companyLogo} alt="Profile Picture" />
                     <AvatarFallback
                       className={`bg-green-500 text-white font-semibold`}
@@ -48,29 +48,33 @@ export function RecentApplications() {
                       {app?.companyName?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h3 className="font-medium text-dark">{app.jobTitle}</h3>
-                    <p className="text-sm text-light">
+                  <div className="min-w-0">
+                    <h3 className="font-medium text-dark truncate">{app.jobTitle}</h3>
+                    <p className="text-sm text-light truncate">
                       {app.companyName} • {app.location} • {app.salaryType}
                     </p>
                   </div>
                 </div>
-                <div>
-                  <p className="text-sm text-dark">Date Applied</p>
-                  <p className="text-sm font-medium text-light">
-                    {app.appliedAt
-                      ? new Date(app.appliedAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : "N/A"}
-                  </p>
+                <div className="flex w-full md:w-auto items-center justify-between md:justify-end gap-4 md:gap-8">
+                  <div className="text-left md:text-right">
+                    <p className="text-sm text-dark">Date Applied</p>
+                    <p className="text-sm font-medium text-light">
+                      {app.appliedAt
+                        ? new Date(app.appliedAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : "N/A"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={app.status} />
+                    <Button variant="ghost" size="sm" className="shrink-0">
+                      <MoreHorizontal className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-                <StatusBadge status={app.status} />
-                <Button variant="ghost" size="sm">
-                  <MoreHorizontal className="w-4 h-4" />
-                </Button>
               </div>
             ))
           ) : (
@@ -79,8 +83,8 @@ export function RecentApplications() {
             </div>
           )}
         </div>
-        <div className="flex items-center mt-6 text-center">
-          <Button variant="link" className="text-primary text-xl">
+        <div className="flex items-center mt-6 text-center justify-center md:justify-start">
+          <Button variant="link" className="text-primary md:text-xl text-md">
             View all applications history
           </Button>
           <ArrowRight className="text-primary" />

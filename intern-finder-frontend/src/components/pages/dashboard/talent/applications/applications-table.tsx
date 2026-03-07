@@ -66,19 +66,19 @@ export function ApplicationsTable() {
   return (
     <div className="border-1 rounded-lg shadow-sm p-5">
       <div className="p-6 border-b">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <h3 className="text-lg font-medium text-dark">
             Applications History
           </h3>
 
-          <div className="flex items-center gap-3">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-light" />
-              <Input placeholder="Search" className="pl-10 w-64" />
+              <Input placeholder="Search" className="pl-10 w-full sm:w-64" />
             </div>
             <Button
               variant="outline"
-              className="flex items-center gap-2 bg-transparent"
+              className="flex items-center gap-2 bg-transparent w-full sm:w-auto justify-center"
             >
               <Filter className="h-4 w-4" />
               Filter

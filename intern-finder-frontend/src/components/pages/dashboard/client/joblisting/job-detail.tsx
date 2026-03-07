@@ -14,10 +14,10 @@ export default function JobPosting({ applied, capacity }: JobPostingProps) {
   const percentage = (applied / capacity) * 100;
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-4 md:p-6">
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
             <Image
               src={"https://cdn-icons-png.flaticon.com/128/9706/9706727.png"}
@@ -25,7 +25,7 @@ export default function JobPosting({ applied, capacity }: JobPostingProps) {
               width={40}
               height={40}
             />
-            <h1 className="text-3xl font-bold text-dark">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-dark">
               Social Media Assistant
             </h1>
           </div>

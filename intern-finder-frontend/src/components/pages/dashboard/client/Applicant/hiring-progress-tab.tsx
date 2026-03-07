@@ -10,7 +10,7 @@ export function HiringProgressTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h2 className="text-xl font-semibold text-dark">Current Stage</h2>
         <ReviewPopup
           isOpen={isPopupOpen}
@@ -29,37 +29,37 @@ export function HiringProgressTab() {
       </div>
 
       {/* Progress Steps */}
-      <div className="flex items-center mb-8">
+      <div className="flex items-center mb-8 overflow-x-auto pb-2">
         <div className="relative flex">
-          <div className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium h-15 min-w-50 flex items-center justify-center">
+          <div className="px-3 sm:px-4 py-2 bg-primary/10 text-primary text-xs sm:text-sm font-medium h-12 sm:h-15 min-w-32 sm:min-w-50 flex items-center justify-center whitespace-nowrap">
             In-Review
           </div>
           <div className="h-18 w-4 absolute -right-2 -top-1 bg-white rotate-15 z-10"></div>
         </div>
         <div className="relative flex">
-          <div className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium h-15 min-w-50 flex items-center justify-center">
+          <div className="px-3 sm:px-4 py-2 bg-primary/10 text-primary text-xs sm:text-sm font-medium h-12 sm:h-15 min-w-32 sm:min-w-50 flex items-center justify-center whitespace-nowrap">
             Shortlisted
           </div>
           <div className="h-18 w-4 absolute -right-2 -top-1 bg-white rotate-15 z-10"></div>
         </div>
         <div className="relative flex">
-          <div className="px-4 py-2 bg-primary text-white text-sm font-medium h-15 min-w-50 flex items-center justify-center">
+          <div className="px-3 sm:px-4 py-2 bg-primary text-white text-xs sm:text-sm font-medium h-12 sm:h-15 min-w-32 sm:min-w-50 flex items-center justify-center whitespace-nowrap">
             Interview
           </div>
           <div className="h-18 w-4 absolute -right-2 -top-1 bg-white rotate-15 z-10"></div>
         </div>
         <div className="relative flex">
-          <div className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-light text-sm font-medium h-15 min-w-50 flex items-center justify-center">
+          <div className="px-3 sm:px-4 py-2 bg-gray-100 dark:bg-gray-800 text-light text-xs sm:text-sm font-medium h-12 sm:h-15 min-w-32 sm:min-w-50 flex items-center justify-center whitespace-nowrap">
             Hired / Declined
           </div>
         </div>
       </div>
 
       {/* Stage Info */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <h3 className="text-lg font-semibold text-dark mb-4">Stage Info</h3>
 
-        <div className="grid grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
           <div>
             <p className="text-light text-sm mb-1">Interview Date</p>
             <p className="text-dark font-medium">10 - 13 July 2021</p>

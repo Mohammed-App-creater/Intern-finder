@@ -27,18 +27,18 @@ export function JobStatusChart() {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex items-center gap-10">
+        <div className="flex flex-col lg:flex-row lg:flex-col xl:flex-row items-center gap-6 lg:gap-10 lg:gap-6 xl:gap-10">
           <CircularProgress percentage={interviewed} size={150} />
-          <div className="flex flex-col gap-5 p-5">
+          <div className="flex flex-col gap-5 p-0 lg:p-5 lg:p-0 xl:p-5 w-full">
             <div className="flex items-center gap-5">
-              <div className="w-5 h-5 bg-primary rounded-sm"></div>
+              <div className="w-5 h-5 bg-primary rounded-sm shrink-0"></div>
               <div className="flex flex-col gap-1">
                 <span className="text-2xl font-bold text-dark">{interviewed}%</span>
                 <span className="text-xl text-light">Unsuitable</span>
               </div>
             </div>
             <div className="flex items-center gap-5">
-              <div className="w-5 h-5 bg-gray-300 rounded-sm"></div>
+              <div className="w-5 h-5 bg-gray-300 rounded-sm shrink-0"></div>
               <div className="flex flex-col gap-1">
                 <span className="text-2xl font-bold text-dark">{rejected}%</span>
                 <span className="text-xl text-light">Interviewed</span>

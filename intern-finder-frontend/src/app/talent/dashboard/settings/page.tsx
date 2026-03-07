@@ -2,7 +2,7 @@ import SettingTabs from "@/components/pages/dashboard/talent/settings/setting-ta
 
 export default function Setting() {
   return (
-    <div className="min-h-screen p-8 mt-2">
+    <div className="min-h-screen p-4 md:p-8 mt-2">
       <h1 className="text-3xl font-bold text-dark font-['Clash_Display'] mb-10">
         Settings
       </h1>

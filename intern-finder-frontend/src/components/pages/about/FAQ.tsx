@@ -7,7 +7,7 @@ export default function FAQ() {
       {/* FAQ Section */}
       <section className="py-16 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-dark mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-4">
             Frequently Asked Questions
           </h2>
           <p className="text-light text-lg">
@@ -23,7 +23,7 @@ export default function FAQ() {
             <AccordionTrigger className="text-left hover:no-underline cursor-pointer">
               <div className="flex items-center gap-4">
                 <span className="text-light data-[state=open]:text-primary font-semibold" >01</span>
-                <span className="text-dark font-medium">
+                <span className="text-dark font-medium text-sm sm:text-base">
                   Can I upload a CV?
                 </span>
               </div>
@@ -43,7 +43,7 @@ export default function FAQ() {
             <AccordionTrigger className="text-left hover:no-underline cursor-pointer">
               <div className="flex items-center gap-4">
                 <span className="text-light data-[state=open]:text-primary font-semibold">02</span>
-                <span className="text-dark font-medium">
+                <span className="text-dark font-medium text-sm sm:text-base">
                   How long will the recruitment process take?
                 </span>
               </div>
@@ -62,7 +62,7 @@ export default function FAQ() {
             <AccordionTrigger className="text-left hover:no-underline cursor-pointer">
               <div className="flex items-center gap-4">
                 <span className="text-light data-[state=open]:text-primary font-semibold">03</span>
-                <span className="text-dark font-medium">
+                <span className="text-dark font-medium text-sm sm:text-base">
                   Do you recruit for Graduates, Apprentices and Students?
                 </span>
               </div>
@@ -81,7 +81,7 @@ export default function FAQ() {
             <AccordionTrigger className="text-left hover:no-underline cursor-pointer">
               <div className="flex items-center gap-4">
                 <span className="text-light data-[state=open]:text-primary font-semibold">04</span>
-                <span className="text-dark font-medium">
+                <span className="text-dark font-medium text-sm sm:text-base">
                   What does the recruitment and selection process involve?
                 </span>
               </div>
@@ -100,7 +100,7 @@ export default function FAQ() {
             <AccordionTrigger className="text-left hover:no-underline cursor-pointer">
               <div className="flex items-center gap-4">
                 <span className="text-light data-[state=open]:text-primary font-semibold">05</span>
-                <span className="text-dark font-medium">
+                <span className="text-dark font-medium text-sm sm:text-base">
                   Can I receive notifications for any future jobs that may
                   interest me?
                 </span>

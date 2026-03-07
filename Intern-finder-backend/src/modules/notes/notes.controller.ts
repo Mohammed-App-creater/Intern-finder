@@ -3,7 +3,8 @@ import { NotesService } from "./notes.service";
 
 export class NotesController {
   static async createNote(req: Request, res: Response) {
-    const { companyId, interviewId } = req.params;
+    const companyId = req.params.companyId as string;
+    const interviewId = req.params.interviewId as string;
     const { authorTalentId, content, isPrivate, parentId } = req.body;
 
     try {
@@ -17,7 +18,8 @@ export class NotesController {
   }
 
   static async listNotes(req: Request, res: Response) {
-    const { companyId, interviewId } = req.params;
+    const companyId = req.params.companyId as string;
+    const interviewId = req.params.interviewId as string;
     const isCandidate = req.user?.role === "TALENT"; // from auth middleware
 
     try {
@@ -29,7 +31,9 @@ export class NotesController {
   }
 
   static async createReply(req: Request, res: Response) {
-    const { companyId, applicationId, noteId } = req.params;
+    const companyId = req.params.companyId as string;
+    const applicationId = req.params.applicationId as string;
+    const noteId = req.params.noteId as string;
     const { authorTalentId, content } = req.body;
 
     try {

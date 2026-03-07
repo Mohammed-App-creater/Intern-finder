@@ -14,7 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export function ApplicantSidebar() {
   
   return (
-    <div className="w-80 space-y-6">
+    <div className="w-full lg:w-80 space-y-6">
       {/* Profile Section */}
       <Card className="rounded-none">
         <CardContent className="px-6 rounded-none">

@@ -59,8 +59,8 @@ export const changeDateToTimeAgo = (dateString: string) => {
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   }
 
-export const formatRange = (date: Date, type: "week" | "month" | "year"): string => {
-  const options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
+export const formatRange = (date: Date, type: "week" | "month" | "year", shortMonth: boolean = false): string => {
+  const options: Intl.DateTimeFormatOptions = { month: shortMonth ? "short" : "long", day: "numeric" };
 
   if (type === "week") {
     // Get start (Sunday) and end (Saturday) of the week

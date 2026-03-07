@@ -28,7 +28,7 @@ export const registerStep1Handler = async (req: Request, res: Response) => {
 
 export const registerStep2Handler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const data = req.body;
         const talent = await registerStep2(talentId, data);
         res.status(200).json(talent);
@@ -58,7 +58,7 @@ export const loginTalentHandler = async (req: Request, res: Response) => {
 // Dashboard handlers
 export const getTotalJobsAppliedHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const totalJobs = await getTotalJobsApplied(talentId);
         res.status(200).json({
             success: true,
@@ -84,7 +84,7 @@ export const getTotalJobsAppliedHandler = async (req: Request, res: Response) =>
 
 export const getInterviewedCountHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const interviewedCount = await getInterviewedCount(talentId);
         res.status(200).json({
             success: true,
@@ -110,7 +110,7 @@ export const getInterviewedCountHandler = async (req: Request, res: Response) =>
 
 export const getJobAppliedStatusHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const statusCounts = await getJobAppliedStatus(talentId);
         res.status(200).json({
             success: true,
@@ -136,7 +136,7 @@ export const getJobAppliedStatusHandler = async (req: Request, res: Response) =>
 
 export const getUpcomingInterviewsHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const upcomingInterviews = await getUpcomingInterviews(talentId);
         res.status(200).json({
             success: true,
@@ -162,7 +162,7 @@ export const getUpcomingInterviewsHandler = async (req: Request, res: Response) 
 
 export const getRecentApplicationsHistoryHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
         const recentApplications = await getRecentApplicationsHistory(talentId, limit);
         res.status(200).json({
@@ -189,7 +189,7 @@ export const getRecentApplicationsHistoryHandler = async (req: Request, res: Res
 
 export const getTalentDashboardStatsHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const dashboardStats = await getTalentDashboardStats(talentId);
         res.status(200).json({
             success: true,
@@ -215,7 +215,7 @@ export const getTalentDashboardStatsHandler = async (req: Request, res: Response
 
 export const getTalentByIdHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const talent = await (await import("./talent.service")).getTalentById(talentId);
         res.status(200).json({ success: true, data: talent, error: null });
     } catch (error) {
@@ -230,7 +230,7 @@ export const getTalentByIdHandler = async (req: Request, res: Response) => {
 
 export const updateTalentHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const body = req.body;
         const updated = await (await import("./talent.service")).updateTalent(talentId, body);
         res.status(200).json({ success: true, data: updated, error: null });
@@ -245,7 +245,7 @@ export const updateTalentHandler = async (req: Request, res: Response) => {
 
 export const updateBasicInfoHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const updated = await (await import("./talent.service")).updateBasicInfo(talentId, req.body);
         res.status(200).json({ success: true, data: updated, error: null });
     } catch (error) {
@@ -259,7 +259,7 @@ export const updateBasicInfoHandler = async (req: Request, res: Response) => {
 
 export const updateEmailHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const { email } = req.body;
         const updated = await (await import("./talent.service")).updateEmail(talentId, email);
         res.status(200).json({ success: true, data: updated, error: null });
@@ -274,7 +274,7 @@ export const updateEmailHandler = async (req: Request, res: Response) => {
 
 export const changePasswordHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const { oldPassword, newPassword } = req.body;
         await (await import("./talent.service")).changePassword(talentId, oldPassword, newPassword);
         res.status(200).json({ success: true, data: { message: "Password updated" }, error: null });
@@ -289,7 +289,7 @@ export const changePasswordHandler = async (req: Request, res: Response) => {
 
 export const updateNotificationSettingsHandler = async (req: Request, res: Response) => {
     try {
-        const talentId = req.params.talentId;
+        const talentId = req.params.talentId as string;
         const { application, job, recommendation, alert } = req.body;
         const updated = await (await import("./talent.service")).updateNotificationSettings(talentId, {
             application,

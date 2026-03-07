@@ -114,21 +114,23 @@ export default function Filter() {
       salaryRange,
       tags: selectedTags,
     };
-    
+
     const normalized = normalizeFilters(rawFilters);
-    setFilters(normalized); // ✅ push to zustand
+    setFilters(normalized);
   };
 
   return (
-    <div className="w-70 bg-secondary p-6 rounded-md h-fit">
+    <div className="w-full bg-secondary p-4 sm:p-5 md:p-6 rounded-md h-fit max-h-[70vh] sm:max-h-[80vh] md:max-h-none overflow-y-auto">
       {/* Search by Job Title */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Search by Job Title</h3>
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Search by Job Title
+        </h3>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
           <Input
             placeholder="Job title or company"
-            className="pl-10 bg-white"
+            className="pl-10 bg-white text-sm sm:text-base h-10 sm:h-11"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -136,8 +138,10 @@ export default function Filter() {
       </div>
 
       {/* Location */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Location</h3>
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Location
+        </h3>
         <LocationInput
           formData={formData}
           handleInputChange={handleInputChange}
@@ -146,10 +150,12 @@ export default function Filter() {
       </div>
 
       {/* Category */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Category</h3>
-        <div className="space-y-3">
-          {categories.map((category) => (
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Category
+        </h3>
+        <div className="space-y-2 sm:space-y-3">
+          {categories.slice(0, 3).map((category) => (
             <div
               key={category.name}
               className="flex items-center justify-between"
@@ -159,8 +165,12 @@ export default function Filter() {
                   id={category.name}
                   checked={selectedCategories.includes(category.name)}
                   onCheckedChange={() => handleCategoryChange(category.name)}
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                 />
-                <label htmlFor={category.name} className="text-sm text-dark">
+                <label
+                  htmlFor={category.name}
+                  className="text-xs sm:text-sm text-dark"
+                >
                   {category.name}
                 </label>
               </div>
@@ -170,16 +180,18 @@ export default function Filter() {
         </div>
         <Button
           variant="outline"
-          className="w-full mt-3 bg-primary text-white hover:bg-primary/90 hover:text-white"
+          className="w-full mt-2 sm:mt-3 bg-primary text-white hover:bg-primary/90 hover:text-white text-xs sm:text-sm h-8 sm:h-9"
         >
           Show More
         </Button>
       </div>
 
       {/* Job Type */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Job Type</h3>
-        <div className="space-y-3">
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Job Type
+        </h3>
+        <div className="space-y-2 sm:space-y-3">
           {jobTypes.map((type) => (
             <div key={type.name} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -187,8 +199,12 @@ export default function Filter() {
                   id={type.name}
                   checked={selectedJobTypes.includes(type.name)}
                   onCheckedChange={() => handleJobTypeChange(type.name)}
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                 />
-                <label htmlFor={type.name} className="text-sm text-dark">
+                <label
+                  htmlFor={type.name}
+                  className="text-xs sm:text-sm text-dark"
+                >
                   {type.name}
                 </label>
               </div>
@@ -199,9 +215,11 @@ export default function Filter() {
       </div>
 
       {/* Experience Level */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Experience Level</h3>
-        <div className="space-y-3">
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Experience Level
+        </h3>
+        <div className="space-y-2 sm:space-y-3">
           {experienceLevels.map((level) => (
             <div key={level.name} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -211,8 +229,12 @@ export default function Filter() {
                   onCheckedChange={() =>
                     handleExperienceLevelChange(level.name)
                   }
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                 />
-                <label htmlFor={level.name} className="text-sm text-dark">
+                <label
+                  htmlFor={level.name}
+                  className="text-xs sm:text-sm text-dark"
+                >
                   {level.name}
                 </label>
               </div>
@@ -223,9 +245,11 @@ export default function Filter() {
       </div>
 
       {/* Date Posted */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Date Posted</h3>
-        <div className="space-y-3">
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Date Posted
+        </h3>
+        <div className="space-y-2 sm:space-y-3">
           {datePosted.map((date) => (
             <div key={date.name} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -233,8 +257,12 @@ export default function Filter() {
                   id={date.name}
                   checked={selectedDatePosted.includes(date.name)}
                   onCheckedChange={() => handleDatePostedChange(date.name)}
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                 />
-                <label htmlFor={date.name} className="text-sm text-dark">
+                <label
+                  htmlFor={date.name}
+                  className="text-xs sm:text-sm text-dark"
+                >
                   {date.name}
                 </label>
               </div>
@@ -245,23 +273,25 @@ export default function Filter() {
       </div>
 
       {/* Salary */}
-      <div className="mb-6">
-        <h3 className="text-dark font-medium mb-3">Salary</h3>
-        <div className="px-2">
+      <div className="mb-4 sm:mb-5 md:mb-6">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Salary
+        </h3>
+        <div className="px-1 sm:px-2">
           <Slider
             value={salaryRange}
             onValueChange={(v) => setSalaryRange([v[0], v[1]])}
             max={60000}
             step={1000}
-            className="mb-4"
+            className="mb-3 sm:mb-4"
           />
-          <div className="flex justify-between items-center text-sm text-light">
-            <span>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 text-xs sm:text-sm text-light">
+            <span className="text-center sm:text-left">
               Salary: ${salaryRange[0]} - ${salaryRange[1]}
             </span>
             <Button
               size="sm"
-              className="bg-primary text-white hover:bg-primary/90"
+              className="bg-primary text-white hover:bg-primary/90 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
               onClick={handleApplyFilters}
             >
               Apply
@@ -272,13 +302,15 @@ export default function Filter() {
 
       {/* Tags */}
       <div>
-        <h3 className="text-dark font-medium mb-3">Tags</h3>
-        <div className="flex flex-wrap gap-2">
+        <h3 className="text-dark font-medium mb-2 sm:mb-3 text-sm sm:text-base">
+          Tags
+        </h3>
+        <div className="flex flex-wrap gap-1 sm:gap-2">
           {tags.map((tag) => (
             <Badge
               key={tag}
               variant="secondary"
-              className={`cursor-pointer ${
+              className={`cursor-pointer text-xs sm:text-sm px-2 py-1 ${
                 selectedTags.includes(tag)
                   ? "bg-primary text-white"
                   : "bg-[#3096891A] text-primary"
@@ -293,4 +325,3 @@ export default function Filter() {
     </div>
   );
 }
-

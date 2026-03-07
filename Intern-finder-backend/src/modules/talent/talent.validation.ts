@@ -15,7 +15,6 @@ export const RegisterStep2Schema = z.object({
     program: z.string().min(3, "Program is required"),
     workingEnvironment: z.string().min(3, "Working environment is required"),
     preferredRole: z.string().min(3, "Preferred role is required"),
-    linkedinUrl: z.string().min(3, "LinkedIn URL is required"),
     bio: z.string().min(3, "Bio is required"),
 })
 

@@ -92,13 +92,13 @@ export default function CompanyLocationForm({
     Object.keys(localErrors).length > 0 ? localErrors : errors;
 
   return (
-    <div className="relative min-h-screen flex">
+    <div className="relative min-h-screen flex flex-col lg:flex-row">
       {/* Left side - Teal background with text */}
       <motion.div
         initial={{ x: 800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex flex-col p-12 gap-25 text-white z-10"
+        className="hidden lg:flex flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex-col p-12 gap-25 text-white z-10"
       >
         {/* Logo */}
         <div
@@ -133,7 +133,7 @@ export default function CompanyLocationForm({
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 p-8 flex flex-col justify-center"
+        className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-center"
       >
         {/* Back Button */}
         <div className="absolute top-15 right-15">

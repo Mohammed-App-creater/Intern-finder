@@ -44,8 +44,8 @@ export function StatusCards() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-5">
-                  <div className="text-3xl font-bold mb-1">Loading...</div>
-                  <div className="text-lg font-bold opacity-90 max-w-50">
+                  <div className="text-2xl sm:text-3xl font-bold mb-1">Loading...</div>
+                  <div className="text-base sm:text-lg font-bold opacity-90">
                     {status.title}
                   </div>
                 </div>
@@ -71,8 +71,8 @@ export function StatusCards() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-5">
-                  <div className="text-3xl font-bold mb-1">Error</div>
-                  <div className="text-lg font-bold opacity-90 max-w-50">
+                  <div className="text-2xl sm:text-3xl font-bold mb-1">Error</div>
+                  <div className="text-base sm:text-lg font-bold opacity-90">
                     {stat.title}
                   </div>
                 </div>
@@ -95,10 +95,10 @@ export function StatusCards() {
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-5">
-                <div className="text-3xl font-bold mb-1">
+                <div className="text-2xl sm:text-3xl font-bold mb-1">
                   {data?.[status.key] ?? 0}
                 </div>
-                <div className="text-lg font-bold opacity-90 max-w-50">
+                <div className="text-base sm:text-lg font-bold opacity-90">
                   {status.title}
                 </div>
               </div>

@@ -138,7 +138,7 @@ export default function PostJobPage() {
         </span>
       </div>
 
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         <StepIndicator currentStep={currentStep} steps={steps} />
 
         {currentStep === 1 && <JobInformationStep onNext={handleNext} />}

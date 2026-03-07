@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea"
 
 export function ContactForm() {
   return (
-    <div className="bg-secondary p-8 rounded-lg max-w-lg">
+    <div className="bg-secondary p-4 sm:p-6 md:p-8 rounded-lg max-w-lg">
       <div className="flex flex-col items-center mb-6">
         <h2 className="text-2xl font-bold text-dark mb-2">Contact Info</h2>
         <p className="text-light">Reach out to us. Our team is here to answer your questions.</p>
@@ -41,7 +41,7 @@ export function ContactForm() {
             id="message"
             placeholder="Your message..."
             rows={4}
-            className="bg-white"
+            className="bg-white min-h-30"
           />
         </div>
 

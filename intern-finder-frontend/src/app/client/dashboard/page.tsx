@@ -7,14 +7,16 @@ import { JobOpenCard } from "@/components/pages/dashboard/client/job-open-card";
 
 export default function Dashboard() {
   return (
-    <main className="min-h-screen flex-1 p-8 mb-5 mt-2">
+    <main className="min-h-screen flex-1 p-4 md:p-8 mb-5 mt-2">
       <div className="space-y-6">
         <DashboardGreeting />
         {/* Main Grid */}
         <StatusCards />
-        <div className="flex justify-between">
-          <JobStatistics />
-          <div className="flex flex-col gap-8  w-[32.5%]">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="w-full lg:w-2/3">
+            <JobStatistics />
+          </div>
+          <div className="flex flex-col gap-6 lg:gap-8 w-full lg:w-1/3">
             <JobOpenCard />
             <ApplicantsSummary />
           </div>

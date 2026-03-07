@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TalentForm from "@/components/pages/signup/talent/talent-form";
 import TalentFinalForm from "@/components/pages/signup/talent/talent-final-form";
 import { useTalentRegisterStep2 } from "@/hooks/useAuth";
@@ -14,12 +14,35 @@ import { getErrorMessage, getValidationErrors } from "@/utils/error-handler";
 export default function Talent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
   const { showSuccess, showError } = useToastMessages();
 
   const { mutate: registerTalent } = useTalentRegisterStep2();
   const tempo = tempoAuthstore.getState();
   const user = useAuthStore();
+
+  // Load saved state on mount
+  useEffect(() => { // Added import for useEffect if not present, checking imports next
+    const savedData = localStorage.getItem("talentSignupData");
+    const savedStep = localStorage.getItem("talentSignupStep");
+
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+    if (savedStep) {
+      setCurrentStep(parseInt(savedStep));
+    }
+    setIsLoaded(true);
+  }, []); // will need to add useEffect to imports
+
+  // Save state on change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("talentSignupData", JSON.stringify(formData));
+      localStorage.setItem("talentSignupStep", currentStep.toString());
+    }
+  }, [formData, currentStep, isLoaded]);
 
   const handleFormSubmit = (data: object) => {
     setFormData({ ...formData, ...data });
@@ -38,6 +61,10 @@ export default function Talent() {
       onSuccess: (response) => {
         user.setAuth(response.token, response.talent);
         setCookie("token", response.token);
+        // Clear saved state on success
+        localStorage.removeItem("talentSignupData");
+        localStorage.removeItem("talentSignupStep");
+        localStorage.removeItem("profileImageUrl"); // Also clear the profile image if stored
         showSuccess("Registration successful! Redirecting to dashboard...");
         setTimeout(() => {
           router.push("/talent/dashboard");
@@ -63,6 +90,10 @@ export default function Talent() {
   const handleBackToFirstForm = () => {
     setCurrentStep(1);
   };
+
+  if (!isLoaded) {
+    return null; // or loading spinner
+  }
 
   return (
     <div>

@@ -20,7 +20,7 @@ export function ProfessionalInfo() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <p className="text-sm text-light mb-1">Current Job</p>
           <p className="text-dark font-medium">Product Designer</p>
@@ -31,7 +31,7 @@ export function ProfessionalInfo() {
           <p className="text-dark font-medium">4 Years</p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <p className="text-sm text-light mb-1">Highest Qualification Field</p>
           <p className="text-dark font-medium">Bachelors in Engineering</p>

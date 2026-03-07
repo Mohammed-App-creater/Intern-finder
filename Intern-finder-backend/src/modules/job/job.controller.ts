@@ -8,7 +8,7 @@ export const createJobController = async (req: Request, res: Response, next: Nex
     try {
         // validate input
         const parsedData = createJobSchema.parse(req.body);
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const company = await prisma.company.findUnique({
             where: { id: companyId },
         });
@@ -38,7 +38,7 @@ export const getAllJobsController = async (req: Request, res: Response, next: Ne
 
 export const getJobsByCompanyIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { companyId } = req.params;
+        const companyId = req.params.companyId as string;
         const company = await prisma.company.findUnique({
             where: { id: companyId },
         });
@@ -53,7 +53,7 @@ export const getJobsByCompanyIdController = async (req: Request, res: Response, 
 
 export const getJobByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { jobId } = req.params;
+        const jobId = req.params.jobId as string;
         const job = await getJobById(jobId);
         res.status(200).json(successResponse(job, "Job fetched"));
     } catch (error) {

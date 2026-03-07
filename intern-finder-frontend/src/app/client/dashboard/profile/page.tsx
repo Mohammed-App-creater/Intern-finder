@@ -9,17 +9,17 @@ import { OpenPositionsSection } from "@/components/pages/dashboard/client/Compan
 
 export default function CompanyProfilePage() {
   return (
-    <div className="min-h-screen px-2 mt-5">
+    <div className="min-h-screen px-4 md:px-6 mt-5">
       <CompanyHeader />
-      <div className="flex gap-3">
-        <div className="max-w-5xl">
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 max-w-full lg:max-w-5xl">
           <CompanyProfile />
           <ContactSection />
           <Gallery />
           <TeamSection />
           <OpenPositionsSection />
         </div>
-        <div>
+        <div className="w-full lg:w-auto space-y-6">
           <TechStack />
           <OfficeLocations />
         </div>

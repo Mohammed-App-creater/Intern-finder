@@ -18,8 +18,8 @@ export function Gallery() {
           </div>
         </div>
 
-        <div className="flex gap-4 max-h-150">
-          <div className="aspect-video w-[65%]">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="aspect-video w-full md:w-[65%]">
             <Image
               src="https://images.pexels.com/photos/3182750/pexels-photo-3182750.jpeg"
               alt="Modern office workspace"
@@ -28,7 +28,7 @@ export function Gallery() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="flex flex-col gap-3 w-[35%]">
+          <div className="flex flex-row md:flex-col gap-3 w-full md:w-[35%] overflow-x-auto md:overflow-x-visible">
             <div className="aspect-video overflow-hidden">
               <Image
                 src="https://images.pexels.com/photos/3182835/pexels-photo-3182835.jpeg"

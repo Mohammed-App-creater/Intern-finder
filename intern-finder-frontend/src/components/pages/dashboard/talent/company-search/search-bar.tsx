@@ -91,23 +91,23 @@ export function SearchBar() {
   };
 
   return (
-    <div className="flex gap-4 mb-6">
-      <div className="flex-2 relative">
+    <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="flex-1 lg:flex-2 relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
         <Input 
           placeholder="Company title or keyword" 
-          className="pl-10 h-12" 
+          className="pl-10 h-12 w-full" 
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
       </div>
 
-      <div className="flex-1 relative min-w-48" ref={locationRef}>
+      <div className="flex-1 relative min-w-full md:min-w-48" ref={locationRef}>
         <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light w-4 h-4" />
         <div className="relative">
           <Input 
             placeholder="Florence, Italy" 
-            className="pl-10 h-12" 
+            className="pl-10 h-12 w-full" 
             value={location}
             onChange={(e) => handleLocationChange(e.target.value)}
             onFocus={handleInputFocus}
@@ -144,7 +144,7 @@ export function SearchBar() {
       </div>
 
       <Button 
-        className="h-12 px-8 bg-primary text-white hover:bg-primary/90"
+        className="h-12 w-full md:w-auto px-8 bg-primary text-white hover:bg-primary/90"
         onClick={handleSearch}
       >
         Search

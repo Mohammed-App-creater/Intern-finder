@@ -14,13 +14,13 @@ interface ApplicantTabsProps {
 
 export function ApplicantTabs({ activeTab, onTabChange }: ApplicantTabsProps) {
   return (
-    <div className="px-6">
-      <div className="flex gap-8 border-b">
+    <div className="px-4 sm:px-6">
+      <div className="flex gap-4 sm:gap-8 border-b overflow-x-auto pb-0.5">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`py-4 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+            className={`py-3 sm:py-4 text-xs sm:text-sm font-medium border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === tab.id
                 ? "border-primary text-primary"
                 : "border-transparent text-light hover:text-dark"

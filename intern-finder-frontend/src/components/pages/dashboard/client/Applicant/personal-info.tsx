@@ -3,7 +3,7 @@ export function PersonalInfo() {
     <div className="space-y-6  border-b pb-5">
       <h3 className="text-lg font-semibold text-dark">Personal Info</h3>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <p className="text-sm text-light mb-1">Full Name</p>
           <p className="text-dark font-medium">Jerome Bell</p>
@@ -26,7 +26,7 @@ export function PersonalInfo() {
           <p className="text-dark font-medium">English, French, Bahasa</p>
         </div>
 
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <p className="text-sm text-light mb-1">Address</p>
           <p className="text-dark font-medium">
             4517 Washington Ave, Manchester, Kentucky 39495

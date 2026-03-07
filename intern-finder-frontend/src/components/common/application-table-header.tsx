@@ -36,17 +36,17 @@ export default function ApplicationTableHeader({
             <ArrowLeft className="w-6 h-6" />
           </Button>
           <div>
-            <h1 className="text-dark text-xl font-semibold">
+            <h1 className="text-dark text-sm md:text-xl font-semibold">
               Social Media Assistant
             </h1>
-            <p className="text-light text-sm">
+            <p className="text-light text-xs md:text-sm">
               Design • Full-Time • 4 / 11 Hired
             </p>
           </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="none" className="text-primary border">
+            <Button variant="none" className="text-primary border text-xs md:text-base w-24 md:w-fit">
               More Action
             </Button>
           </DropdownMenuTrigger>

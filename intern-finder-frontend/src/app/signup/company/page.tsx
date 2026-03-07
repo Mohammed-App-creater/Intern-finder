@@ -61,6 +61,7 @@ export default function CompanySignup() {
     otherLocation: "",
     logoUrl: "",
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const { mutate: registerCompanyStep2 } = useCompanyRegisterStep2();
   const tempo = tempoAuthstore.getState();
@@ -84,6 +85,28 @@ export default function CompanySignup() {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [currentStep]);
+
+  // Load saved state on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("companySignupData");
+    const savedStep = localStorage.getItem("companySignupStep");
+
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+    if (savedStep) {
+      setCurrentStep(parseInt(savedStep));
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save state on change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("companySignupData", JSON.stringify(formData));
+      localStorage.setItem("companySignupStep", currentStep.toString());
+    }
+  }, [formData, currentStep, isLoaded]);
 
   const handleFormSubmit = (data: StepData) => {
     const newData = { ...formData, ...data };
@@ -118,6 +141,11 @@ export default function CompanySignup() {
         user.setAuth(response.token, response.company);
         setCookie("token", response.token);
         clearAllErrors();
+        // Clear saved state on success
+        localStorage.removeItem("companySignupData");
+        localStorage.removeItem("companySignupStep");
+        localStorage.removeItem("profileImage"); // Also clear the profile image if stored separately
+
         showSuccess("Registration successful! Redirecting to dashboard...");
         setTimeout(() => {
           router.push("/client/dashboard");
@@ -190,6 +218,10 @@ export default function CompanySignup() {
       ),
     },
   ];
+
+  if (!isLoaded) {
+    return null; // or a loading spinner
+  }
 
   return <div className="relative">{steps[currentStep].component}</div>;
 }

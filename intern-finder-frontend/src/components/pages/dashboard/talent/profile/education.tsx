@@ -44,7 +44,7 @@ export function Educations() {
             key={experience.id}
             className="flex gap-4 pb-5 not-last:border-b"
           >
-            <Avatar className="h-20 w-20 flex-shrink-0 rounded-none">
+            <Avatar className="h-12 w-12 md:h-20 md:w-20 flex-shrink-0 rounded-none">
               <AvatarImage src={experience.avatar} alt="Industry Logo" />
               <AvatarFallback>Industry Logo</AvatarFallback>
             </Avatar>

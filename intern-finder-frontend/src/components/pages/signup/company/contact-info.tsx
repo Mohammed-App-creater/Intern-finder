@@ -98,7 +98,7 @@ export default function ContactInfoForm({
     Object.keys(localErrors).length > 0 ? localErrors : errors;
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Side - Form */}
       <motion.div
         initial={{ x: 800, opacity: 1 }}
@@ -137,7 +137,7 @@ export default function ContactInfoForm({
         </div>
 
         {/* Form Content */}
-        <div className="flex-1 flex flex-col mx-auto p-4 md:p-8 w-150">
+        <div className="flex-1 flex flex-col mx-auto p-4 md:p-8 md:w-150">
           <h1 className="text-3xl font-bold text-dark mb-8">
             Contact Information
           </h1>
@@ -264,7 +264,7 @@ export default function ContactInfoForm({
         initial={{ x: -800, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] flex items-center justify-center p-6 z-10"
+        className="hidden lg:flex flex-1 bg-gradient-to-br from-[#309689] to-[#1E3E57] items-center justify-center p-6 z-10"
       >
         <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight md:leading-relaxed text-white max-w-170">
           Help us reach the right person when the perfect intern comes along!

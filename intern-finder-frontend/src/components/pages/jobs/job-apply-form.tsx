@@ -198,7 +198,7 @@ export default function JobApplicationPopup(props: JobApplicationPopupProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md mx-auto bg-text-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[95vw] max-w-md mx-auto bg-text-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader className="flex flex-row items-center justify-between p-6 pb-4">
           <div className="flex items-center gap-3">
             <Image src={logo} alt="Company Logo" width={40} height={40} />

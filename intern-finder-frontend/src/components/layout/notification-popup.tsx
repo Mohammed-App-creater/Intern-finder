@@ -123,7 +123,7 @@ export function NotificationPopup() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-105 p-0 bg-white border shadow-lg"
+        className="w-[90vw] sm:w-105 p-0 bg-white border shadow-lg ml-4 md:ml-0"
         sideOffset={8}
       >
         <div className="p-4 border-b">

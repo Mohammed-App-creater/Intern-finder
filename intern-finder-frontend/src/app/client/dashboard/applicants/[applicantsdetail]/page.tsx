@@ -4,10 +4,10 @@ import { ApplicantSidebar } from "@/components/pages/dashboard/client/Applicant/
 
 export default function ApplicantDetailsPage() {
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-4 md:p-6">
       <ApplicantHeader />
 
-      <div className="flex gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <ApplicantSidebar />
         <ApplicantContent />
       </div>

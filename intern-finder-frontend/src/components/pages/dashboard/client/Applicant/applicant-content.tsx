@@ -39,7 +39,7 @@ export function ApplicantContent() {
   return (
     <div className="flex-1 p-3 border shadow-sm bg-white">
       <ApplicantTabs activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="p-6">{renderTabContent()}</div>
+      <div className="p-4 sm:p-6">{renderTabContent()}</div>
     </div>
   );
 }

@@ -142,7 +142,7 @@ export default function MyProfileTab() {
       </div>
 
       <div>
-        <div className="flex gap-15 mb-10 border-b pb-10">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10 lg:gap-15 mb-10 border-b pb-10">
           <div>
             <h3 className="text-base font-medium text-dark mb-2">
               Profile Photo
@@ -153,7 +153,7 @@ export default function MyProfileTab() {
             </p>
           </div>
 
-          <Avatar className="w-35 h-35">
+          <Avatar className="w-24 h-24 md:w-35 md:h-35 mx-auto md:mx-0">
             <AvatarImage
               src={formData.profileImageUrl ?? ""}
               alt="Profile Picture"
@@ -164,7 +164,7 @@ export default function MyProfileTab() {
           </Avatar>
 
           <div
-            className={`border-2 border-dashed rounded-lg p-8 flex-1 max-w-md cursor-pointer transition
+            className={`border-2 border-dashed rounded-lg p-6 md:p-8 flex-1 w-full md:max-w-md cursor-pointer transition
         ${dragOver ? "border-primary bg-[#021103]" : "border-primary"}`}
             onClick={() => fileInputRef.current?.click()}
             onDragOver={(e) => {
@@ -194,7 +194,7 @@ export default function MyProfileTab() {
           </div>
         </div>
 
-        <div className="flex justify-between max-w-5xl">
+        <div className="flex flex-col lg:flex-row justify-between gap-6 w-full">
           <div>
             <h3 className="text-base font-medium text-dark mb-6">
               Personal Details
@@ -296,7 +296,7 @@ export default function MyProfileTab() {
         </div>
       </div>
 
-      <div className="flex justify-end max-w-7xl">
+      <div className="flex justify-end w-full">
         <Button
           onClick={handleUpdate}
           disabled={isLoading}

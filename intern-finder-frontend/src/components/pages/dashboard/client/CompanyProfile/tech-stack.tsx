@@ -57,7 +57,7 @@ export function TechStack() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
           {technologies.map((tech, index) => (
             <div
               key={index}
@@ -68,7 +68,7 @@ export function TechStack() {
                 alt="Tech Logo"
                 width={500}
                 height={500}
-                className="w-25 h-25 flex items-center justify-center mb-2"
+                className="w-16 h-16 md:w-25 md:h-25 flex items-center justify-center mb-2"
               />
               <span className="text-sm text-light font-medium">
                 {tech.name}

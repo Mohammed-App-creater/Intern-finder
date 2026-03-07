@@ -3,7 +3,7 @@ import { JobListingHeader } from "@/components/pages/dashboard/client/joblisting
 
 export default function JobListingPage() {
   return (
-    <div className="min-h-screen p-6 mt-3">
+    <div className="min-h-screen p-4 md:p-6 mt-3">
       <div>
         <JobListingHeader />
         <JobListTable />

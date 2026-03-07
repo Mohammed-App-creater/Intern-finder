@@ -10,9 +10,9 @@ export default function About() {
   return (
     <section>
       {/* Hero */}
-      <div className="bg-black h-60 mb-5">
+      <div className="bg-black h-40 sm:h-60 mb-5">
         <Navbar />
-        <div className="flex justify-center items-center font-extrabold text-white text-5xl mt-10">
+        <div className="flex justify-center items-center font-extrabold text-white text-3xl sm:text-5xl mt-10">
           <h1>About Us</h1>
         </div>
       </div>
@@ -22,7 +22,7 @@ export default function About() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 items-start">
               <div>
-                <h2 className="text-7xl font-bold text-dark mb-4">
+                <h2 className="text-4xl sm:text-7xl font-bold text-dark mb-4">
                   Our Mission & Vision
                 </h2>
               </div>
@@ -62,11 +62,11 @@ export default function About() {
       {/* FAQ Section */}
       <FAQ />
       {/* Working With The Best Section */}
-      <section className="pb-50 pt-25 px-4 bg-secondary">
+      <section className="pb-16 pt-12 sm:pb-50 sm:pt-25 px-4 bg-secondary">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             {/* Images Grid */}
-            <div className="flex gap-4 h-full w-full min-h-150">
+            <div className="flex gap-4 h-full w-full min-h-[400px] sm:min-h-150">
               <div className="h-full w-full space-y-4">
                 <Image
                   src={
@@ -102,7 +102,7 @@ export default function About() {
 
             {/* Content */}
             <div>
-              <h2 className="text-5xl font-bold text-dark mb-6">
+              <h2 className="text-3xl sm:text-5xl font-bold text-dark mb-6">
                 We&apos;re Only Working
                 <br />
                 With The Best
@@ -114,7 +114,7 @@ export default function About() {
               </p>
 
               {/* Features Grid */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex items-center gap-5">
                   <CircleStar className="w-10 h-10 text-primary font-light stroke-1" />
                   <span className="text-dark font-bold text-xl">

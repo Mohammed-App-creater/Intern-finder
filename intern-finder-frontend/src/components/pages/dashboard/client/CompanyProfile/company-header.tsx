@@ -4,8 +4,8 @@ import { Eye, Settings, Calendar, Users, MapPin, Building, Edit } from "lucide-r
 
 export function CompanyHeader() {
   return (
-    <div className="flex gap-6 border-b p-6">
-      <div className="relative flex items-center h-30 w-30 pt-5">
+    <div className="flex flex-col md:flex-row gap-6 border-b p-4 md:p-6">
+      <div className="relative flex items-center justify-center md:justify-start h-20 w-20 md:h-30 md:w-30 pt-5 mx-auto md:mx-0">
         <Image
           src={"https://cdn-icons-png.flaticon.com/128/5968/5968835.png"}
           alt="Company Logo"
@@ -13,20 +13,20 @@ export function CompanyHeader() {
           height={500}
           className="pl-4"
         />
-        <Button variant="ghost" size="icon" className="absolute -top-2 border h-7 w-7 p-2">
+        <Button variant="none" size="icon" className="absolute top-0 left-0 border h-7 w-7 p-2 bg-white">
           <Edit className="h-2 w-2 text-primary" />
         </Button>
       </div>
       <div>
         {/* Header with logo and buttons */}
-        <div className="flex items-center justify-between gap-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
             <div>
               <h1 className="text-2xl font-bold text-dark">Nomad</h1>
               <p className="text-light text-sm">https://nomad.com</p>
             </div>
           </div>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
             <Button variant="none" className="text-primary border-primary">
               <Eye className="w-4 h-4 mr-1" />
               Public View
@@ -39,7 +39,7 @@ export function CompanyHeader() {
         </div>
 
         {/* Company stats */}
-        <div className="grid grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center border p-2">
               <Calendar className="w-5 h-5 text-primary" />
